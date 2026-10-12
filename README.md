@@ -38,6 +38,7 @@ AI review is optional and runs on your own API key (Anthropic, OpenAI, Google, a
 | [`prompts/01-ui-design.md`](prompts/01-ui-design.md) | Prompt for Stitch or Claude Design to generate the UI |
 | [`prompts/02-build.md`](prompts/02-build.md) | Prompt for Claude Code to build the app from that UI |
 | [`design/`](design/) | Where the exported designs go |
+| [`CLAUDE.md`](CLAUDE.md) | Standing instructions for agents, including the skills to follow |
 | [`docs/`](docs/) | The project site, served by GitHub Pages |
 
 ## How the project gets built
@@ -45,6 +46,10 @@ AI review is optional and runs on your own API key (Anthropic, OpenAI, Google, a
 1. Run `prompts/01-ui-design.md` in Stitch or Claude Design and export the result into `design/`.
 2. Run `prompts/02-build.md` in Claude Code at the root of this repository. It builds milestone by milestone, starting with the foundations and the Signing tool.
 3. Tick the boxes in `ROADMAP.md` as work lands.
+
+## Engineering standards
+
+The code follows the practices published as agent skills in [mobile-craft-skills](https://github.com/Androbito/mobile-craft-skills): clean architecture, TDD, a test pyramid, SOLID reviews, quality audits and ADRs. [`CLAUDE.md`](CLAUDE.md) says which skill applies where, and the repository declares the plugin so Claude Code sessions pick it up.
 
 ## Stack
 

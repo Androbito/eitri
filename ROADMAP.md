@@ -6,6 +6,8 @@ Legend: **[spike]** means the item needs a short investigation before it can be 
 
 ## M0. Foundations
 
+- [ ] Install the [mobile-craft-skills](https://github.com/Androbito/mobile-craft-skills) plugin and follow it for all work (see `CLAUDE.md`)
+- [ ] ADR log in `docs/adr/`, started with the stack and module layout decisions
 - [ ] Gradle multi-module project, Kotlin 2.x, Compose Multiplatform for Desktop (JVM target)
 - [ ] Modules: `core` (domain, no UI), `tools/*` (one per tool), `ai`, `storage`, `ui` (design system), `app` (desktop shell), `cli`
 - [ ] Design system in `ui`: color tokens (light and dark), type scale, spacing, status colors, components from the generated designs in `design/`

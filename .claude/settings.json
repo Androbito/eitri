@@ -1,0 +1,10 @@
+{
+  "extraKnownMarketplaces": {
+    "mobile-craft-skills": {
+      "source": { "source": "github", "repo": "Androbito/mobile-craft-skills" }
+    }
+  },
+  "enabledPlugins": {
+    "mobile-craft-skills@mobile-craft-skills": true
+  }
+}

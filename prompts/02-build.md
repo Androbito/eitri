@@ -14,6 +14,25 @@ You are building **Eitri**, a free and open source desktop toolbox for Android a
 
 If `design/` is empty, stop and say so. Do not invent the UI.
 
+## Engineering standards: mobile-craft-skills
+
+This project follows the skills in https://github.com/Androbito/mobile-craft-skills. `CLAUDE.md` has the table of which skill applies where, and `.claude/settings.json` declares the plugin. Before writing any code:
+
+1. Check the nine skills are available in this session. If not, run `claude plugin marketplace add Androbito/mobile-craft-skills` then `claude plugin install mobile-craft-skills@mobile-craft-skills`. If that fails, stop and say so.
+2. Load `mobile-clean-architecture` and read its KMP reference. The architecture section below is the module map, the skill is how each module is built inside.
+3. Load `adr-writer` and record the first decisions in `docs/adr/`: Compose Multiplatform for Desktop, the module layout, DI choice, persistence, secrets storage.
+
+Then, throughout:
+- `tdd-craftsmanship` for all tool logic, test first.
+- `mobile-testing-strategy` for what to test at which level. Where it names an Android-only tool, pick the desktop equivalent and write an ADR.
+- `figma-to-native-ui` when turning a screen from `design/` into Compose.
+- `api-mock-server` for the Play Developer API, OSV.dev and AI providers. No test and no demo-mode screen calls a real service.
+- `solid-code-review` on the diff before every pull request.
+- `mobile-quality-audit` on Eitri itself at the end of each milestone. Put the report in `docs/audits/` and fix the blocking findings before calling the milestone done.
+- `mobile-release-pipeline` for CI, branching and feature flags. Skip its Fastlane and store upload parts: Eitri ships desktop installers through GitHub Releases.
+
+The rule catalogs of Eitri's own Accessibility and Security tools start from the accessibility, localisation and OWASP MASVS checklists in `mobile-quality-audit`, so the app checks other projects against the same standard it is held to.
+
 ## Product rules, not negotiable
 
 - **Read by default.** Every write (file edit, delete, install, API mutation) goes through a confirmation that lists exactly what will change, then gets recorded in the audit log.
@@ -124,6 +143,7 @@ AI
 
 ## Working method
 
+- Follow the skills listed under Engineering standards at every step. Name the skill you applied in each pull request description.
 - Work through the roadmap in order: M0, then M1, and so on. One milestone per pull request series, small commits.
 - For each milestone: write or extend fixtures first, then the tool logic with unit tests, then the UI against the fake data source, then wire the real data source, then run the app and check the screen against the design images in both themes.
 - Take screenshots of each finished screen into `design/implemented/` so design and implementation can be compared side by side.
@@ -133,4 +153,4 @@ AI
 
 ## Where to stop
 
-Start with **M0 and M1 only**. At the end, report: what is ticked in the roadmap, what is in `design/GAPS.md`, the result of the Play signing certificate spike, and how to run the app in demo mode. Wait for review before starting M2.
+Start with **M0 and M1 only**. At the end, report: what is ticked in the roadmap, the ADRs written, the result of the quality audit, what is in `design/GAPS.md`, the result of the Play signing certificate spike, and how to run the app in demo mode. Wait for review before starting M2.
