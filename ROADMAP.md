@@ -35,7 +35,7 @@ The question it answers: why does Google Sign-In, Maps or Firebase work in debug
 - [ ] Flag secrets committed in Gradle files or in `gradle.properties` inside the repo
 - [ ] Read `google-services.json`: registered package names and certificate hashes per client
 - [ ] Compare: every signing identity against what Firebase has registered. Report which fingerprint is missing for which package
-- [ ] Play App Signing: fetch the app signing certificate fingerprint through the Play Developer API and include it in the comparison **[spike]** confirm which endpoint exposes it for an app without a fresh upload
+- [ ] Play App Signing: fetch the app signing certificate fingerprint through the Play Developer API and include it in the comparison. **Spike done, see [`docs/notes/play-signing-cert.md`](docs/notes/play-signing-cert.md):** SHA-256 is readable with `generatedapks.list` for an app that has a processed bundle, without uploading anything. SHA-1 is exposed only by `appsigning.enrollApp` and `appsigning.rotateAppSigningKey`, which both change the app, so Servante reports the Play SHA-1 as unavailable and points at the Play Console. Recovering both from a downloaded generated APK is moved to M6, where the version code it needs already exists
 - [ ] Verify a built APK or AAB: who signed it, which signature schemes (v1 to v4), does it match the expected upload key
 - [ ] Certificate validity: warn on short remaining validity and on weak algorithms
 - [ ] Fingerprint matrix view: rows are identities (debug, upload, Play signing), columns are consumers (Firebase, Google Cloud OAuth clients, Play), cells are match, missing or unknown

@@ -1,5 +1,7 @@
 package app.servante.storage.project
 
+import app.servante.core.text.GradleScript
+
 /** What Servante needs from a `settings.gradle(.kts)` file. */
 public data class ParsedSettingsScript(public val rootProjectName: String?, public val modulePaths: List<String>)
 
@@ -18,7 +20,7 @@ public object SettingsScriptParser {
     private const val INCLUDE = "include"
 
     public fun parse(script: String): ParsedSettingsScript {
-        val code = CommentStripper.strip(script)
+        val code = GradleScript.stripComments(script)
         val paths = linkedSetOf<String>()
         for (arguments in includeArguments(code)) {
             COLON_PATH.findAll(arguments).forEach { paths += it.groupValues[1] }
@@ -87,66 +89,5 @@ public object SettingsScriptParser {
     private fun String.isWordCharAt(index: Int): Boolean {
         if (index < 0 || index >= length) return false
         return this[index].isLetterOrDigit() || this[index] == '_' || this[index] == '.'
-    }
-}
-
-/**
- * Removes line and block comments from a Gradle script so a commented-out statement is not read as real.
- *
- * String literals are left alone: a `//` inside a quoted path is part of the path. Each kind of run is
- * skipped or copied by its own function, so the main loop only has to decide which kind it is looking at.
- */
-internal object CommentStripper {
-    fun strip(script: String): String {
-        val out = StringBuilder(script.length)
-        var i = 0
-        while (i < script.length) {
-            i = when {
-                script.startsOfLineComment(i) -> script.skipToEndOfLine(i)
-                script.startsOfBlockComment(i) -> script.skipBlockComment(i)
-                script[i] == '\'' || script[i] == '"' -> script.copyStringLiteral(i, out)
-                else -> script.copyChar(i, out)
-            }
-        }
-        return out.toString()
-    }
-
-    private fun String.startsOfLineComment(at: Int): Boolean = this[at] == '/' && at + 1 < length && this[at + 1] == '/'
-
-    private fun String.startsOfBlockComment(at: Int): Boolean =
-        this[at] == '/' && at + 1 < length && this[at + 1] == '*'
-
-    private fun String.skipToEndOfLine(at: Int): Int = indexOf('\n', at).takeIf { it >= 0 } ?: length
-
-    private fun String.skipBlockComment(at: Int): Int {
-        val end = indexOf("*/", startIndex = at + 2)
-        return if (end >= 0) end + 2 else length
-    }
-
-    /** Copies a quoted literal verbatim, escapes included, and returns the index just after it. */
-    private fun String.copyStringLiteral(at: Int, out: StringBuilder): Int {
-        val quote = this[at]
-        out.append(quote)
-        var i = at + 1
-        while (i < length) {
-            val c = this[i]
-            out.append(c)
-            when {
-                c == '\\' && i + 1 < length -> {
-                    out.append(this[i + 1])
-                    i += 2
-                }
-
-                c == quote -> return i + 1
-
-                else -> i++
-            }
-        }
-        return i
-    }
-
-    private fun String.copyChar(at: Int, out: StringBuilder): Int {
-        out.append(this[at])
-        return at + 1
     }
 }

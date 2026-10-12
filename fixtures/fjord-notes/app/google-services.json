@@ -18,7 +18,7 @@
           "client_type": 1,
           "android_info": {
             "package_name": "app.fjord.notes",
-            "certificate_hash": "bb8a823f19f928152e629432eaf8f2e452214cd6"
+            "certificate_hash": "2d26154e8daaf5cdf510a87c2a80c0145a21f9a1"
           }
         },
         {
@@ -63,7 +63,7 @@
           "client_type": 1,
           "android_info": {
             "package_name": "app.fjord.notes.debug",
-            "certificate_hash": "bb8a823f19f928152e629432eaf8f2e452214cd6"
+            "certificate_hash": "2d26154e8daaf5cdf510a87c2a80c0145a21f9a1"
           }
         },
         {

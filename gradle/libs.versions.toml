@@ -13,6 +13,8 @@ sqldelight = "2.4.1"
 turbine = "1.2.1"
 jna = "5.19.1"
 slf4j = "2.0.20"
+androidpublisher = "v3-rev20260924-2.0.0"
+googleAuth = "1.54.0"
 tomlj = "2.2.0"
 checkerQual = "4.3.1"
 detektCli = "1.23.8"
@@ -42,6 +44,9 @@ checker-qual = { module = "org.checkerframework:checker-qual", version.ref = "ch
 jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
 jna-platform = { module = "net.java.dev.jna:jna-platform", version.ref = "jna" }
 slf4j-nop = { module = "org.slf4j:slf4j-nop", version.ref = "slf4j" }
+
+google-api-androidpublisher = { module = "com.google.apis:google-api-services-androidpublisher", version.ref = "androidpublisher" }
+google-auth-oauth2 = { module = "com.google.auth:google-auth-library-oauth2-http", version.ref = "googleAuth" }
 
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
