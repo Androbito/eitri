@@ -4,6 +4,8 @@ import app.servante.core.process.ProcessCommand
 import app.servante.core.process.ProcessOutcome
 import app.servante.core.secrets.Secret
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.filterNot
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -116,5 +118,34 @@ class JvmProcessRunnerTest {
         // is the case in some CI images, writes its own notice to standard error first.
         assertTrue(lines.filter { it.fromStandardError }.map { it.text }.contains("on stderr"))
         assertEquals(listOf("out"), lines.filterNot { it.fromStandardError }.map { it.text })
+    }
+}
+
+/**
+ * A collector slower than the process used to lose lines, because the readers used `trySend` and a full
+ * channel buffer fails that call silently. For a tool that parses a build log, missing lines are not an
+ * incomplete answer, they are a wrong one.
+ */
+class JvmProcessRunnerStreamBackPressureTest {
+    @Test
+    fun `every line reaches a slow collector`() = runTest {
+        val runner = JvmProcessRunner(Dispatchers.IO)
+        val lineCount = 500
+        val command = ProcessCommand(
+            executable = ProcessTestPrograms.javaExecutable,
+            arguments = ProcessTestPrograms.arguments(
+                PrintsManyLines::class.java.name,
+                lineCount.toString(),
+            ),
+            timeout = 60.seconds,
+        )
+
+        val received = runner.stream(command)
+            .filterNot { it.fromStandardError }
+            .onEach { Thread.sleep(1) }
+            .toList()
+
+        assertEquals(lineCount, received.size, "lost ${lineCount - received.size} lines")
+        assertEquals((0 until lineCount).map { "line $it" }, received.map { it.text })
     }
 }

@@ -36,12 +36,16 @@ public sealed interface PlannedChange {
  *
  * @param title the question the dialog asks, as in "Move 4 items to the trash?".
  * @param explanation what happens and what is recoverable.
+ * @param projectPath the project this write belongs to, or null for an app-level change such as
+ *   removing a service account. It is recorded with the audit event, which is the only way the history
+ *   view can be filtered to one project.
  */
 public data class WriteRequest(
     public val tool: ToolId,
     public val title: String,
     public val explanation: String,
     public val changes: List<PlannedChange>,
+    public val projectPath: String? = null,
 ) {
     init {
         require(title.isNotBlank()) { "A write request needs a title." }

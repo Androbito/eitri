@@ -73,7 +73,23 @@ public data class SigningIdentity(
     public val validFrom: Instant? = null,
     public val validUntil: Instant? = null,
     public val unreadableReason: String? = null,
-)
+) {
+    /**
+     * What tells two keys apart within one run.
+     *
+     * The kind alone does not: a project can have a release config and a user-added upload keystore, or
+     * one keystore with two aliases, and both are [IdentityKind.Upload]. Keying anything by kind makes
+     * the second key overwrite the first, which is how a key that is registered came to be reported as
+     * missing. [source] is what the user sees for this key, so it is also what distinguishes it.
+     */
+    public val id: String get() = "${kind.name.lowercase()}:$source"
+
+    /** The id reduced to something that can sit inside a [app.servante.core.FindingId]. */
+    public fun slug(): String = id.lowercase().map { if (it.isLetterOrDigit() || it == '.') it else '-' }
+        .joinToString("")
+        .replace(Regex("-+"), "-")
+        .trim('-')
+}
 
 /**
  * The fingerprint matrix from `design/screens/Signing.dc.html`: rows are the keys the project signs
@@ -87,18 +103,25 @@ public data class FingerprintMatrix(
     public val packageName: String,
     public val identities: List<SigningIdentity>,
     public val consumers: List<Consumer>,
-    private val cells: Map<Pair<IdentityKind, Consumer>, MatrixCell>,
+    private val cells: Map<Pair<String, Consumer>, MatrixCell>,
 ) {
-    public fun cell(kind: IdentityKind, consumer: Consumer): MatrixCell =
-        cells[kind to consumer] ?: MatrixCell(MatchState.Unknown, "Not compared.")
+    /** Keyed by [SigningIdentity.id], not by kind: see the note on that property. */
+    public fun cell(identity: SigningIdentity, consumer: Consumer): MatrixCell =
+        cells[identity.id to consumer] ?: MatrixCell(MatchState.Unknown, "Not compared.")
+
+    /**
+     * The cell for the first identity of this kind, for a caller that has a kind and not an identity.
+     *
+     * Returns unknown when there is no such identity, and when there is more than one it answers for
+     * the first, which is why nothing inside this file uses it.
+     */
+    public fun firstCellOfKind(kind: IdentityKind, consumer: Consumer): MatrixCell =
+        identities.firstOrNull { it.kind == kind }?.let { cell(it, consumer) }
+            ?: MatrixCell(MatchState.Unknown, "No $kind key was found.")
 
     public fun missingPairs(): List<Pair<SigningIdentity, Consumer>> = identities.flatMap { identity ->
         consumers.mapNotNull { consumer ->
-            if (cell(identity.kind, consumer).state == MatchState.Missing) {
-                identity to consumer
-            } else {
-                null
-            }
+            if (cell(identity, consumer).state == MatchState.Missing) identity to consumer else null
         }
     }
 }
@@ -117,13 +140,13 @@ public object FingerprintComparison {
         firebase: Availability<GoogleServicesConfig>,
         playCertificate: Availability<CertificateFingerprints>,
     ): FingerprintMatrix {
-        val cells = mutableMapOf<Pair<IdentityKind, Consumer>, MatrixCell>()
+        val cells = mutableMapOf<Pair<String, Consumer>, MatrixCell>()
         identities.forEach { identity ->
-            cells[identity.kind to Consumer.Firebase] =
+            cells[identity.id to Consumer.Firebase] =
                 firebaseCell(packageName, identity, firebase, clientType = null)
-            cells[identity.kind to Consumer.OAuthClient] =
+            cells[identity.id to Consumer.OAuthClient] =
                 firebaseCell(packageName, identity, firebase, clientType = ANDROID_OAUTH_CLIENT_TYPE)
-            cells[identity.kind to Consumer.Play] = playCell(identity, playCertificate)
+            cells[identity.id to Consumer.Play] = playCell(identity, playCertificate)
         }
         return FingerprintMatrix(
             packageName = packageName,

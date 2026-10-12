@@ -7,6 +7,7 @@ import app.servante.core.process.ProcessRunner
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
@@ -68,9 +69,12 @@ public class JvmProcessRunner(private val dispatcher: CoroutineDispatcher = Disp
             close()
             return@callbackFlow
         }
+        // trySendBlocking, not trySend: the readers are plain threads, and trySend fails silently
+        // once the channel buffer is full, so a collector slower than the process lost lines with no
+        // error. A build log read that way is not merely incomplete, it is wrong.
         val readers = listOf(
-            process.emitLines(process.inputStream, fromStandardError = false) { trySend(it) },
-            process.emitLines(process.errorStream, fromStandardError = true) { trySend(it) },
+            process.emitLines(process.inputStream, fromStandardError = false) { trySendBlocking(it) },
+            process.emitLines(process.errorStream, fromStandardError = true) { trySendBlocking(it) },
         )
         writeSecretThenClose(command, process)
         val waiter = thread(name = "servante-process-wait", isDaemon = true) {

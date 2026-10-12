@@ -13,6 +13,7 @@ import app.servante.core.write.WriteOutcome
 import app.servante.core.write.WriteRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.withContext
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
@@ -60,19 +61,31 @@ public class GatedWriter(
                 null
             }
         }
-        val eventId = auditLog.record(
-            AuditEvent(
-                id = null,
-                at = clock.now(),
-                tool = request.tool,
-                action = request.title,
-                summary = request.explanation,
-                projectPath = null,
-                changes = done,
-                outcome = if (failure == null) AuditOutcome.Applied else AuditOutcome.Failed,
-                failureReason = failure,
-            ),
+        val event = AuditEvent(
+            id = null,
+            at = clock.now(),
+            tool = request.tool,
+            action = request.title,
+            summary = request.explanation,
+            projectPath = request.projectPath,
+            changes = done,
+            outcome = if (failure == null) AuditOutcome.Applied else AuditOutcome.Failed,
+            failureReason = failure,
         )
+        // Recorded outside cancellation. The files have already changed, so a caller that cancels
+        // between the write and the record would otherwise leave a change with no history entry, and
+        // "every write is recorded" would be true only when nobody closed the window at the wrong
+        // moment. A recording that fails outright is reported rather than swallowed, for the same
+        // reason: the user has to know the change was made and not written down.
+        val eventId = withContext(NonCancellable) { runCatching { auditLog.record(event) } }
+            .getOrElse { thrown ->
+                return WriteOutcome.Failed(
+                    reason = "The change was made but could not be recorded in the history: " +
+                        (thrown.message ?: thrown::class.simpleName ?: "unknown error"),
+                    changed = done.map { it.path },
+                    auditEventId = null,
+                )
+            }
         return if (failure == null) {
             WriteOutcome.Applied(auditEventId = eventId, changed = done.map { it.path })
         } else {

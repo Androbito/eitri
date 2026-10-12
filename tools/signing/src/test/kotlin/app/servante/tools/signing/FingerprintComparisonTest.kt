@@ -68,15 +68,15 @@ class FingerprintComparisonTest {
             playCertificate = CertificateFingerprints(sha1 = playSha1).available(),
         )
 
-        assertEquals(MatchState.Match, matrix.cell(IdentityKind.Debug, Consumer.Firebase).state)
-        assertEquals(MatchState.Match, matrix.cell(IdentityKind.Upload, Consumer.Firebase).state)
-        assertEquals(MatchState.Missing, matrix.cell(IdentityKind.PlayAppSigning, Consumer.Firebase).state)
+        assertEquals(MatchState.Match, matrix.firstCellOfKind(IdentityKind.Debug, Consumer.Firebase).state)
+        assertEquals(MatchState.Match, matrix.firstCellOfKind(IdentityKind.Upload, Consumer.Firebase).state)
+        assertEquals(MatchState.Missing, matrix.firstCellOfKind(IdentityKind.PlayAppSigning, Consumer.Firebase).state)
         assertEquals(
             MatchState.Missing,
-            matrix.cell(IdentityKind.PlayAppSigning, Consumer.OAuthClient).state,
+            matrix.firstCellOfKind(IdentityKind.PlayAppSigning, Consumer.OAuthClient).state,
         )
-        assertEquals(MatchState.Match, matrix.cell(IdentityKind.PlayAppSigning, Consumer.Play).state)
-        assertEquals(MatchState.NotUsed, matrix.cell(IdentityKind.Debug, Consumer.Play).state)
+        assertEquals(MatchState.Match, matrix.firstCellOfKind(IdentityKind.PlayAppSigning, Consumer.Play).state)
+        assertEquals(MatchState.NotUsed, matrix.firstCellOfKind(IdentityKind.Debug, Consumer.Play).state)
     }
 
     @Test
@@ -88,7 +88,7 @@ class FingerprintComparisonTest {
             playCertificate = CertificateFingerprints(sha1 = playSha1).available(),
         )
 
-        val reason = matrix.cell(IdentityKind.PlayAppSigning, Consumer.Firebase).reason
+        val reason = matrix.firstCellOfKind(IdentityKind.PlayAppSigning, Consumer.Firebase).reason
 
         assertNotNull(reason)
         assertTrue("app.fjord.notes" in reason)
@@ -104,7 +104,7 @@ class FingerprintComparisonTest {
             playCertificate = CertificateFingerprints(sha1 = uploadSha1).available(),
         )
 
-        assertNull(matrix.cell(IdentityKind.Upload, Consumer.Firebase).reason)
+        assertNull(matrix.firstCellOfKind(IdentityKind.Upload, Consumer.Firebase).reason)
     }
 
     @Test
@@ -123,8 +123,8 @@ class FingerprintComparisonTest {
             playCertificate = unavailable("No Play account is connected."),
         )
 
-        assertEquals(MatchState.Match, matrix.cell(IdentityKind.Upload, Consumer.Firebase).state)
-        val oauth = matrix.cell(IdentityKind.Upload, Consumer.OAuthClient)
+        assertEquals(MatchState.Match, matrix.firstCellOfKind(IdentityKind.Upload, Consumer.Firebase).state)
+        val oauth = matrix.firstCellOfKind(IdentityKind.Upload, Consumer.OAuthClient)
         assertEquals(MatchState.Missing, oauth.state)
         assertTrue("Google Sign-In" in oauth.reason.orEmpty())
     }
@@ -138,7 +138,7 @@ class FingerprintComparisonTest {
             playCertificate = unavailable("No Play account is connected."),
         )
 
-        val cell = matrix.cell(IdentityKind.Upload, Consumer.Firebase)
+        val cell = matrix.firstCellOfKind(IdentityKind.Upload, Consumer.Firebase)
         assertEquals(MatchState.Unknown, cell.state)
         assertEquals("This project has no app/google-services.json.", cell.reason)
     }
@@ -152,7 +152,7 @@ class FingerprintComparisonTest {
             playCertificate = unavailable("No Play account is connected, so releases cannot be read."),
         )
 
-        val cell = matrix.cell(IdentityKind.PlayAppSigning, Consumer.Play)
+        val cell = matrix.firstCellOfKind(IdentityKind.PlayAppSigning, Consumer.Play)
         assertEquals(MatchState.Unknown, cell.state)
         assertTrue("No Play account" in cell.reason.orEmpty())
     }
@@ -168,7 +168,7 @@ class FingerprintComparisonTest {
 
         // With Play App Signing the upload key is not the key Play signs with. That is the correct
         // arrangement, so the cell is unknown with an explanation and never a mismatch.
-        val cell = matrix.cell(IdentityKind.Upload, Consumer.Play)
+        val cell = matrix.firstCellOfKind(IdentityKind.Upload, Consumer.Play)
         assertEquals(MatchState.Unknown, cell.state)
         assertTrue("upload certificate" in cell.reason.orEmpty(), cell.reason.orEmpty())
     }
@@ -185,7 +185,7 @@ class FingerprintComparisonTest {
         )
 
         listOf(Consumer.Firebase, Consumer.OAuthClient).forEach { consumer ->
-            val cell = matrix.cell(IdentityKind.Upload, consumer)
+            val cell = matrix.firstCellOfKind(IdentityKind.Upload, consumer)
             assertEquals(MatchState.Unknown, cell.state, "$consumer")
             assertEquals("You skipped release.jks.", cell.reason, "$consumer")
         }
@@ -212,5 +212,88 @@ class FingerprintComparisonTest {
             ),
             missing.map { (identity, consumer) -> identity.kind to consumer },
         )
+    }
+}
+
+/**
+ * Two keys of the same kind, which is ordinary: a release signing config plus a keystore the user added,
+ * or one keystore holding two aliases. Keying anything by kind makes the second overwrite the first.
+ *
+ * Behaviours:
+ * - each identity keeps its own cells, whichever order they arrive in
+ * - a registered key is not reported missing because another key of the same kind is not registered
+ * - a key that is not registered is still reported when a registered key of the same kind comes first
+ * - the two findings do not share one id
+ */
+class FingerprintComparisonSameKindTest {
+    private val registeredSha1 = fingerprintOf("8914b81777ba9a35c1ace9bed6ee805e2cd35731")
+    private val unregisteredSha1 = fingerprintOf("1111111111111111111111111111111111111111")
+
+    private fun fingerprintOf(hex: String) = Fingerprint(hex.chunked(2).map { it.toInt(16).toByte() }.toByteArray())
+
+    private fun upload(source: String, sha1: Fingerprint) = SigningIdentity(
+        kind = IdentityKind.Upload,
+        label = "Upload key",
+        source = source,
+        sha1 = sha1,
+        sha256 = null,
+    )
+
+    private val registered = upload("release.jks, alias upload", registeredSha1)
+    private val unregistered = upload("extra.jks, alias other", unregisteredSha1)
+
+    private fun matrix(identities: List<SigningIdentity>) = FingerprintComparison.build(
+        packageName = "app.fjord.notes",
+        identities = identities,
+        firebase = GoogleServicesConfig(
+            path = "app/google-services.json",
+            projectId = "fjord-notes",
+            clients = listOf(
+                RegisteredClient(
+                    packageName = "app.fjord.notes",
+                    clientId = "1-x.apps.googleusercontent.com",
+                    certificateHash = "8914b81777ba9a35c1ace9bed6ee805e2cd35731",
+                    clientType = 1,
+                ),
+            ),
+        ).available(),
+        playCertificate = unavailable("No Play account is connected."),
+    )
+
+    @Test
+    fun `each identity keeps its own cells with the registered key first`() {
+        val matrix = matrix(listOf(registered, unregistered))
+
+        assertEquals(MatchState.Match, matrix.cell(registered, Consumer.Firebase).state)
+        assertEquals(MatchState.Missing, matrix.cell(unregistered, Consumer.Firebase).state)
+    }
+
+    @Test
+    fun `each identity keeps its own cells with the unregistered key first`() {
+        val matrix = matrix(listOf(unregistered, registered))
+
+        assertEquals(MatchState.Match, matrix.cell(registered, Consumer.Firebase).state)
+        assertEquals(MatchState.Missing, matrix.cell(unregistered, Consumer.Firebase).state)
+    }
+
+    @Test
+    fun `only the key that is not registered is reported missing, in either order`() {
+        listOf(listOf(registered, unregistered), listOf(unregistered, registered)).forEach { order ->
+            val missing = matrix(order).missingPairs()
+
+            assertEquals(
+                listOf(unregistered.source, unregistered.source),
+                missing.map { it.first.source },
+                "order was ${order.map { it.source }}",
+            )
+            assertTrue(missing.none { it.first.source == registered.source })
+        }
+    }
+
+    @Test
+    fun `the two keys produce findings with different ids`() {
+        val findings = SigningRules.missingRegistrations(matrix(listOf(registered, unregistered)))
+
+        assertEquals(findings.size, findings.map { it.id.value }.distinct().size, "ids: ${findings.map { it.id }}")
     }
 }

@@ -100,7 +100,7 @@ class SigningToolTest {
         // google-services.json records SHA-1 and the API gives SHA-256, so there is nothing to compare.
         assertEquals(
             MatchState.Unknown,
-            report.matrix.cell(IdentityKind.PlayAppSigning, Consumer.Firebase).state,
+            report.matrix.firstCellOfKind(IdentityKind.PlayAppSigning, Consumer.Firebase).state,
         )
         val finding = report.result.findings
             .single { it.id.value == "signing.play-registration-unverified" }
@@ -122,7 +122,7 @@ class SigningToolTest {
 
         assertEquals(
             MatchState.Missing,
-            report.matrix.cell(IdentityKind.PlayAppSigning, Consumer.Firebase).state,
+            report.matrix.firstCellOfKind(IdentityKind.PlayAppSigning, Consumer.Firebase).state,
         )
         val critical = report.result.findings.filter { it.severity == Severity.Critical }
         assertTrue(critical.isNotEmpty(), "had ${report.result.findings.map { it.title }}")
@@ -150,7 +150,7 @@ class SigningToolTest {
 
         val upload = report.identities.first { it.kind == IdentityKind.Upload }
         assertEquals("8914B81777BA9A35C1ACE9BED6EE805E2CD35731", upload.sha1?.plainLowercase?.uppercase())
-        assertEquals(MatchState.Match, report.matrix.cell(IdentityKind.Upload, Consumer.Firebase).state)
+        assertEquals(MatchState.Match, report.matrix.firstCellOfKind(IdentityKind.Upload, Consumer.Firebase).state)
     }
 
     @Test
@@ -178,7 +178,7 @@ class SigningToolTest {
             ),
         )
 
-        val cell = report.matrix.cell(IdentityKind.PlayAppSigning, Consumer.Play)
+        val cell = report.matrix.firstCellOfKind(IdentityKind.PlayAppSigning, Consumer.Play)
         assertEquals(MatchState.Unknown, cell.state)
         assertTrue("No Play account" in cell.reason.orEmpty())
         assertTrue(

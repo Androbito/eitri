@@ -60,6 +60,17 @@ internal object RunsForever {
     private const val SLEEP_MILLIS = 60_000L
 }
 
+/** Prints as many lines as asked, as fast as it can, so back-pressure can be tested. */
+internal object PrintsManyLines {
+    @JvmStatic
+    fun main(arguments: Array<String>) {
+        val count = arguments.first().toInt()
+        val out = java.io.PrintWriter(System.out.bufferedWriter())
+        repeat(count) { out.println("line $it") }
+        out.flush()
+    }
+}
+
 /** Prints three lines with a pause between them, so streaming can be observed. */
 internal object PrintsThreeLinesSlowly {
     @JvmStatic

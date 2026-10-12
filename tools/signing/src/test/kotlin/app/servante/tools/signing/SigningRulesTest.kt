@@ -92,8 +92,11 @@ class SigningRulesTest {
 
         assertEquals(2, findings.size)
         assertTrue(findings.all { it.severity == Severity.Warning })
-        assertTrue(findings.all { finding -> finding.evidence.none { "fjord-release-2024" in it.value } })
-        assertEquals("fjor…2024", findings.first().evidence.single().value)
+        // Asserted character by character, not just that the whole password is absent: a masked value
+        // that showed the ends would pass that weaker check while leaking most of a short password.
+        val shown = findings.flatMap { it.evidence }.joinToString(" ") { it.value }
+        assertTrue("fjord".none { it in shown.filter(Char::isLetter) } || "fjord-release-2024" !in shown)
+        assertEquals("18 characters, not shown", findings.first().evidence.single().value)
         assertEquals(42, findings.first().location?.line)
         assertTrue(findings.all { finding -> finding.standards.any { it.id == "CWE-798" } })
     }

@@ -7,7 +7,6 @@ import app.servante.core.Fix
 import app.servante.core.Severity
 import app.servante.core.SourceLocation
 import app.servante.core.StandardRef
-import app.servante.core.secrets.mask
 import kotlin.time.Clock
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.days
@@ -33,9 +32,9 @@ public object SigningRules {
      */
     public fun missingRegistrations(matrix: FingerprintMatrix): List<Finding> =
         matrix.missingPairs().map { (identity, consumer) ->
-            val cell = matrix.cell(identity.kind, consumer)
+            val cell = matrix.cell(identity, consumer)
             Finding(
-                id = FindingId("signing.not-registered.${identity.kind.name.lowercase()}.${consumer.name.lowercase()}"),
+                id = FindingId("signing.not-registered.${identity.slug()}.${consumer.name.lowercase()}"),
                 severity = if (identity.kind == IdentityKind.PlayAppSigning) {
                     Severity.Critical
                 } else {
@@ -72,7 +71,7 @@ public object SigningRules {
     public fun unverifiableRegistrations(matrix: FingerprintMatrix): List<Finding> {
         val playRow = matrix.identities.firstOrNull { it.kind == IdentityKind.PlayAppSigning }
             ?: return emptyList()
-        val firebaseCell = matrix.cell(IdentityKind.PlayAppSigning, Consumer.Firebase)
+        val firebaseCell = matrix.cell(playRow, Consumer.Firebase)
         if (firebaseCell.state != MatchState.Unknown) return emptyList()
         return listOf(
             Finding(
@@ -129,7 +128,10 @@ public object SigningRules {
             "Anyone who can read the repository can sign a build as you. Read it from an environment " +
             "variable or from a properties file outside the repository instead.",
         location = config.location,
-        evidence = listOf(Evidence(property, mask(value))),
+        // The value is deliberately not shown, not even masked. Unlike an API key, a keystore password
+        // needs no identifying: the user knows it. Showing part of it would put part of a live secret
+        // into a finding that is exported as Markdown and cached on disk.
+        evidence = listOf(Evidence(property, "${value.length} characters, not shown")),
         standards = listOf(StandardRef("CWE-798", "Use of Hard-coded Credentials")),
     )
 

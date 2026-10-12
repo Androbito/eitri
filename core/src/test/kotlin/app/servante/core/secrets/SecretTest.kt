@@ -47,13 +47,29 @@ class SecretTest {
     }
 
     @Test
-    fun `masking shows the ends of a value and never the middle`() {
+    fun `masking shows the ends of a long value and never the middle`() {
         assertEquals("AIza…0000", mask("AIzaSyDEMOkeyNotRealFjordNotes0000"))
+    }
+
+    @Test
+    fun `masking never reveals more than a quarter of the value`() {
+        listOf("abcdefghi", "fjord-release-2024", "hunter2hunter2", "a".repeat(40)).forEach { value ->
+            val masked = mask(value)
+            val revealed = masked.replace("…", "").length
+            assertTrue(
+                revealed * 4 <= value.length,
+                "mask('$value') revealed $revealed of ${value.length} characters as '$masked'",
+            )
+        }
     }
 
     @Test
     fun `masking a short value shows nothing of it`() {
         assertEquals("………", mask("abcdefg"))
         assertEquals("………", mask(""))
+        // Eight characters would have shown four from each end, which is all of it. Anything below
+        // twelve shows nothing: there is no long key to tell apart at that length.
+        assertEquals("………", mask("hunter22"))
+        assertEquals("………", mask("hunter2hunt"))
     }
 }

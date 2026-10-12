@@ -51,7 +51,7 @@ public object SigningMarkdown {
         appendLine("| --- | --- | ${matrix.consumers.joinToString(" | ") { "---" }} |")
         matrix.identities.forEach { identity ->
             val cells = matrix.consumers.joinToString(" | ") { consumer ->
-                matrix.cell(identity.kind, consumer).state.word()
+                matrix.cell(identity, consumer).state.word()
             }
             val sha1 = identity.sha1?.let { "`${it.formatted}`" } ?: "unknown"
             appendLine("| ${identity.label} | $sha1 | $cells |")
@@ -59,7 +59,7 @@ public object SigningMarkdown {
         appendLine()
         val reasons = matrix.identities.flatMap { identity ->
             matrix.consumers.mapNotNull { consumer ->
-                matrix.cell(identity.kind, consumer).reason?.let { reason ->
+                matrix.cell(identity, consumer).reason?.let { reason ->
                     "- ${identity.label}, ${consumer.column()}: $reason"
                 }
             }
