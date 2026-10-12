@@ -6,41 +6,41 @@ Legend: **[spike]** means the item needs a short investigation before it can be 
 
 ## M0. Foundations
 
-- [ ] Install the [mobile-craft-skills](https://github.com/Androbito/mobile-craft-skills) plugin and follow it for all work (see `CLAUDE.md`)
-- [ ] ADR log in `docs/adr/`, started with the stack and module layout decisions
-- [ ] Gradle multi-module project, Kotlin 2.x, Compose Multiplatform for Desktop (JVM target)
-- [ ] Modules: `core` (domain, no UI), `tools/*` (one per tool), `ai`, `storage`, `ui` (design system), `app` (desktop shell), `cli`
-- [ ] Design system in `ui`: color tokens (light and dark), type scale, spacing, status colors, components from the generated designs in `design/`
-- [ ] App shell: sidebar navigation, project picker, Overview screen with one card per tool
-- [ ] Project detection: point at a folder, find `settings.gradle(.kts)`, modules, application modules, version catalog, `local.properties`
-- [ ] Shared result model: `Finding(severity, title, explanation, location, fix?)` used by every tool
-- [ ] "Unavailable" state everywhere: anything that cannot be read is reported as unavailable, never replaced by a placeholder
-- [ ] Demo mode: a bundled fictional project and fake accounts so every screen can be shown and recorded without real data
-- [ ] Secrets store: macOS Keychain, Windows Credential Manager, Linux Secret Service (libsecret), behind one interface
-- [ ] Audit log (local SQLite): every write Servante performs, with timestamp, what changed and where
-- [ ] Confirmation dialog pattern for any write: summary of what will change, then confirm
-- [ ] Localization scaffolding, English and French
-- [ ] Settings screen: appearance, language, SDK path, JDK path, providers, service accounts
-- [ ] CI: build, unit tests, detekt, ktlint on macOS, Windows and Linux runners
-- [ ] Packaging: DMG (Apple silicon and Intel), MSI, DEB and AppImage through GitHub Actions on tag
-- [ ] Update check against GitHub Releases, opt-in, no telemetry
+- [x] Install the [mobile-craft-skills](https://github.com/Androbito/mobile-craft-skills) plugin and follow it for all work (see `CLAUDE.md`)
+- [x] ADR log in `docs/adr/`, started with the stack and module layout decisions. Ten records, indexed in `docs/adr/README.md`
+- [ ] Gradle multi-module project, Kotlin 2.x, Compose Multiplatform for Desktop (JVM target). Gradle 9.8.1, Kotlin 2.4.21, JVM 21 and the convention plugins are in place and building; the Compose Multiplatform target is configured but has never compiled, because Compose pulls androidx from Google's Maven repository and the environment this was built in denies it
+- [x] Modules: `core` (domain, no UI), `tools/*` (one per tool), `ai`, `storage`, `ui` (design system), `app` (desktop shell), `cli`. Seventeen modules with the dependency rules enforced by their build files (ADR 0003). `core`, `storage` and `tools/signing` have content; the rest are placeholders behind feature flags
+- [ ] Design system in `ui`: color tokens (light and dark), type scale, spacing, status colors, components from the generated designs in `design/`. Tokens, type scale, spacing and the theme are written from `design/tokens.md`, and the three typefaces are bundled; none of it compiles yet for the Compose reason above, and no component is built
+- [ ] App shell: sidebar navigation, project picker, Overview screen with one card per tool. Blocked on Compose
+- [x] Project detection: point at a folder, find `settings.gradle(.kts)`, modules, application modules, version catalog, `local.properties`. Both DSLs, without executing the build; anything absent or unreadable is reported as unavailable with a reason
+- [x] Shared result model: `Finding(severity, title, explanation, location, fix?)` used by every tool, plus evidence and a standard mapping, and the six `ToolState`s the designs draw
+- [x] "Unavailable" state everywhere: anything that cannot be read is reported as unavailable, never replaced by a placeholder. `Availability<T>` has exactly two cases and an unavailable one cannot be built without a reason. Carried through the whole of M1; the UI surface for it is blocked on Compose
+- [ ] Demo mode: a bundled fictional project and fake accounts so every screen can be shown and recorded without real data. The Fjord Notes fixture and the fakes exist and the tests run on them; the demo-mode wiring needs the app shell
+- [x] Secrets store: macOS Keychain, Windows Credential Manager, Linux Secret Service (libsecret), behind one interface, with a session-only fallback that says why (ADR 0007). The Windows implementation is native and is only exercised on a Windows CI runner, which has not run yet
+- [x] Audit log (local SQLite): every write Servante performs, with timestamp, what changed and where. Append-only by construction: the schema has no UPDATE and no DELETE
+- [x] Confirmation dialog pattern for any write: summary of what will change, then confirm. `WriteGate` is the only write path and `GatedWriter` implements ask, write, record; the dialog that renders a request is blocked on Compose
+- [ ] Localization scaffolding, English and French. Both languages are written as one interface per language, so a missing string is a compile error; it has not compiled yet for the Compose reason above
+- [ ] Settings screen: appearance, language, SDK path, JDK path, providers, service accounts. The settings themselves, their storage and the privacy registry the screen renders from are done; the screen is blocked on Compose
+- [ ] CI: build, unit tests, detekt, ktlint on macOS, Windows and Linux runners. `.github/workflows/pull-request.yml` is written and runs `./gradlew checkAll`, under Xvfb on Linux. It has never run: it needs a pull request
+- [ ] Packaging: DMG (Apple silicon and Intel), MSI, DEB and AppImage through GitHub Actions on tag. `.github/workflows/release.yml` and `scripts/packaging/build-appimage.sh` are written; neither has run, and both need the app module to build first
+- [ ] Update check against GitHub Releases, opt-in, no telemetry. The setting and the two GitHub hosts are in the network registry, off by default; the check itself is not written
 
 ## M1. Signing Doctor (first release, v0.1)
 
 The question it answers: why does Google Sign-In, Maps or Firebase work in debug and fail in release?
 
-- [ ] Find keystores: debug keystore, keystores referenced by `signingConfigs`, user-added keystores
-- [ ] Read a keystore (JKS and PKCS12): aliases, algorithm, key size, validity dates, SHA-1 and SHA-256 fingerprints. Passwords are asked for when needed and never written to disk
-- [ ] Parse `signingConfigs` and which build type and flavor uses which config
-- [ ] Flag secrets committed in Gradle files or in `gradle.properties` inside the repo
-- [ ] Read `google-services.json`: registered package names and certificate hashes per client
-- [ ] Compare: every signing identity against what Firebase has registered. Report which fingerprint is missing for which package
+- [x] Find keystores: debug keystore, keystores referenced by `signingConfigs`, user-added keystores. A keystore a build file points at that is not on disk is still reported, because that is a finding
+- [x] Read a keystore (JKS and PKCS12): aliases, algorithm, key size, validity dates, SHA-1 and SHA-256 fingerprints. Passwords are asked for when needed and never written to disk. The format is detected from the file rather than its extension
+- [ ] Parse `signingConfigs` and which build type and flavor uses which config. Build types and configs are read in both DSLs; flavor-level assignment is not, and the Gradle Tooling API this item assumes could not be used because `repo.gradle.org` is denied in this environment and Maven Central carries only a 2021 snapshot. See ADR 0010 and `docs/notes/signing-config-reading.md` for exactly what text reading sees
+- [x] Flag secrets committed in Gradle files or in `gradle.properties` inside the repo. Only a literal is flagged: a password read from the environment or a Gradle property is the correct arrangement and is deliberately not reported
+- [x] Read `google-services.json`: registered package names and certificate hashes per client, with the OAuth client type kept so a package with no Android client is distinguishable
+- [x] Compare: every signing identity against what Firebase has registered. Report which fingerprint is missing for which package. Every cell that is not a plain match carries a reason
 - [ ] Play App Signing: fetch the app signing certificate fingerprint through the Play Developer API and include it in the comparison. **Spike done, see [`docs/notes/play-signing-cert.md`](docs/notes/play-signing-cert.md):** SHA-256 is readable with `generatedapks.list` for an app that has a processed bundle, without uploading anything. SHA-1 is exposed only by `appsigning.enrollApp` and `appsigning.rotateAppSigningKey`, which both change the app, so Servante reports the Play SHA-1 as unavailable and points at the Play Console. Recovering both from a downloaded generated APK is moved to M6, where the version code it needs already exists
-- [ ] Verify a built APK or AAB: who signed it, which signature schemes (v1 to v4), does it match the expected upload key
-- [ ] Certificate validity: warn on short remaining validity and on weak algorithms
-- [ ] Fingerprint matrix view: rows are identities (debug, upload, Play signing), columns are consumers (Firebase, Google Cloud OAuth clients, Play), cells are match, missing or unknown
-- [ ] Copy helpers: fingerprint in the format each console expects
-- [ ] Export the diagnosis as Markdown
+- [ ] Verify a built APK or AAB: who signed it, which signature schemes (v1 to v4), does it match the expected upload key. Done by reading the APK signing block directly, which gives the schemes and the signer certificates; it does not verify the signatures cryptographically, because the only apksig on Maven Central is from 2017 and knows nothing after v2. See `docs/notes/build-verification.md`
+- [x] Certificate validity: warn on short remaining validity and on weak algorithms. Critical once expired, a warning within a year, and healthy stated explicitly so the screen is not empty when nothing is wrong
+- [ ] Fingerprint matrix view: rows are identities (debug, upload, Play signing), columns are consumers (Firebase, Google Cloud OAuth clients, Play), cells are match, missing or unknown. The matrix and every cell's state and reason are computed and tested; the view is blocked on Compose
+- [x] Copy helpers: fingerprint in the format each console expects. Each fingerprint carries the colon-separated uppercase form, the plain lowercase form `google-services.json` uses, and the abbreviated form for the matrix. The buttons that put them on the clipboard are blocked on Compose
+- [x] Export the diagnosis as Markdown, with the matrix, every key, the reasons, and full fingerprints in code spans so they can be pasted
 
 ## M2. Compose Analyzer (v0.2)
 

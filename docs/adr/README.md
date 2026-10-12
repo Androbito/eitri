@@ -15,3 +15,4 @@ ways. See ADR 0001 and the `adr-writer` skill.
 | [0007](0007-secret-storage-per-operating-system.md) | Secrets in the OS store, behind one interface, with an in-memory fallback | Accepted | 2026-10-12 |
 | [0008](0008-desktop-test-tooling.md) | Desktop equivalents for the Android-only tools in the test strategy | Accepted | 2026-10-12 |
 | [0009](0009-read-the-user-s-project-in-the-storage-module.md) | Read the user's project in the storage module | Accepted | 2026-10-12 |
+| [0010](0010-read-signing-configs-as-text-until-the-tooling-api.md) | Read signingConfigs as text until the Gradle Tooling API is available | Accepted | 2026-10-12 |

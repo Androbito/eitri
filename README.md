@@ -2,7 +2,8 @@
 
 The open source toolbox for Android and Kotlin developers. One desktop app for macOS, Windows and Linux that answers the questions Android Studio leaves to a terminal and a forum thread.
 
-**Status: in development. Nothing is released yet.** This repository currently holds the plan, the prompts used to design and build the app, and the project site.
+**Status: in development. Nothing is released yet.** The foundations and the Signing tool's logic are
+built and tested; the user interface is not. See [What works today](#what-works-today).
 
 Site and interactive demo: https://androbito.github.io/servante/
 
@@ -30,6 +31,34 @@ AI review is optional and runs on your own API key (Anthropic, OpenAI, Google, a
 - No account, no server, no telemetry.
 - Free and open source, Apache 2.0, no paid tier.
 
+## What works today
+
+| Part | State |
+| --- | --- |
+| Project reading | Reads `settings.gradle(.kts)` in both DSLs, the modules and which of them are application modules, the version catalog and `local.properties`, without running Gradle |
+| Signing | Reads JKS and PKCS12 keystores, computes SHA-1 and SHA-256, reads `signingConfigs` and `google-services.json`, compares every key against Firebase, the Android OAuth clients and Play, reads the signature schemes of a built APK, and exports the diagnosis as Markdown |
+| Local database | Append-only audit log, settings, recent projects, cached results, in SQLite through SQLDelight |
+| Secrets | The OS store on each of the three systems, behind one interface, with a session-only fallback that says why |
+| Writes | One gate: it asks, writes atomically, and records. There is no other write path |
+| User interface | **Not built.** The design tokens and both languages are written; no screen exists yet |
+| CLI | Not started |
+
+204 tests. Run them with `./gradlew checkAll`, which is also what CI runs.
+
+## Building it
+
+```
+./gradlew checkAll          # tests, ktlint and detekt across every module
+./gradlew :core:test        # one module
+./gradlew ktlintFormat      # fix formatting
+```
+
+JDK 21 is the only prerequisite; the Gradle wrapper fetches the rest. The build resolves dependencies
+from Maven Central and from Google's Maven repository, which Compose Multiplatform needs.
+
+Demo mode will run against the fictional project in [`fixtures/fjord-notes`](fixtures/fjord-notes),
+which is the `app.fjord.notes` project the designs show. It is not wired up until the app shell exists.
+
 ## What is in this repository
 
 | Path | What it is |
@@ -39,7 +68,12 @@ AI review is optional and runs on your own API key (Anthropic, OpenAI, Google, a
 | [`prompts/02-build.md`](prompts/02-build.md) | Prompt for Claude Code to build the app from that UI |
 | [`design/`](design/) | Where the exported designs go |
 | [`CLAUDE.md`](CLAUDE.md) | Standing instructions for agents, including the skills to follow |
-| [`docs/`](docs/) | The project site, served by GitHub Pages |
+| [`docs/`](docs/) | The project site, served by GitHub Pages, plus the decision records, notes and audits below |
+| [`docs/adr/`](docs/adr/) | Why the stack and the structure are what they are |
+| [`docs/notes/`](docs/notes/) | Investigations: what the Play API really exposes, what reading a signature can and cannot tell you |
+| [`docs/audits/`](docs/audits/) | The quality audit at the end of each milestone, on Servante itself |
+| [`fixtures/`](fixtures/) | Sample projects and test keystores the tests read |
+| [`design/GAPS.md`](design/GAPS.md) | Where the designs are silent and what was built instead |
 
 ## How the project gets built
 
@@ -53,7 +87,11 @@ The code follows the practices published as agent skills in [mobile-craft-skills
 
 ## Stack
 
-Kotlin, Compose Multiplatform for Desktop, Gradle Tooling API, Kotlin Analysis API, bundletool, the Google Play Developer API, SQLDelight.
+Kotlin 2.4, Compose Multiplatform for Desktop, Gradle 9.8, a JVM 21 toolchain, SQLDelight, Ktor,
+kotlinx.serialization, and the Google Play Developer API. Later milestones add the Gradle Tooling API,
+the Kotlin Analysis API and bundletool. Every version is pinned in
+[`gradle/libs.versions.toml`](gradle/libs.versions.toml) with the date it was checked against its
+publishing repository.
 
 ## Contributing
 
