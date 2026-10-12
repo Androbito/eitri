@@ -7,8 +7,7 @@ dependencies {
     api(compose.desktop.currentOs)
     api(compose.foundation)
     api(compose.material3)
-    implementation(compose.components.resources)
 
-    testImplementation(compose.desktop.uiTestJUnit4)
+    testImplementation(libs.compose.ui.test.junit4)
     testImplementation(libs.kotlinx.coroutines.test)
 }
