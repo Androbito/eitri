@@ -52,7 +52,7 @@ The question it answers: why does this composable recompose?
 - [ ] Score out of 100 across categories (stability, state, lists, side effects, performance, structure), with the formula documented so the number is explainable
 - [ ] Each issue shown with its location and a fix as a diff
 - [ ] Paste mode: analyze a single composable pasted in, static rules only
-- [ ] Deep analysis with AI (see M7), grounded in the compiler data: the model explains and proposes fixes, the graph and line numbers still come from the source
+- [ ] Deep analysis with AI (see M8), grounded in the compiler data: the model explains and proposes fixes, the graph and line numbers still come from the source
 - [ ] Baseline Profile presence check and a reminder when it is missing
 
 ## M3. Gradle Doctor (v0.3)
@@ -114,7 +114,43 @@ Reminders
 - [ ] Reminder windows configurable (30, 14, 7, 1 days)
 - [ ] History view backed by the audit log
 
-## M7. AI Project Review (v0.7)
+## M7. Accessibility and Security (v0.7)
+
+Two assessments that share the same engine: rules over source, resources, manifest and the built bundle, each producing a score with a documented formula.
+
+Accessibility score. The question it answers: can someone using TalkBack, large text or a switch use this screen?
+
+- [ ] Compose rules: clickable elements without a label or role, images and icons without `contentDescription` (and decorative ones that should be `null`), touch targets under 48 dp, custom gestures without a semantic action, missing `heading` semantics, missing state descriptions on toggles, focus order overrides, `clearAndSetSemantics` that hides content
+- [ ] View and XML rules: missing `contentDescription`, `labelFor`, `importantForAccessibility` misuse, touch target size, hard-coded text sizes in `dp` instead of `sp`
+- [ ] Text scaling: fixed heights on text containers, `maxLines` without overflow handling, anything that breaks at 200% font scale
+- [ ] Contrast: read the theme (Material color scheme, XML colors) and compute contrast ratios for the text and surface pairs actually used, in light and dark
+- [ ] Motion and timing: animations that ignore the system "remove animations" setting, auto-dismissing content without a way to extend
+- [ ] Localization readiness: hard-coded strings, missing RTL support flag, start and end versus left and right
+- [ ] Score out of 100 across categories (labels, touch targets, contrast, text scaling, navigation and focus, motion), per screen and for the whole app
+- [ ] Every finding mapped to its WCAG 2.2 success criterion and to the Android accessibility guideline it comes from
+- [ ] Fixes as diffs
+- [ ] Device scan **[spike]** run the Accessibility Test Framework checks against a running screen on a connected device or emulator and merge the results with the static findings
+- [ ] Export the report as Markdown and HTML
+
+Security assessment. The question it answers: what would a pentester flag in the first hour?
+
+- [ ] Manifest and config: exported components without permission, `debuggable`, `allowBackup` and backup rules, cleartext traffic, network security config (user certificates trusted, missing pinning where the project declares it wants it), task affinity and launch mode risks
+- [ ] Deep links and intents: unverified app links, intent filters that accept arbitrary data, implicit intents carrying sensitive extras, mutable `PendingIntent`
+- [ ] Secrets: API keys, tokens and passwords hard-coded in source, resources, `BuildConfig` and Gradle files, and the same scan on strings inside the built AAB or APK
+- [ ] Storage: tokens in plain `SharedPreferences`, world-readable files, sensitive data on external storage, databases without encryption where the project handles credentials
+- [ ] Cryptography: ECB mode, static IVs, MD5 and SHA-1 used for security, hard-coded keys, insecure random
+- [ ] WebView: JavaScript enabled with untrusted content, `addJavascriptInterface`, file access flags, mixed content
+- [ ] Logging: sensitive values written to logcat in release builds
+- [ ] Code hardening: R8 off in release, missing Play Integrity where the project declares it, root and tamper checks reported as information only
+- [ ] Dependencies: known vulnerabilities for the resolved dependency graph, looked up against OSV.dev (a network call, listed in the privacy registry, and it sends package coordinates only)
+- [ ] SQL and injection: raw queries built by string concatenation, unsafe content provider paths
+- [ ] Every finding mapped to its OWASP MASVS control and, where one exists, a CWE
+- [ ] Result as a grade (A to F) plus counts by severity, with the grading rule documented. A grade is a summary, never a certification, and the UI says so
+- [ ] Fixes as diffs where the fix is mechanical, guidance where it is not
+- [ ] Baseline file: accept a finding with a reason so it stops being reported, kept in the repo and reviewed in pull requests
+- [ ] Export the report as Markdown, HTML and SARIF
+
+## M8. AI Project Review (v0.8)
 
 Bring your own key. Nothing is sent unless the user asks.
 
@@ -124,20 +160,20 @@ Bring your own key. Nothing is sent unless the user asks.
 - [ ] Automatic exclusion of secrets: keystores, `local.properties`, `google-services.json`, `.env`, anything matched by the secret scanner
 - [ ] Token and cost estimate before sending, where the provider publishes prices
 - [ ] First-use notice explaining what leaves the machine and to whom
-- [ ] Review types: architecture and module boundaries, Compose deep analysis (M2), Gradle and build setup, release readiness, security basics
+- [ ] Review types: architecture and module boundaries, Compose deep analysis (M2), Gradle and build setup, release readiness, accessibility deep review (M7), security deep review (M7)
 - [ ] Strict response contract (JSON schema). Findings must reference real files and lines, anything that does not resolve is dropped
 - [ ] Results use the same `Finding` model as local tools, with fixes as diffs. Diffs are never applied automatically
 - [ ] Agent log: every request, tool call and response of a review, visible to the user
 - [ ] Fully local path: with Ollama, nothing leaves the machine
 
-## M8. CLI and CI (v0.8)
+## M9. CLI and CI (v0.9)
 
-- [ ] `eitri doctor` runs Signing, Gradle and Preflight checks headless
+- [ ] `eitri doctor` runs Signing, Gradle, Preflight, Accessibility and Security checks headless
 - [ ] Output as text, JSON and SARIF
 - [ ] Exit codes by severity so it can gate a pipeline
 - [ ] GitHub Action wrapper
 
-## M9. Project site and community
+## M10. Project site and community
 
 - [x] Landing page on GitHub Pages with an interactive demo using fictional data
 - [ ] Replace the interactive mock with real screenshots and a recorded demo once M1 ships

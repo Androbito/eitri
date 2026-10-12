@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Eitri: the open source toolbox for Android and Kotlin developers</title>
-<meta name="description" content="Eitri is a free, open source desktop app for Android and Kotlin developers: signing fingerprints, Compose stability, Gradle versions, SDK disk usage, bundle preflight, Play releases and reminders. macOS, Windows and Linux.">
+<meta name="description" content="Eitri is a free, open source desktop app for Android and Kotlin developers: signing fingerprints, Compose stability, Gradle versions, SDK disk usage, bundle preflight, Play releases, reminders, an accessibility score and a security assessment. macOS, Windows and Linux.">
 <meta property="og:title" content="Eitri: the open source toolbox for Android and Kotlin developers">
-<meta property="og:description" content="Eight tools in one desktop app. Free, open source, no account. In development.">
+<meta property="og:description" content="Ten tools in one desktop app. Free, open source, no account. In development.">
 <meta property="og:type" content="website">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%237F52FF'/%3E%3Cpath d='M7 11h14c2.5 0 4 1 4 3h-7v3l3 5H10l3-5v-3H9z' fill='%23fff'/%3E%3C/svg%3E">
@@ -197,6 +197,8 @@ td .mono { color: var(--muted); }
 .tree .ex { color: var(--muted); text-decoration: line-through; }
 .send { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
 .fakebtn { padding: 8px 14px; border-radius: 6px; background: var(--violet); color: var(--on-violet); font-weight: 600; font-size: 0.88rem; }
+.std { display: inline-block; padding: 0 6px; border: 1px solid var(--line); border-radius: 4px; color: var(--text); white-space: nowrap; }
+.score.grade { width: 76px; height: 76px; display: grid; place-items: center; border-radius: 10px; background: var(--warn-soft); color: var(--warn); }
 .demo-note { margin-top: 14px; color: var(--muted); font-size: 0.92rem; }
 @media (max-width: 860px) {
   .app { grid-template-columns: 1fr; }
@@ -281,7 +283,7 @@ footer nav { display: flex; gap: 20px; flex-wrap: wrap; }
 <main id="top">
   <div class="wrap hero">
     <h1>Find out why the release build breaks.</h1>
-    <p class="lede">Eitri is a free, open source desktop app for Android and Kotlin developers. Eight tools in one window: signing fingerprints, Compose stability, Gradle versions, SDK disk usage, bundle preflight, Play releases, reminders and an AI review that runs on your own key.</p>
+    <p class="lede">Eitri is a free, open source desktop app for Android and Kotlin developers. Ten tools in one window: signing fingerprints, Compose stability, Gradle versions, SDK disk usage, bundle preflight, Play releases, reminders, an accessibility score, a security assessment and an AI review that runs on your own key.</p>
     <div class="actions">
       <a class="btn primary" href="#demo">Try the demo</a>
       <a class="btn" href="https://github.com/Androbito/eitri">Follow on GitHub</a>
@@ -304,6 +306,8 @@ footer nav { display: flex; gap: 20px; flex-wrap: wrap; }
             <button class="tab" role="tab" id="t-preflight" aria-controls="p-preflight" aria-selected="false" tabindex="-1">Preflight <i class="dot warn"></i></button>
             <button class="tab" role="tab" id="t-releases" aria-controls="p-releases" aria-selected="false" tabindex="-1">Releases <i class="dot ok"></i></button>
             <button class="tab" role="tab" id="t-reminders" aria-controls="p-reminders" aria-selected="false" tabindex="-1">Reminders <i class="dot warn"></i></button>
+            <button class="tab" role="tab" id="t-a11y" aria-controls="p-a11y" aria-selected="false" tabindex="-1">Accessibility <i class="dot warn"></i></button>
+            <button class="tab" role="tab" id="t-security" aria-controls="p-security" aria-selected="false" tabindex="-1">Security <i class="dot crit"></i></button>
             <button class="tab" role="tab" id="t-ai" aria-controls="p-ai" aria-selected="false" tabindex="-1">AI review <i class="dot none"></i></button>
           </div>
         </div>
@@ -318,6 +322,8 @@ footer nav { display: flex; gap: 20px; flex-wrap: wrap; }
             <div class="card"><small><i class="dot warn"></i>SDK and disk</small><b>84 GB used, 31 GB reclaimable</b></div>
             <div class="card"><small><i class="dot warn"></i>Preflight</small><b>1 library not 16 KB aligned</b></div>
             <div class="card"><small><i class="dot warn"></i>Reminders</small><b>Target API deadline in 41 days</b></div>
+            <div class="card wide"><small><i class="dot crit"></i>Security</small><b>Grade C, 2 critical findings</b></div>
+            <div class="card wide"><small><i class="dot warn"></i>Accessibility</small><b>Score 74, 9 controls without a label</b></div>
             <div class="card wide"><small><i class="dot ok"></i>Releases</small><b>3.8.0 at 20% in production</b></div>
             <div class="card wide"><small><i class="dot none"></i>AI review</small><b>No provider configured</b></div>
           </div>
@@ -463,6 +469,47 @@ footer nav { display: flex; gap: 20px; flex-wrap: wrap; }
           <p class="q" style="margin-top:16px">Notifications are local. Eitri has no server to send them from.</p>
         </div>
 
+        <div class="panel" role="tabpanel" id="p-a11y" aria-labelledby="t-a11y" tabindex="0" hidden>
+          <h4>Accessibility</h4>
+          <p class="q">Can someone using TalkBack or large text use this screen?</p>
+          <div class="score-row">
+            <div class="score">74 <small>out of 100</small></div>
+            <div class="cats">
+              <div class="cat">Labels<b>58</b><i style="--v:58%"></i></div>
+              <div class="cat">Touch targets<b>71</b><i style="--v:71%"></i></div>
+              <div class="cat">Contrast<b>66</b><i style="--v:66%"></i></div>
+              <div class="cat">Text scaling<b>80</b><i style="--v:80%"></i></div>
+              <div class="cat">Focus order<b>88</b><i style="--v:88%"></i></div>
+              <div class="cat">Motion<b>92</b><i style="--v:92%"></i></div>
+            </div>
+          </div>
+          <ul class="findings">
+            <li><i class="dot crit"></i><div><b>9 icon buttons have no label for screen readers</b><span class="mono">NoteRow.kt:64, IconButton without contentDescription <span class="std">WCAG 4.1.2</span></span></div></li>
+            <li><i class="dot warn"></i><div><b>Secondary text on surface is 3.4:1 in dark theme, 4.5:1 needed</b><span class="mono">Color.kt:22, onSurfaceVariant on surface <span class="std">WCAG 1.4.3</span></span></div></li>
+            <li><i class="dot warn"></i><div><b>Tag chips are 32 dp tall, below the 48 dp touch target</b><span class="mono">TagChip.kt:18 <span class="std">Android target size</span></span></div></li>
+            <li><i class="dot ok"></i><div><b>All text sizes use sp and survive 200% font scale</b><span class="mono">38 composables checked</span></div></li>
+          </ul>
+        </div>
+
+        <div class="panel" role="tabpanel" id="p-security" aria-labelledby="t-security" tabindex="0" hidden>
+          <h4>Security</h4>
+          <p class="q">What would a pentester flag in the first hour?</p>
+          <div class="score-row">
+            <div class="score grade">C</div>
+            <div>
+              <p><b>2 critical, 3 warnings, 14 checks passed</b></p>
+              <p style="color:var(--muted)">A summary of automated checks, not a certification.</p>
+            </div>
+          </div>
+          <ul class="findings">
+            <li><i class="dot crit"></i><div><b>API key hard-coded in source</b><span class="mono">SyncClient.kt:17, value sk_l…9f2a <span class="std">MASVS-STORAGE-1</span> <span class="std">CWE-798</span></span></div></li>
+            <li><i class="dot crit"></i><div><b>Session token stored in plain SharedPreferences</b><span class="mono">SessionStore.kt:31 <span class="std">MASVS-STORAGE-1</span> <span class="std">CWE-312</span></span></div></li>
+            <li><i class="dot warn"></i><div><b>Exported activity accepts any deep link without verification</b><span class="mono">AndroidManifest.xml:48, ShareActivity <span class="std">MASVS-PLATFORM-1</span></span></div></li>
+            <li><i class="dot warn"></i><div><b>1 dependency has a known vulnerability</b><span class="mono">com.fjord:picker:2.3.0, fixed in 2.3.4 <span class="std">OSV</span></span></div></li>
+            <li><i class="dot ok"></i><div><b>No cleartext traffic, release build minified, backups restricted</b><span class="mono">manifest and network security config</span></div></li>
+          </ul>
+        </div>
+
         <div class="panel" role="tabpanel" id="p-ai" aria-labelledby="t-ai" tabindex="0" hidden>
           <h4>AI review</h4>
           <p class="q">Review the architecture of the app module</p>
@@ -494,7 +541,7 @@ footer nav { display: flex; gap: 20px; flex-wrap: wrap; }
   <section class="alt" id="tools">
     <div class="wrap">
       <div class="sec-head">
-        <h2>Eight tools, each built around one question</h2>
+        <h2>Ten tools, each built around one question</h2>
         <p class="lede">Android Studio is good at writing code. These are the questions it leaves you to answer with a terminal, three browser tabs and a forum thread.</p>
       </div>
       <div class="tools">
@@ -505,7 +552,9 @@ footer nav { display: flex; gap: 20px; flex-wrap: wrap; }
         <div class="tool"><span class="name">Preflight</span><h3>Will Play accept this build?</h3><p>Drop an AAB or APK. Target API, 16 KB page size alignment, permissions and which library added them, exported components, size by category. Compare two builds side by side.</p></div>
         <div class="tool"><span class="name">Releases</span><h3>Where is build 412?</h3><p>Your Play tracks in one view: internal, closed, open and production, with version codes and staged rollout progress. It uses your own service account.</p></div>
         <div class="tool"><span class="name">Reminders</span><h3>What deadline is coming?</h3><p>Local notifications before the Play target API deadline, before a certificate runs out and when a service account key gets old. Plus a log of everything Eitri changed for you.</p></div>
-        <div class="tool"><span class="name">AI review</span><h3>What would a senior reviewer say about this project?</h3><p>An optional review of architecture, build setup or release readiness, run with your own API key or a local model. Findings point at real files and lines.</p></div>
+        <div class="tool"><span class="name">Accessibility</span><h3>Can someone using TalkBack or large text use this screen?</h3><p>A score out of 100 from rules over your Compose and XML code: missing labels, small touch targets, contrast computed from your real theme, text that breaks at large sizes. Each finding names its WCAG criterion.</p></div>
+        <div class="tool"><span class="name">Security</span><h3>What would a pentester flag in the first hour?</h3><p>Hard-coded secrets, plain-text token storage, exported components, weak crypto, risky WebView settings and vulnerable dependencies. Findings map to OWASP MASVS, and the grade says clearly that it is not a certification.</p></div>
+        <div class="tool"><span class="name">AI review</span><h3>What would a senior reviewer say about this project?</h3><p>An optional deeper review of architecture, build setup, accessibility, security or release readiness, run with your own API key or a local model. Findings point at real files and lines.</p></div>
       </div>
     </div>
   </section>
@@ -557,6 +606,7 @@ footer nav { display: flex; gap: 20px; flex-wrap: wrap; }
         <li><div><b>SDK and disk</b> <span>inventory and cleanup</span></div><span class="st">Planned</span></li>
         <li><div><b>Preflight</b> <span>AAB and APK checks</span></div><span class="st">Planned</span></li>
         <li><div><b>Releases and reminders</b> <span>Play tracks, deadlines</span></div><span class="st">Planned</span></li>
+        <li><div><b>Accessibility and security</b> <span>score, grade, WCAG and MASVS mapping</span></div><span class="st">Planned</span></li>
         <li><div><b>AI review</b> <span>bring your own key, local models</span></div><span class="st">Planned</span></li>
         <li><div><b>Command line</b> <span>the same checks in CI</span></div><span class="st">Planned</span></li>
       </ol>
@@ -570,9 +620,9 @@ footer nav { display: flex; gap: 20px; flex-wrap: wrap; }
         <details><summary>Can I download it today?</summary><p>No. Eitri is in development and nothing has been released yet. The demo on this page is a preview with fictional data. Watch the repository on GitHub to hear about the first release.</p></details>
         <details><summary>What will it cost?</summary><p>Nothing. Eitri is open source under Apache 2.0, with no paid tier. AI review uses your own provider account, so you pay that provider for what you use, or nothing with a local model.</p></details>
         <details><summary>Which systems will it run on?</summary><p>macOS, Windows and Linux. It is written in Kotlin with Compose Multiplatform for Desktop.</p></details>
-        <details><summary>What will leave my computer?</summary><p>Requests to Google APIs with your own credentials for the Play features, version lookups against Maven repositories, an optional update check on GitHub, and the files you choose when you start an AI review. There is no Eitri server.</p></details>
+        <details><summary>What will leave my computer?</summary><p>Requests to Google APIs with your own credentials for the Play features, version lookups against Maven repositories, package names and versions to OSV.dev when you ask for a vulnerability check, an optional update check on GitHub, and the files you choose when you start an AI review. There is no Eitri server.</p></details>
         <details><summary>Will it change my project or my keystores?</summary><p>Only when you ask. It reads by default. Any change is confirmed first with a summary, then recorded in a local log. Keystore passwords are used once and never stored.</p></details>
-        <details><summary>Do I need an AI key?</summary><p>No. The seven other tools run locally with their own rules. A key is only needed for the AI review, and a local model through Ollama needs none.</p></details>
+        <details><summary>Do I need an AI key?</summary><p>No. The nine other tools run locally with their own rules. A key is only needed for the AI review, and a local model through Ollama needs none.</p></details>
         <details><summary>How is this related to Sindri?</summary><p>Sindri is a Mac app by Walid Sassi that does this job for iOS and macOS developers, and it inspired Eitri. The two projects are separate. Eitri is named after Sindri's brother in the Norse stories.</p></details>
         <details><summary>Can I help?</summary><p>Yes. The roadmap lists every task, and Compose and Gradle rules are a good place to start. Open an issue on GitHub before a large change.</p></details>
       </div>

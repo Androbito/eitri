@@ -19,7 +19,7 @@ If `design/` is empty, stop and say so. Do not invent the UI.
 - **Read by default.** Every write (file edit, delete, install, API mutation) goes through a confirmation that lists exactly what will change, then gets recorded in the audit log.
 - **Nothing is invented.** Data that cannot be read is surfaced as `Unavailable(reason)`. No placeholder values, no silent fallbacks, no guessed numbers.
 - **Secrets never touch disk or logs.** API keys, service account JSON and keystore passwords live in the OS secrets store or in memory only. Keystore passwords are used once and dropped.
-- **No telemetry, no backend.** The only network calls are to Google APIs with the user's credentials, to Maven repositories for version lookups, to GitHub for the update check and data files, and to an AI provider when the user explicitly sends a review. Keep a single registry of allowed destinations in code and render the Settings privacy list from it, so the list cannot drift from reality.
+- **No telemetry, no backend.** The only network calls are to Google APIs with the user's credentials, to Maven repositories for version lookups, to OSV.dev for vulnerability lookups when the user runs one, to GitHub for the update check and data files, and to an AI provider when the user explicitly sends a review. Keep a single registry of allowed destinations in code and render the Settings privacy list from it, so the list cannot drift from reality.
 - **AI is opt-in and bring-your-own-key.** Nothing is sent without the user seeing the payload scope, the destination and, when prices are known, a cost estimate.
 - **Explainable results.** Every finding carries severity, explanation, location and evidence. Scores have a documented formula.
 
@@ -56,6 +56,9 @@ tools/
   preflight/ AAB and APK checks, size, permissions, diff
   releases/ Play Developer API client and models
   reminders/ scheduling, notifications
+  rules/    shared rule engine over source, resources, manifest and bundle
+  a11y/     accessibility rules, contrast computation, scoring, WCAG mapping
+  security/ security rules, secret scanner, OSV lookup, grading, MASVS mapping
 ai/         provider clients, payload builder, secret exclusion, response contract, agent log
 cli/        headless entry point sharing the tools modules
 data/       compatibility matrix and Play policy data files, versioned and dated
@@ -103,6 +106,15 @@ Preflight
 
 Releases
 - Read only in this version. Scope the service account request to what reading needs and explain the required Play Console permission in the empty state.
+
+Accessibility and Security
+- Both sit on one rule engine in `tools/rules`: a rule declares what it inspects (Kotlin source, XML resource, merged manifest, bundle entry), returns `Finding`s, and carries its standard mapping (WCAG 2.2 criterion, or MASVS control and CWE). Adding a rule must not require touching the engine.
+- Contrast is computed from the project's real theme colors, in both light and dark, using the WCAG relative luminance formula. If a color cannot be resolved statically, report the pair as unavailable.
+- The accessibility score and the security grade have their formulas in `docs/notes/a11y-score.md` and `docs/notes/security-grade.md`, linked from the UI. The security screen states that the grade is a summary and not a certification.
+- The secret scanner is one component used three times: by the Security tool, by Signing (committed keystore passwords) and by the AI payload builder (exclusion). Findings never display the full secret: show the first and last characters only.
+- Vulnerability lookup sends package coordinates and versions to OSV.dev and nothing else. It is opt-in per run and registered in the network destination registry.
+- The security baseline file lives in the user's repo (`eitri-baseline.yml`). Writing it goes through the `WriteGate`.
+- The device accessibility scan is a spike in the roadmap. Do the static rules first.
 
 AI
 - One `AiProvider` interface: Anthropic, OpenAI, Google, OpenAI-compatible, Ollama. Streaming, cancellation, and a common error model.

@@ -16,9 +16,11 @@ design/
     07-preflight/
     08-releases/
     09-reminders/
-    10-ai-review/
-    11-settings/
-    12-dialogs/
+    10-accessibility/
+    11-security/
+    12-ai-review/
+    13-settings/
+    14-dialogs/
 ```
 
 From Stitch: export each screen as PNG and as HTML (or Figma, then export). From Claude Design: export the page as images, and keep the link to the design in `tokens.md` so it can be reopened.

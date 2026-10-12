@@ -17,6 +17,8 @@ Site and interactive demo: https://androbito.github.io/eitri/
 | Preflight | Will Play accept this build? |
 | Releases | Where is build 412? |
 | Reminders | What deadline is coming? |
+| Accessibility | Can someone using TalkBack or large text use this screen? |
+| Security | What would a pentester flag in the first hour? |
 | AI review | What would a senior reviewer say about this project? |
 
 AI review is optional and runs on your own API key (Anthropic, OpenAI, Google, any OpenAI-compatible endpoint) or on a local model through Ollama. Every other tool works without it.

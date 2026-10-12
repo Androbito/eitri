@@ -10,7 +10,7 @@ Design a desktop application called **Eitri**.
 
 ## Product
 
-Eitri is a free, open source toolbox for Android and Kotlin developers. It runs on macOS, Windows and Linux. It bundles eight tools in one window. Each tool answers a question a developer would otherwise lose twenty minutes on. The user points Eitri at an Android project folder and gets diagnoses, not dashboards for their own sake.
+Eitri is a free, open source toolbox for Android and Kotlin developers. It runs on macOS, Windows and Linux. It bundles ten tools in one window. Each tool answers a question a developer would otherwise lose twenty minutes on. The user points Eitri at an Android project folder and gets diagnoses, not dashboards for their own sake.
 
 The audience is professional Android developers. They live in Android Studio, read monospace all day, and distrust tools that look like marketing. The app sits close to their signing keys, so it has to look precise, calm and trustworthy.
 
@@ -36,7 +36,7 @@ Core behaviors the UI must make visible:
 
 ## Shared layout
 
-- Left sidebar, 232 px: app mark and name, project switcher (current project name, path, a dropdown), then navigation: Overview, Signing, Compose, Gradle, SDK and disk, Preflight, Releases, Reminders, AI review. Each item can show a small status dot or count. Settings pinned at the bottom.
+- Left sidebar, 232 px: app mark and name, project switcher (current project name, path, a dropdown), then navigation: Overview, Signing, Compose, Gradle, SDK and disk, Preflight, Releases, Reminders, Accessibility, Security, AI review. Each item can show a small status dot or count. Settings pinned at the bottom.
 - Main area: a header with the tool name, the question it answers as a subtitle, the time of the last check and a "Check again" button. Content below.
 - Optional right inspector, 360 px, that opens when a finding, node or row is selected.
 - Finding row component: severity mark, title, one-line explanation, location in monospace, chevron. Expanded state shows the full explanation, the evidence and the fix.
@@ -49,7 +49,7 @@ Core behaviors the UI must make visible:
 First launch. Short statement of what Eitri does, "Open a project folder" as the primary action, recent projects, and "Explore with demo data". A small line states: no account, no telemetry.
 
 ### 2. Overview
-One card per tool in a grid, each showing its headline state for the open project. Examples: Signing "1 fingerprint missing in Firebase", Compose "Score 69, 4 unstable parameters", Gradle "2 incompatible versions", SDK and disk "84 GB, 31 GB reclaimable", Preflight "No bundle checked yet", Releases "1 build in review", Reminders "Target API deadline in 41 days", AI review "No provider configured". Cards are not identical: size them by importance, and the tool with the worst state comes first.
+One card per tool in a grid, each showing its headline state for the open project. Examples: Signing "1 fingerprint missing in Firebase", Compose "Score 69, 4 unstable parameters", Gradle "2 incompatible versions", SDK and disk "84 GB, 31 GB reclaimable", Preflight "No bundle checked yet", Releases "1 build in review", Reminders "Target API deadline in 41 days", Accessibility "Score 74, 9 unlabeled controls", Security "Grade C, 2 critical", AI review "No provider configured". Cards are not identical: size them by importance, and the tool with the worst state comes first.
 
 ### 3. Signing
 The signature screen of the product. Top: the verdict in one sentence, for example "Google Sign-In will fail in release: the Play signing certificate is not registered in Firebase". Center: the fingerprint matrix. Rows are signing identities (debug keystore, upload key, Play app signing key). Columns are consumers (Firebase project, Google Cloud OAuth client, Play Console). Cells show match, missing or unknown. Selecting a row shows the keystore details in the inspector: path, alias, algorithm, key size, valid from and until, SHA-1 and SHA-256 in monospace with copy buttons. Below: findings list, including "Keystore password committed in app/build.gradle.kts line 42". Also design the "Verify a build" flow: drop an APK or AAB, see who signed it and with which signature schemes.
@@ -60,7 +60,7 @@ Three tabs: Graph, Issues, Compiler report.
 - Graph: the composable hierarchy from a chosen root as a node graph, state dependencies as dashed edges, recomposition risk as node color. Selecting a node opens the inspector with its parameters, each marked stable or unstable with the reason.
 - Issues: list of findings, one expanded with its fix as a diff.
 - Compiler report: a table of composables with restartable, skippable and the unstable parameters.
-- A "Deep analysis" button that opens the AI send sheet (screen 10).
+- A "Deep analysis" button that opens the AI send sheet (screen 12).
 - Also a paste mode: an editor on the left, results on the right.
 
 ### 5. Gradle
@@ -78,17 +78,23 @@ Left: list of apps from the connected Play account. Right: for the selected app,
 ### 9. Reminders
 A timeline of upcoming deadlines (target API requirement, upload certificate validity, service account key age), toggles and reminder windows on the right, and below a history table: the audit log of everything Eitri changed, with date, action and target.
 
-### 10. AI review
+### 10. Accessibility
+Header with a score out of 100 and six category scores (labels, touch targets, contrast, text scaling, navigation and focus, motion). Left: list of screens of the app with a score each, worst first. Right: findings for the selected screen in the standard finding component, each carrying a WCAG 2.2 criterion chip (for example "1.4.3 Contrast"). A contrast tab shows the theme's text and surface pairs as swatches with their ratio and pass or fail for AA, in light and dark. One finding is expanded with its fix as a diff. Include the "Scan a running screen" action for a connected device, with its unavailable state when no device is attached.
+
+### 11. Security
+Header with a grade from A to F, counts by severity and a line stating "A summary of automated checks, not a certification". Findings grouped by OWASP MASVS area (storage, crypto, auth, network, platform, code, resilience), each group collapsible with its count. Each finding shows a MASVS chip and a CWE chip. Secrets are always masked, showing only the first and last characters. A Dependencies tab lists vulnerable libraries with the advisory id, affected range and fixed version, behind a "Check against OSV.dev" action that states what is sent. Include the "Accept with a reason" flow that writes to the baseline file, and export actions for Markdown, HTML and SARIF.
+
+### 12. AI review
 - Provider setup: Anthropic, OpenAI, Google, OpenAI-compatible endpoint, Ollama (local). Key field, "Stored in your system keychain" note, model picker, test button.
-- Send sheet: review type (architecture, Compose deep analysis, build setup, release readiness, security basics), a file tree with checkboxes showing what will be sent, files excluded automatically because they look like secrets, token and cost estimate, destination clearly named, "Send to Anthropic" as the action label (the provider name changes).
+- Send sheet: review type (architecture, Compose deep analysis, build setup, release readiness, accessibility deep review, security deep review), a file tree with checkboxes showing what will be sent, files excluded automatically because they look like secrets, token and cost estimate, destination clearly named, "Send to Anthropic" as the action label (the provider name changes).
 - Results: findings in the standard component with fixes as diffs, each tied to a file and line.
 - Agent log: a chronological list of requests, tool calls and responses for the review.
 - Local variant: with Ollama selected, a visible "Nothing leaves this machine" state.
 
-### 11. Settings
+### 13. Settings
 Sections: General (appearance, language: English, French), Paths (Android SDK, JDK), Accounts (Play service accounts), AI providers, Privacy (a plain list of every network destination the app can contact and why), About (version, license Apache 2.0, GitHub link).
 
-### 12. Shared dialogs
+### 14. Shared dialogs
 Write confirmation with a summary of changes, keystore password prompt (states that the password is used once and not stored), error dialog with what happened and what to do next.
 
 ## Deliverables
