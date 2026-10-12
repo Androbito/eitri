@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Eitri Compose analyzer</title>
+<title>Servante Compose analyzer</title>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -11,16 +11,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 body{margin:0}
-.eitri{--bg:#F5F7F5;--surface:#FFFFFF;--raised:#E9EEEA;--line:#D3DAD5;--text:#101412;--muted:#55605A;--accent:#3DDC84;--accent-ink:#0A7D43;--accent-soft:#DDF7E8;--on-accent:#06210F;--ok:#137A43;--ok-soft:#DDF3E6;--warn:#8F5B00;--warn-soft:#FBEBCB;--crit:#C6292F;--crit-soft:#FBE0E1;--add:#E3F4E9;--del:#FBE4E5}
-.eitri.dark{--bg:#0E1210;--surface:#151A17;--raised:#1E2521;--line:#303A34;--text:#ECF1EE;--muted:#A3AEA8;--accent:#3DDC84;--accent-ink:#3DDC84;--accent-soft:#153524;--on-accent:#06210F;--ok:#4FD08A;--ok-soft:#173A2B;--warn:#F2B453;--warn-soft:#3D2F14;--crit:#FF7A7F;--crit-soft:#44191D;--add:#17352A;--del:#3E1A1E}
-a{color:#0A7D43}a:hover{color:#075C31}.eitri.dark a{color:#3DDC84}
+.servante{--bg:#F5F7F5;--surface:#FFFFFF;--raised:#E9EEEA;--line:#D3DAD5;--text:#101412;--muted:#55605A;--accent:#3DDC84;--accent-ink:#0A7D43;--accent-soft:#DDF7E8;--on-accent:#06210F;--ok:#137A43;--ok-soft:#DDF3E6;--warn:#8F5B00;--warn-soft:#FBEBCB;--crit:#C6292F;--crit-soft:#FBE0E1;--add:#E3F4E9;--del:#FBE4E5}
+.servante.dark{--bg:#0E1210;--surface:#151A17;--raised:#1E2521;--line:#303A34;--text:#ECF1EE;--muted:#A3AEA8;--accent:#3DDC84;--accent-ink:#3DDC84;--accent-soft:#153524;--on-accent:#06210F;--ok:#4FD08A;--ok-soft:#173A2B;--warn:#F2B453;--warn-soft:#3D2F14;--crit:#FF7A7F;--crit-soft:#44191D;--add:#17352A;--del:#3E1A1E}
+a{color:#0A7D43}a:hover{color:#075C31}.servante.dark a{color:#3DDC84}
 </style>
 </helmet>
-<div class="eitri {{themeClass}}" style="display: flex; flex-wrap: wrap; min-height: 800px; background: var(--bg); color: var(--text); font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 14px; line-height: 1.45">
+<div class="servante {{themeClass}}" style="display: flex; flex-wrap: wrap; min-height: 800px; background: var(--bg); color: var(--text); font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 14px; line-height: 1.45">
 <nav aria-label="Tools" style="flex: 0 0 232px; box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; padding: 16px 12px; background: var(--surface); border-right: 1px solid var(--line)">
 <div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 14px">
-<svg aria-hidden="true" width="26" height="26" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#3DDC84"></rect><path d="M7 11h14c2.5 0 4 1 4 3h-7v3l3 5H10l3-5v-3H9z" fill="#06210F"></path></svg>
-<span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 18px">Eitri</span>
+<svg aria-hidden="true" width="26" height="26" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#3DDC84"></rect><rect x="8" y="6" width="16" height="16.5" rx="2" fill="#06210F"></rect><path d="M11.5 10.5h9M11.5 14.5h9M11.5 18.5h9" stroke="#3DDC84" stroke-width="1.6" stroke-linecap="round" fill="none"></path><circle cx="11.5" cy="25.2" r="1.7" fill="#06210F"></circle><circle cx="20.5" cy="25.2" r="1.7" fill="#06210F"></circle></svg>
+<span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 18px">Servante</span>
 </div>
 <button type="button" style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px; margin-bottom: 12px; padding: 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; text-align: left; cursor: pointer">
 <span style="font-weight: 600">Fjord Notes</span>

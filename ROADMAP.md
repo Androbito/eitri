@@ -1,4 +1,4 @@
-# Eitri roadmap
+# Servante roadmap
 
 The to-do list for the whole project. Milestones are ordered: each one ships something usable on its own. Checkboxes get ticked as work lands on `main`.
 
@@ -17,7 +17,7 @@ Legend: **[spike]** means the item needs a short investigation before it can be 
 - [ ] "Unavailable" state everywhere: anything that cannot be read is reported as unavailable, never replaced by a placeholder
 - [ ] Demo mode: a bundled fictional project and fake accounts so every screen can be shown and recorded without real data
 - [ ] Secrets store: macOS Keychain, Windows Credential Manager, Linux Secret Service (libsecret), behind one interface
-- [ ] Audit log (local SQLite): every write Eitri performs, with timestamp, what changed and where
+- [ ] Audit log (local SQLite): every write Servante performs, with timestamp, what changed and where
 - [ ] Confirmation dialog pattern for any write: summary of what will change, then confirm
 - [ ] Localization scaffolding, English and French
 - [ ] Settings screen: appearance, language, SDK path, JDK path, providers, service accounts
@@ -170,7 +170,7 @@ Bring your own key. Nothing is sent unless the user asks.
 
 ## M9. CLI and CI (v0.9)
 
-- [ ] `eitri doctor` runs Signing, Gradle, Preflight, Accessibility and Security checks headless
+- [ ] `servante doctor` runs Signing, Gradle, Preflight, Accessibility and Security checks headless
 - [ ] Output as text, JSON and SARIF
 - [ ] Exit codes by severity so it can gate a pipeline
 - [ ] GitHub Action wrapper
@@ -186,7 +186,7 @@ Bring your own key. Nothing is sent unless the user asks.
 ## Later, not committed
 
 - Arabic localization with right-to-left layout
-- Android Studio plugin that surfaces Eitri findings in the IDE
+- Android Studio plugin that surfaces Servante findings in the IDE
 - Kotlin Multiplatform project support (shared module checks, iOS framework export)
 - Device tools: logcat viewer, deep link tester, install a bundle on a device
 - Firebase checks through the Firebase Management API (registered fingerprints without relying on the local JSON)

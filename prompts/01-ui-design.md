@@ -6,11 +6,11 @@ When the designs are done, export them into `design/` as described in `design/RE
 
 ---
 
-Design a desktop application called **Eitri**.
+Design a desktop application called **Servante**.
 
 ## Product
 
-Eitri is a free, open source toolbox for Android and Kotlin developers. It runs on macOS, Windows and Linux. It bundles ten tools in one window. Each tool answers a question a developer would otherwise lose twenty minutes on. The user points Eitri at an Android project folder and gets diagnoses, not dashboards for their own sake.
+Servante is a free, open source toolbox for Android and Kotlin developers. It runs on macOS, Windows and Linux. It bundles ten tools in one window. Each tool answers a question a developer would otherwise lose twenty minutes on. The user points Servante at an Android project folder and gets diagnoses, not dashboards for their own sake.
 
 The audience is professional Android developers. They live in Android Studio, read monospace all day, and distrust tools that look like marketing. The app sits close to their signing keys, so it has to look precise, calm and trustworthy.
 
@@ -46,7 +46,7 @@ Core behaviors the UI must make visible:
 ## Screens
 
 ### 1. Welcome and project picker
-First launch. Short statement of what Eitri does, "Open a project folder" as the primary action, recent projects, and "Explore with demo data". A small line states: no account, no telemetry.
+First launch. Short statement of what Servante does, "Open a project folder" as the primary action, recent projects, and "Explore with demo data". A small line states: no account, no telemetry.
 
 ### 2. Overview
 One card per tool in a grid, each showing its headline state for the open project. Examples: Signing "1 fingerprint missing in Firebase", Compose "Score 69, 4 unstable parameters", Gradle "2 incompatible versions", SDK and disk "84 GB, 31 GB reclaimable", Preflight "No bundle checked yet", Releases "1 build in review", Reminders "Target API deadline in 41 days", Accessibility "Score 74, 9 unlabeled controls", Security "Grade C, 2 critical", AI review "No provider configured". Cards are not identical: size them by importance, and the tool with the worst state comes first.
@@ -76,7 +76,7 @@ Empty state is a drop zone: "Drop an AAB or APK". After a file is loaded: a chec
 Left: list of apps from the connected Play account. Right: for the selected app, one lane per track (internal, closed, open, production). Each release shows version name, version code, status and a rollout progress bar with its percentage. Review status shows "Unavailable from the Play API" where that is the case. Design the "Connect a service account" empty state with a short explanation of the permissions needed.
 
 ### 9. Reminders
-A timeline of upcoming deadlines (target API requirement, upload certificate validity, service account key age), toggles and reminder windows on the right, and below a history table: the audit log of everything Eitri changed, with date, action and target.
+A timeline of upcoming deadlines (target API requirement, upload certificate validity, service account key age), toggles and reminder windows on the right, and below a history table: the audit log of everything Servante changed, with date, action and target.
 
 ### 10. Accessibility
 Header with a score out of 100 and six category scores (labels, touch targets, contrast, text scaling, navigation and focus, motion). Left: list of screens of the app with a score each, worst first. Right: findings for the selected screen in the standard finding component, each carrying a WCAG 2.2 criterion chip (for example "1.4.3 Contrast"). A contrast tab shows the theme's text and surface pairs as swatches with their ratio and pass or fail for AA, in light and dark. One finding is expanded with its fix as a diff. Include the "Scan a running screen" action for a connected device, with its unavailable state when no device is attached.

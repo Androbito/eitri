@@ -1,6 +1,6 @@
 # Design tokens
 
-Source: the "Eitri desktop app UI" canvas in Claude Design (private to the owner). The artboard sources are in `screens/`. Every artboard has a "dark" toggle, so one file covers both themes: the light values are on `.eitri`, the dark ones on `.eitri.dark`, at the top of each file.
+Source: the "Servante desktop app UI" canvas in Claude Design (private to the owner). The artboard sources are in `screens/`. Every artboard has a "dark" toggle, so one file covers both themes: the light values are on `.servante`, the dark ones on `.servante.dark`, at the top of each file.
 
 ## Color roles
 
@@ -70,4 +70,4 @@ Rules:
 
 ## Known gaps
 
-Each tool screen is drawn in its "findings" state. The other states (first run, loading, healthy, unavailable, error) are drawn once, as patterns, in `Components.dc.html`. Not drawn yet: the "verify a build" flow in Signing, the Issues and Compiler report tabs in Compose, the Compatibility, Properties and Build timing tabs in Gradle, the build comparison in Preflight, the Dependencies tab in Security, Windows and Linux window chrome. The app name and logo glyph are placeholders until the name is decided.
+Each tool screen is drawn in its "findings" state. The other states (first run, loading, healthy, unavailable, error) are drawn once, as patterns, in `Components.dc.html`. Not drawn yet: the "verify a build" flow in Signing, the Issues and Compiler report tabs in Compose, the Compatibility, Properties and Build timing tabs in Gradle, the build comparison in Preflight, the Dependencies tab in Security, Windows and Linux window chrome. 

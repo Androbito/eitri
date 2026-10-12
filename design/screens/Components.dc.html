@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Eitri components and tokens</title>
+<title>Servante components and tokens</title>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -11,12 +11,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 body{margin:0}
-.eitri{--bg:#F5F7F5;--surface:#FFFFFF;--raised:#E9EEEA;--line:#D3DAD5;--text:#101412;--muted:#55605A;--accent:#3DDC84;--accent-ink:#0A7D43;--accent-soft:#DDF7E8;--on-accent:#06210F;--ok:#137A43;--ok-soft:#DDF3E6;--warn:#8F5B00;--warn-soft:#FBEBCB;--crit:#C6292F;--crit-soft:#FBE0E1;--add:#E3F4E9;--del:#FBE4E5}
-.eitri.dark{--bg:#0E1210;--surface:#151A17;--raised:#1E2521;--line:#303A34;--text:#ECF1EE;--muted:#A3AEA8;--accent:#3DDC84;--accent-ink:#3DDC84;--accent-soft:#153524;--on-accent:#06210F;--ok:#4FD08A;--ok-soft:#173A2B;--warn:#F2B453;--warn-soft:#3D2F14;--crit:#FF7A7F;--crit-soft:#44191D;--add:#17352A;--del:#3E1A1E}
-a{color:#0A7D43}a:hover{color:#075C31}.eitri.dark a{color:#3DDC84}
+.servante{--bg:#F5F7F5;--surface:#FFFFFF;--raised:#E9EEEA;--line:#D3DAD5;--text:#101412;--muted:#55605A;--accent:#3DDC84;--accent-ink:#0A7D43;--accent-soft:#DDF7E8;--on-accent:#06210F;--ok:#137A43;--ok-soft:#DDF3E6;--warn:#8F5B00;--warn-soft:#FBEBCB;--crit:#C6292F;--crit-soft:#FBE0E1;--add:#E3F4E9;--del:#FBE4E5}
+.servante.dark{--bg:#0E1210;--surface:#151A17;--raised:#1E2521;--line:#303A34;--text:#ECF1EE;--muted:#A3AEA8;--accent:#3DDC84;--accent-ink:#3DDC84;--accent-soft:#153524;--on-accent:#06210F;--ok:#4FD08A;--ok-soft:#173A2B;--warn:#F2B453;--warn-soft:#3D2F14;--crit:#FF7A7F;--crit-soft:#44191D;--add:#17352A;--del:#3E1A1E}
+a{color:#0A7D43}a:hover{color:#075C31}.servante.dark a{color:#3DDC84}
 </style>
 </helmet>
-<div class="eitri {{themeClass}}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 28px 32px; align-items: start; min-height: 800px; box-sizing: border-box; padding: 32px; background: var(--bg); color: var(--text); font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 14px; line-height: 1.45">
+<div class="servante {{themeClass}}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 28px 32px; align-items: start; min-height: 800px; box-sizing: border-box; padding: 32px; background: var(--bg); color: var(--text); font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 14px; line-height: 1.45">
 <section style="grid-column: 1 / -1">
 <h1 style="margin: 0 0 12px; font-family: 'Bricolage Grotesque', sans-serif; font-size: 26px; letter-spacing: -0.01em">Color roles</h1>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; font-size: 12px">

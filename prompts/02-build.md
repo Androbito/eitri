@@ -4,7 +4,7 @@ Run this in Claude Code at the root of this repository, after the designs from P
 
 ---
 
-You are building **Eitri**, a free and open source desktop toolbox for Android and Kotlin developers, for macOS, Windows and Linux. The license is Apache 2.0. There is no paid tier, no account and no backend.
+You are building **Servante**, a free and open source desktop toolbox for Android and Kotlin developers, for macOS, Windows and Linux. The license is Apache 2.0. There is no paid tier, no account and no backend.
 
 ## Read these first
 
@@ -28,10 +28,10 @@ Then, throughout:
 - `figma-to-native-ui` when turning a screen from `design/` into Compose.
 - `api-mock-server` for the Play Developer API, OSV.dev and AI providers. No test and no demo-mode screen calls a real service.
 - `solid-code-review` on the diff before every pull request.
-- `mobile-quality-audit` on Eitri itself at the end of each milestone. Put the report in `docs/audits/` and fix the blocking findings before calling the milestone done.
-- `mobile-release-pipeline` for CI, branching and feature flags. Skip its Fastlane and store upload parts: Eitri ships desktop installers through GitHub Releases.
+- `mobile-quality-audit` on Servante itself at the end of each milestone. Put the report in `docs/audits/` and fix the blocking findings before calling the milestone done.
+- `mobile-release-pipeline` for CI, branching and feature flags. Skip its Fastlane and store upload parts: Servante ships desktop installers through GitHub Releases.
 
-The rule catalogs of Eitri's own Accessibility and Security tools start from the accessibility, localisation and OWASP MASVS checklists in `mobile-quality-audit`, so the app checks other projects against the same standard it is held to.
+The rule catalogs of Servante's own Accessibility and Security tools start from the accessibility, localisation and OWASP MASVS checklists in `mobile-quality-audit`, so the app checks other projects against the same standard it is held to.
 
 ## Product rules, not negotiable
 
@@ -132,7 +132,7 @@ Accessibility and Security
 - The accessibility score and the security grade have their formulas in `docs/notes/a11y-score.md` and `docs/notes/security-grade.md`, linked from the UI. The security screen states that the grade is a summary and not a certification.
 - The secret scanner is one component used three times: by the Security tool, by Signing (committed keystore passwords) and by the AI payload builder (exclusion). Findings never display the full secret: show the first and last characters only.
 - Vulnerability lookup sends package coordinates and versions to OSV.dev and nothing else. It is opt-in per run and registered in the network destination registry.
-- The security baseline file lives in the user's repo (`eitri-baseline.yml`). Writing it goes through the `WriteGate`.
+- The security baseline file lives in the user's repo (`servante-baseline.yml`). Writing it goes through the `WriteGate`.
 - The device accessibility scan is a spike in the roadmap. Do the static rules first.
 
 AI

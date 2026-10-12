@@ -1,10 +1,10 @@
-# Eitri
+# Servante
 
 The open source toolbox for Android and Kotlin developers. One desktop app for macOS, Windows and Linux that answers the questions Android Studio leaves to a terminal and a forum thread.
 
 **Status: in development. Nothing is released yet.** This repository currently holds the plan, the prompts used to design and build the app, and the project site.
 
-Site and interactive demo: https://androbito.github.io/eitri/
+Site and interactive demo: https://androbito.github.io/servante/
 
 ## The tools
 
@@ -61,9 +61,9 @@ Issues and ideas are welcome. Open an issue before a large change so it can be m
 
 ## Credits
 
-Inspired by [Sindri](https://getsindri.app) by Walid Sassi, which does this job for iOS and macOS developers. The two projects are separate. Eitri is the name of Sindri's brother in the Norse stories.
+Inspired by [Sindri](https://getsindri.app) by Walid Sassi, which does this job for iOS and macOS developers. The two projects are separate. A servante is the French word for the rolling tool cabinet in a mechanic's workshop.
 
-Android, Google Play, Firebase and Jetpack Compose are trademarks of Google LLC. Kotlin is a trademark of the Kotlin Foundation. Eitri is an independent project, not affiliated with Google or JetBrains.
+Android, Google Play, Firebase and Jetpack Compose are trademarks of Google LLC. Kotlin is a trademark of the Kotlin Foundation. Servante is an independent project, not affiliated with Google or JetBrains.
 
 ## License
 

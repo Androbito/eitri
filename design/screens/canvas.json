@@ -1,7 +1,7 @@
 {
   "v": 3,
   "createdOnFiles": {"v": 1, "at": "2026-10-12T18:20:00Z"},
-  "title": "Eitri desktop app UI",
+  "title": "Servante desktop app UI",
   "launch": {"view": "canvas"},
   "pages": [],
   "boards": {
@@ -23,7 +23,7 @@
   },
   "order": ["Welcome.dc.html", "Main.dc.html", "Signing.dc.html", "Compose.dc.html", "Gradle.dc.html", "SdkDisk.dc.html", "Preflight.dc.html", "Releases.dc.html", "Reminders.dc.html", "Accessibility.dc.html", "Security.dc.html", "AiReview.dc.html", "Settings.dc.html", "Dialogs.dc.html", "Components.dc.html"],
   "notes": {
-    "heading": {"x": 0, "y": -300, "text": "Eitri desktop app", "kind": "title1", "maxW": 5360}
+    "heading": {"x": 0, "y": -300, "text": "Servante desktop app", "kind": "title1", "maxW": 5360}
   },
   "designSystems": []
 }
