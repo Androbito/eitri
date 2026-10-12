@@ -13,6 +13,14 @@ dependencies {
     "testImplementation"(kotlin("test"))
 }
 
+// kotlinx-coroutines-test marks its dispatchers experimental, and the testing strategy says to pick one
+// deliberately rather than avoid them. Opting in for test code only keeps main code honest about it.
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    if (name.contains("Test")) {
+        compilerOptions.optIn.add("kotlinx.coroutines.ExperimentalCoroutinesApi")
+    }
+}
+
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
     // Findings and dates are formatted; keep tests independent of the machine's locale and zone.

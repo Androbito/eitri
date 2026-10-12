@@ -8,11 +8,17 @@ public sealed interface PlannedChange {
     public val path: String
 
     /**
-     * @param unifiedDiff the exact diff that will be applied, shown in the dialog. What is previewed is
-     *   what is written: the gate applies this diff and nothing else.
+     * @param newContent the whole file as it will be after the change. The gate writes this, so what the
+     *   dialog previews and what lands on disk cannot differ: there is no diff to apply, and so no way
+     *   for applying it to go differently than the preview suggested.
+     * @param unifiedDiff the preview, computed from the current content and [newContent].
      */
-    public data class EditFile(override val path: String, public val unifiedDiff: String, public val summary: String) :
-        PlannedChange
+    public data class EditFile(
+        override val path: String,
+        public val newContent: String,
+        public val unifiedDiff: String,
+        public val summary: String,
+    ) : PlannedChange
 
     public data class CreateFile(override val path: String, public val content: String, public val summary: String) :
         PlannedChange
@@ -74,4 +80,15 @@ public sealed interface WriteOutcome {
  */
 public interface WriteGate {
     public suspend fun request(request: WriteRequest): WriteOutcome
+}
+
+/**
+ * Asks the user. Implemented by the UI, which shows the dialog, and by tests, which answer immediately.
+ *
+ * It is a separate interface from [WriteGate] so the gate's behaviour, write then record, can be tested
+ * without a UI, and so the UI never gains the ability to write without going through the gate.
+ */
+public fun interface WriteConfirmer {
+    /** @return true when the user confirmed. A false answer means nothing is touched. */
+    public suspend fun confirm(request: WriteRequest): Boolean
 }

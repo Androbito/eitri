@@ -52,6 +52,8 @@ tasks.register<JavaExec>("detekt") {
         "--config",
         layout.projectDirectory.file("config/detekt.yml").asFile.path,
         "--build-upon-default-config",
+        // Generated SQLDelight code is not ours to style.
+        "--excludes", "**/build/**",
         "--report",
         "md:${layout.buildDirectory.get()}/reports/detekt/detekt.md",
     )

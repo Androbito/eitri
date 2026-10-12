@@ -28,7 +28,9 @@ class WriteRequestTest {
                 tool = ToolId.Gradle,
                 title = "",
                 explanation = "One file changes.",
-                changes = listOf(PlannedChange.EditFile("gradle/libs.versions.toml", "diff", "ksp")),
+                changes = listOf(
+                    PlannedChange.EditFile("gradle/libs.versions.toml", "content", "diff", "ksp"),
+                ),
             )
         }.exceptionOrNull()
 
@@ -44,7 +46,7 @@ class WriteRequestTest {
             changes = listOf(
                 PlannedChange.MoveToTrash("system-images/android-33", sizeBytes = 6_200_000_000),
                 PlannedChange.MoveToTrash("ndk/25.2.9519653", sizeBytes = 4_100_000_000),
-                PlannedChange.EditFile("gradle/libs.versions.toml", "diff", "unrelated"),
+                PlannedChange.EditFile("gradle/libs.versions.toml", "content", "diff", "unrelated"),
             ),
         )
 
