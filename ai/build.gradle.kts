@@ -2,19 +2,18 @@
 //
 // Depends on core only, like a tool: the payload builder works on files and findings, and the secret
 // exclusion goes through the same scanner the Security tool uses.
+//
+// No HTTP client yet, on purpose. Declaring Ktor here before there is any code to use it costs every
+// build the resolution of its transitive graph, which for ktor-serialization-kotlinx-json reaches as
+// far as a YAML parser, and buys nothing. It arrives with the first provider client.
 plugins {
     id("servante.serialization")
 }
 
 dependencies {
     api(projects.core)
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.cio)
-    implementation(libs.ktor.client.content.negotiation)
-    implementation(libs.ktor.serialization.json)
     implementation(libs.kotlinx.serialization.json)
 
     testImplementation(testFixtures(projects.core))
-    testImplementation(libs.ktor.client.mock)
     testImplementation(libs.kotlinx.coroutines.test)
 }

@@ -68,6 +68,8 @@ tasks.named("check") {
 tasks.register("checkAll") {
     group = "verification"
     description = "Everything CI checks: tests, ktlint and detekt across every module."
-    dependsOn(subprojects.map { "${it.path}:check" })
+    // Only projects that have a build file: `:tools` is a container for the tool modules, with no
+    // build file and so no `check` task of its own. Asking for one fails the whole task graph.
+    dependsOn(subprojects.filter { it.buildFile.exists() }.map { "${it.path}:check" })
     dependsOn("ktlintCheck", "detekt")
 }
