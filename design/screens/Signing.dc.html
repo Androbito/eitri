@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Eitri signing</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.eitri{--bg:#F5F7F5;--surface:#FFFFFF;--raised:#E9EEEA;--line:#D3DAD5;--text:#101412;--muted:#55605A;--accent:#3DDC84;--accent-ink:#0A7D43;--accent-soft:#DDF7E8;--on-accent:#06210F;--ok:#137A43;--ok-soft:#DDF3E6;--warn:#8F5B00;--warn-soft:#FBEBCB;--crit:#C6292F;--crit-soft:#FBE0E1;--add:#E3F4E9;--del:#FBE4E5}
+.eitri.dark{--bg:#0E1210;--surface:#151A17;--raised:#1E2521;--line:#303A34;--text:#ECF1EE;--muted:#A3AEA8;--accent:#3DDC84;--accent-ink:#3DDC84;--accent-soft:#153524;--on-accent:#06210F;--ok:#4FD08A;--ok-soft:#173A2B;--warn:#F2B453;--warn-soft:#3D2F14;--crit:#FF7A7F;--crit-soft:#44191D;--add:#17352A;--del:#3E1A1E}
+a{color:#0A7D43}a:hover{color:#075C31}.eitri.dark a{color:#3DDC84}
+</style>
+</helmet>
+<div class="eitri {{themeClass}}" style="display: flex; flex-wrap: wrap; min-height: 800px; background: var(--bg); color: var(--text); font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 14px; line-height: 1.45">
+<nav aria-label="Tools" style="flex: 0 0 232px; box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; padding: 16px 12px; background: var(--surface); border-right: 1px solid var(--line)">
+<div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 14px">
+<svg aria-hidden="true" width="26" height="26" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#3DDC84"></rect><path d="M7 11h14c2.5 0 4 1 4 3h-7v3l3 5H10l3-5v-3H9z" fill="#06210F"></path></svg>
+<span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 18px">Eitri</span>
+</div>
+<button type="button" style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px; margin-bottom: 12px; padding: 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; text-align: left; cursor: pointer">
+<span style="font-weight: 600">Fjord Notes</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted)">~/dev/fjord-notes</span>
+</button>
+<sc-for list="{{nav}}" as="item" hint-placeholder-count="11">
+<a href="{{item.href}}" style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; border-radius: 6px; text-decoration: none; background: {{item.bg}}; color: {{item.fg}}; font-weight: {{item.weight}}">
+<span>{{item.label}}</span>
+<span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{item.dot}}"></span>
+</a>
+</sc-for>
+<a href="Settings.dc.html" style="margin-top: auto; padding: 8px 10px; border-radius: 6px; text-decoration: none; color: var(--muted); font-weight: 500">Settings</a>
+</nav>
+<main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 28px 32px 36px">
+<header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 20px">
+<div>
+<h1 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 26px; letter-spacing: -0.01em">Signing</h1>
+<p style="margin: 4px 0 0; color: var(--muted)">Why does sign-in work in debug and fail in release?</p>
+</div>
+<div style="display: flex; align-items: center; gap: 12px">
+<span style="color: var(--muted); font-size: 13px">Checked 2 minutes ago</span>
+<button type="button" style="height: 36px; padding: 0 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; font-weight: 600; cursor: pointer">Verify a build</button>
+<button type="button" style="height: 36px; padding: 0 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; font-weight: 600; cursor: pointer">Check again</button>
+</div>
+</header>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div role="status" style="padding: 14px 16px; border: 1px solid var(--crit); border-radius: 10px; background: var(--crit-soft)">
+<div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 18px">Google Sign-In will fail for installs from Play.</div>
+<div style="margin-top: 2px">The Play app signing certificate is not registered in the Firebase project.</div>
+</div>
+<div style="overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface)">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px; white-space: nowrap">
+<caption style="padding: 12px 14px 4px; text-align: left; font-weight: 600; font-size: 14px">Fingerprint matrix</caption>
+<thead>
+<tr>
+<th scope="col" style="padding: 8px 14px; text-align: left; font-weight: 500; color: var(--muted); border-bottom: 1px solid var(--line)">Signing identity</th>
+<th scope="col" style="padding: 8px 14px; text-align: left; font-weight: 500; color: var(--muted); border-bottom: 1px solid var(--line)">SHA-256</th>
+<th scope="col" style="padding: 8px 14px; text-align: left; font-weight: 500; color: var(--muted); border-bottom: 1px solid var(--line)">Firebase</th>
+<th scope="col" style="padding: 8px 14px; text-align: left; font-weight: 500; color: var(--muted); border-bottom: 1px solid var(--line)">OAuth client</th>
+<th scope="col" style="padding: 8px 14px; text-align: left; font-weight: 500; color: var(--muted); border-bottom: 1px solid var(--line)">Play</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row" style="padding: 12px 14px; text-align: left; font-weight: 600; border-bottom: 1px solid var(--line)">Debug keystore</th>
+<td style="padding: 12px 14px; border-bottom: 1px solid var(--line); font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted)">3A:91:0C:E4 … 7B:22</td>
+<td style="padding: 12px 14px; border-bottom: 1px solid var(--line); color: var(--ok); font-weight: 600">Match</td>
+<td style="padding: 12px 14px; border-bottom: 1px solid var(--line); color: var(--ok); font-weight: 600">Match</td>
+<td style="padding: 12px 14px; border-bottom: 1px solid var(--line); color: var(--muted)">Not used</td>
+</tr>
+<tr>
+<th scope="row" style="padding: 12px 14px; text-align: left; font-weight: 600; border-bottom: 1px solid var(--line)">Upload key</th>
+<td style="padding: 12px 14px; border-bottom: 1px solid var(--line); font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted)">C8:5F:A1:09 … D4:6E</td>
+<td style="padding: 12px 14px; border-bottom: 1px solid var(--line); color: var(--ok); font-weight: 600">Match</td>
+<td style="padding: 12px 14px; border-bottom: 1px solid var(--line); color: var(--ok); font-weight: 600">Match</td>
+<td style="padding: 12px 14px; border-bottom: 1px solid var(--line); color: var(--ok); font-weight: 600">Match</td>
+</tr>
+<tr style="background: var(--accent-soft)">
+<th scope="row" style="padding: 12px 14px; text-align: left; font-weight: 600">Play app signing key</th>
+<td style="padding: 12px 14px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted)">F2:77:3D:B0 … 19:AC</td>
+<td style="padding: 12px 14px; color: var(--crit); font-weight: 600">Missing</td>
+<td style="padding: 12px 14px; color: var(--crit); font-weight: 600">Missing</td>
+<td style="padding: 12px 14px; color: var(--ok); font-weight: 600">Match</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h2 style="margin: 4px 0 0; font-size: 14px; font-weight: 600">Findings</h2>
+<div style="display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface)">
+<span aria-hidden="true" style="flex: none; width: 8px; height: 8px; margin-top: 6px; border-radius: 50%; background: var(--crit)"></span>
+<div style="flex: 1; min-width: 0">
+<div style="font-weight: 600">Add the Play signing SHA-1 and SHA-256 to Firebase</div>
+<div style="color: var(--muted)">Firebase only knows the debug and upload certificates. Play re-signs your app with its own key.</div>
+<div style="margin-top: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted)">google-services.json, client app.fjord.notes</div>
+</div>
+<button type="button" style="flex: none; height: 32px; padding: 0 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; font-weight: 600; cursor: pointer">Copy fingerprints</button>
+</div>
+<div style="display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface)">
+<span aria-hidden="true" style="flex: none; width: 8px; height: 8px; margin-top: 6px; border-radius: 50%; background: var(--warn)"></span>
+<div style="flex: 1; min-width: 0">
+<div style="font-weight: 600">Keystore password committed to the repository</div>
+<div style="margin-top: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted)">app/build.gradle.kts:42</div>
+</div>
+</div>
+<div style="display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface)">
+<span aria-hidden="true" style="flex: none; width: 8px; height: 8px; margin-top: 6px; border-radius: 50%; background: var(--ok)"></span>
+<div style="flex: 1; min-width: 0">
+<div style="font-weight: 600">Upload certificate valid until 2049</div>
+<div style="margin-top: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted)">release.jks, alias upload, RSA 4096</div>
+</div>
+</div>
+</div>
+</div>
+<aside aria-label="Selected identity" style="flex: 1 1 280px; max-width: 360px; box-sizing: border-box; padding: 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); display: flex; flex-direction: column; gap: 14px">
+<div>
+<div style="font-size: 13px; color: var(--muted)">Selected identity</div>
+<div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 18px">Play app signing key</div>
+</div>
+<dl style="margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; font-size: 13px">
+<dt style="color: var(--muted)">Source</dt><dd style="margin: 0">Play Developer API</dd>
+<dt style="color: var(--muted)">Algorithm</dt><dd style="margin: 0">RSA 4096</dd>
+<dt style="color: var(--muted)">Valid from</dt><dd style="margin: 0">12 March 2021</dd>
+<dt style="color: var(--muted)">Valid until</dt><dd style="margin: 0">5 March 2051</dd>
+</dl>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-size: 13px; color: var(--muted)">SHA-1</span><button type="button" style="height: 28px; padding: 0 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; font-size: 12px; font-weight: 600; cursor: pointer">Copy</button></div>
+<div style="padding: 10px; border-radius: 6px; background: var(--raised); font-family: 'JetBrains Mono', monospace; font-size: 12px; overflow-wrap: anywhere">9B:04:E1:6C:2F:A8:55:D0:71:3E:BC:48:0A:F6:12:9D:C7:63:E5:2B</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-size: 13px; color: var(--muted)">SHA-256</span><button type="button" style="height: 28px; padding: 0 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; font-size: 12px; font-weight: 600; cursor: pointer">Copy</button></div>
+<div style="padding: 10px; border-radius: 6px; background: var(--raised); font-family: 'JetBrains Mono', monospace; font-size: 12px; overflow-wrap: anywhere">F2:77:3D:B0:5A:C1:0E:94:6B:D8:23:7F:E0:41:9C:A5:38:D2:6F:0B:E7:14:85:CA:52:9E:30:7D:B6:48:19:AC</div>
+</div>
+<button type="button" style="height: 36px; border: 0; border-radius: 6px; background: var(--accent); color: var(--on-accent); font: inherit; font-weight: 600; cursor: pointer">Export diagnosis as Markdown</button>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+var dark = this.props.dark ?? false;
+var active = 'signing';
+var items = [
+['overview', 'Overview', 'Main.dc.html', 'transparent'],
+['signing', 'Signing', 'Signing.dc.html', 'var(--crit)'],
+['compose', 'Compose', 'Compose.dc.html', 'var(--warn)'],
+['gradle', 'Gradle', 'Gradle.dc.html', 'var(--crit)'],
+['sdk', 'SDK and disk', 'SdkDisk.dc.html', 'var(--warn)'],
+['preflight', 'Preflight', 'Preflight.dc.html', 'var(--warn)'],
+['releases', 'Releases', 'Releases.dc.html', 'var(--ok)'],
+['reminders', 'Reminders', 'Reminders.dc.html', 'var(--warn)'],
+['a11y', 'Accessibility', 'Accessibility.dc.html', 'var(--warn)'],
+['security', 'Security', 'Security.dc.html', 'var(--crit)'],
+['ai', 'AI review', 'AiReview.dc.html', 'transparent']
+];
+return {
+themeClass: dark ? 'dark' : '',
+nav: items.map(function (i) {
+var on = i[0] === active;
+return { label: i[1], href: i[2], dot: i[3], bg: on ? 'var(--accent-soft)' : 'transparent', fg: on ? 'var(--text)' : 'var(--muted)', weight: on ? 600 : 500 };
+})
+};
+}
+}
+</script>
+</body>
+</html>

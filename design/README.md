@@ -1,28 +1,10 @@
-# Design exports
+# Design
 
-Output of `prompts/01-ui-design.md` goes here. `prompts/02-build.md` reads this folder, so keep the layout:
+The UI source of truth for the app. `prompts/02-build.md` reads this folder.
 
-```
-design/
-  tokens.md            colors by role (light and dark), type scale, spacing, radii
-  components/          one PNG per component, plus HTML if the tool exports it
-  screens/
-    01-welcome/        light.png, dark.png, and screen.html when available
-    02-overview/
-    03-signing/
-    04-compose/
-    05-gradle/
-    06-sdk-disk/
-    07-preflight/
-    08-releases/
-    09-reminders/
-    10-accessibility/
-    11-security/
-    12-ai-review/
-    13-settings/
-    14-dialogs/
-```
+- `tokens.md`: colors by role for light and dark, type, spacing, the list of screens and the known gaps.
+- `screens/`: one `.dc.html` file per screen, exported from the Claude Design canvas. They are plain HTML with inline styles, so every size, color and spacing value can be read directly. Each has a dark toggle: the theme values are the two CSS rules at the top of the file. `canvas.json` is the canvas layout.
 
-From Stitch: export each screen as PNG and as HTML (or Figma, then export). From Claude Design: export the page as images, and keep the link to the design in `tokens.md` so it can be reopened.
+The files need the Claude Design runtime to render, so read them as source. For pictures, open the canvas and use Share, Export, then drop the PNGs next to each screen as `<Screen>-light.png` and `<Screen>-dark.png`.
 
-If a screen has several states (empty, loading, findings), name them `light-empty.png`, `light-findings.png` and so on.
+Designs made in another tool (Stitch, Figma) can be added the same way: one folder or file per screen, plus an update to `tokens.md`.

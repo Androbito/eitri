@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Eitri components and tokens</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.eitri{--bg:#F5F7F5;--surface:#FFFFFF;--raised:#E9EEEA;--line:#D3DAD5;--text:#101412;--muted:#55605A;--accent:#3DDC84;--accent-ink:#0A7D43;--accent-soft:#DDF7E8;--on-accent:#06210F;--ok:#137A43;--ok-soft:#DDF3E6;--warn:#8F5B00;--warn-soft:#FBEBCB;--crit:#C6292F;--crit-soft:#FBE0E1;--add:#E3F4E9;--del:#FBE4E5}
+.eitri.dark{--bg:#0E1210;--surface:#151A17;--raised:#1E2521;--line:#303A34;--text:#ECF1EE;--muted:#A3AEA8;--accent:#3DDC84;--accent-ink:#3DDC84;--accent-soft:#153524;--on-accent:#06210F;--ok:#4FD08A;--ok-soft:#173A2B;--warn:#F2B453;--warn-soft:#3D2F14;--crit:#FF7A7F;--crit-soft:#44191D;--add:#17352A;--del:#3E1A1E}
+a{color:#0A7D43}a:hover{color:#075C31}.eitri.dark a{color:#3DDC84}
+</style>
+</helmet>
+<div class="eitri {{themeClass}}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 28px 32px; align-items: start; min-height: 800px; box-sizing: border-box; padding: 32px; background: var(--bg); color: var(--text); font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 14px; line-height: 1.45">
+<section style="grid-column: 1 / -1">
+<h1 style="margin: 0 0 12px; font-family: 'Bricolage Grotesque', sans-serif; font-size: 26px; letter-spacing: -0.01em">Color roles</h1>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; font-size: 12px">
+<div><div style="height: 44px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg)"></div><div style="margin-top: 4px; font-weight: 600">bg</div></div>
+<div><div style="height: 44px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface)"></div><div style="margin-top: 4px; font-weight: 600">surface</div></div>
+<div><div style="height: 44px; border: 1px solid var(--line); border-radius: 6px; background: var(--raised)"></div><div style="margin-top: 4px; font-weight: 600">raised</div></div>
+<div><div style="height: 44px; border-radius: 6px; background: var(--line)"></div><div style="margin-top: 4px; font-weight: 600">line</div></div>
+<div><div style="height: 44px; border-radius: 6px; background: var(--text)"></div><div style="margin-top: 4px; font-weight: 600">text</div></div>
+<div><div style="height: 44px; border-radius: 6px; background: var(--muted)"></div><div style="margin-top: 4px; font-weight: 600">muted</div></div>
+<div><div style="height: 44px; border-radius: 6px; background: var(--accent)"></div><div style="margin-top: 4px; font-weight: 600">accent, fills only</div></div>
+<div><div style="height: 44px; border-radius: 6px; background: var(--accent-ink)"></div><div style="margin-top: 4px; font-weight: 600">accent-ink, text and borders</div></div>
+<div><div style="height: 44px; border: 1px solid var(--line); border-radius: 6px; background: var(--accent-soft)"></div><div style="margin-top: 4px; font-weight: 600">accent-soft, selection</div></div>
+<div><div style="height: 44px; border-radius: 6px; background: var(--ok)"></div><div style="margin-top: 4px; font-weight: 600">ok</div></div>
+<div><div style="height: 44px; border-radius: 6px; background: var(--warn)"></div><div style="margin-top: 4px; font-weight: 600">warn</div></div>
+<div><div style="height: 44px; border-radius: 6px; background: var(--crit)"></div><div style="margin-top: 4px; font-weight: 600">crit</div></div>
+</div>
+</section>
+<section style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 18px">Type</h2>
+<div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 44px; line-height: 1.05; letter-spacing: -0.02em">Display 44</div>
+<div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 26px; letter-spacing: -0.01em">Screen title 26</div>
+<div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 18px">Panel title 18</div>
+<div style="font-weight: 600">Label 14 semibold</div>
+<div>Body 14 regular, Instrument Sans</div>
+<div style="font-size: 13px; color: var(--muted)">Secondary 13 muted</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 12px">Mono 12: F2:77:3D:B0, app/build.gradle.kts:42</div>
+<h2 style="margin: 12px 0 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 18px">Spacing and radius</h2>
+<div style="color: var(--muted)">Spacing steps 4, 8, 12, 16, 20, 28, 32. Radius 10 on panels, 6 on controls, 4 on chips. Borders are 1 px lines, no shadows.</div>
+</section>
+<section style="display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 18px">Buttons and inputs</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+<button type="button" style="height: 36px; padding: 0 14px; border: 0; border-radius: 6px; background: var(--accent); color: var(--on-accent); font: inherit; font-weight: 600; cursor: pointer">Primary</button>
+<button type="button" style="height: 36px; padding: 0 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; font-weight: 600; cursor: pointer">Secondary</button>
+<button type="button" style="height: 32px; padding: 0 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; font-weight: 600; cursor: pointer">Small</button>
+<button type="button" disabled="disabled" style="height: 36px; padding: 0 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--raised); color: var(--muted); font: inherit; font-weight: 600">Disabled</button>
+<button type="button" style="height: 36px; padding: 0 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; font-weight: 600; outline: 2px solid var(--accent-ink); outline-offset: 2px; cursor: pointer">Focused</button>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 6px">
+<button type="button" aria-pressed="true" style="height: 32px; padding: 0 12px; border: 1px solid var(--accent-ink); border-radius: 6px; background: var(--accent-soft); color: var(--text); font: inherit; font-weight: 600; cursor: pointer">Selected option</button>
+<button type="button" aria-pressed="false" style="height: 32px; padding: 0 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; cursor: pointer">Option</button>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="c-in" style="font-size: 13px; color: var(--muted)">Text field</label><input id="c-in" type="text" value="~/Library/Android/sdk" style="height: 36px; padding: 0 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 12px"></div>
+<label style="display: flex; align-items: center; gap: 10px"><input type="checkbox" checked="checked" style="width: 16px; height: 16px; accent-color: #0A7D43"><span>Checkbox with its label</span></label>
+<h2 style="margin: 8px 0 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 18px">Status marks and chips</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 14px; align-items: center">
+<span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: var(--crit)"></span>Critical</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: var(--warn)"></span>Warning</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: var(--ok)"></span>Healthy</span>
+<span style="padding: 2px 8px; border: 1px dashed var(--muted); border-radius: 4px; color: var(--muted)">Unavailable: reason goes here</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 6px">
+<span style="padding: 1px 6px; border: 1px solid var(--line); border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 11px">WCAG 1.4.3 Contrast</span>
+<span style="padding: 1px 6px; border: 1px solid var(--line); border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 11px">MASVS-STORAGE-1</span>
+<span style="padding: 1px 6px; border: 1px solid var(--line); border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 11px">CWE-798</span>
+</div>
+<p style="margin: 0; font-size: 13px; color: var(--muted)">Status is never shown by color alone: a dot always sits next to a word.</p>
+</section>
+<section style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 18px">Finding row</h2>
+<div style="font-size: 13px; color: var(--muted)">Collapsed</div>
+<div style="display: flex; gap: 12px; align-items: flex-start; padding: 12px 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface)">
+<span aria-hidden="true" style="flex: none; width: 8px; height: 8px; margin-top: 6px; border-radius: 50%; background: var(--warn)"></span>
+<div style="flex: 1; min-width: 0">
+<div style="font-weight: 600">Title says what is wrong in one line</div>
+<div style="margin-top: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted)">path/to/File.kt:42</div>
+</div>
+</div>
+<div style="font-size: 13px; color: var(--muted)">Expanded and selected</div>
+<div style="padding: 14px 16px; border: 1px solid var(--accent-ink); border-radius: 10px; background: var(--surface)">
+<div style="display: flex; gap: 12px; align-items: flex-start">
+<span aria-hidden="true" style="flex: none; width: 8px; height: 8px; margin-top: 6px; border-radius: 50%; background: var(--crit)"></span>
+<div style="flex: 1; min-width: 0">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px"><span style="font-weight: 600">Title says what is wrong in one line</span><span style="padding: 1px 6px; border: 1px solid var(--line); border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 11px">Standard chip</span></div>
+<div style="color: var(--muted)">Explanation: why it matters and what happens if it is left alone.</div>
+<div style="margin-top: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted)">path/to/File.kt:42</div>
+<div style="margin-top: 10px; border: 1px solid var(--line); border-radius: 6px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7">
+<div style="padding: 4px 10px; border-bottom: 1px solid var(--line); color: var(--muted)">File.kt</div>
+<div style="padding: 0 10px; background: var(--del); white-space: pre">- removed line</div>
+<div style="padding: 0 10px; background: var(--add); white-space: pre">+ added line</div>
+</div>
+<div style="display: flex; gap: 8px; margin-top: 10px">
+<button type="button" style="height: 32px; padding: 0 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; font-weight: 600; cursor: pointer">Copy diff</button>
+<button type="button" style="height: 32px; padding: 0 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; font-weight: 600; cursor: pointer">Open in editor</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 18px">Tool states</h2>
+<div style="padding: 20px; border: 1px dashed var(--muted); border-radius: 10px; background: var(--surface)">
+<div style="font-weight: 600">First run</div>
+<div style="color: var(--muted)">Nothing has been checked yet for this project.</div>
+<button type="button" style="margin-top: 10px; height: 36px; padding: 0 14px; border: 0; border-radius: 6px; background: var(--accent); color: var(--on-accent); font: inherit; font-weight: 600; cursor: pointer">Check signing</button>
+</div>
+<div role="status" style="padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface)">
+<div style="font-weight: 600">Loading</div>
+<div style="color: var(--muted)">Reading 3 keystores, step 2 of 4.</div>
+<div style="height: 4px; margin-top: 8px; border-radius: 2px; background: var(--raised)"><div style="width: 50%; height: 4px; border-radius: 2px; background: var(--accent-ink)"></div></div>
+</div>
+<div role="status" style="padding: 14px 16px; border: 1px solid var(--ok); border-radius: 10px; background: var(--ok-soft)">
+<div style="font-weight: 600">Healthy</div>
+<div>Nothing wrong. 14 checks passed.</div>
+</div>
+<div style="padding: 14px 16px; border: 1px dashed var(--muted); border-radius: 10px; background: var(--surface)">
+<div style="font-weight: 600">Unavailable</div>
+<div style="color: var(--muted)">No Play account is connected, so releases cannot be read. <a href="Settings.dc.html">Connect a service account</a></div>
+</div>
+<div role="alert" style="padding: 14px 16px; border: 1px solid var(--crit); border-radius: 10px; background: var(--crit-soft)">
+<div style="font-weight: 600">Error</div>
+<div>The check stopped: Gradle did not answer within 2 minutes. Nothing was changed. Try again, or open the full output.</div>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+var dark = this.props.dark ?? false;
+return { themeClass: dark ? 'dark' : '' };
+}
+}
+</script>
+</body>
+</html>

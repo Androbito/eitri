@@ -24,9 +24,9 @@ Core behaviors the UI must make visible:
 
 - Desktop app, not a website. Dense but breathable, closer to a pro tool than to a consumer app.
 - Light and dark themes, both first class. Design every screen in both.
-- Base: deep indigo for dark (`#16142A` surfaces rising to `#211E3B`), cool paper for light (`#F4F3FA` with white surfaces).
-- Brand accent: violet `#7F52FF`, used for selection, primary actions and focus only.
-- Status colors carry meaning and are never decorative: healthy `#2FBF71`, warning `#F2A93B`, critical `#E5484D`, unavailable is a neutral grey with a dashed outline.
+- Base: neutral greys with no color tint. Light: background `#F5F7F5`, surfaces white. Dark: background `#0E1210`, surfaces `#151A17` rising to `#1E2521`.
+- Brand and primary color: Android green `#3DDC84`, the green of the official Android brand. Use it for the logo, primary buttons and other fills, always with dark text `#06210F` on top. Where green must work as text, a border or a thin bar on a light background, use the darker shade `#0A7D43`, because `#3DDC84` on white is too faint to read. In the dark theme `#3DDC84` works for both.
+- Status colors carry meaning and are never decorative: healthy `#137A43`, warning `#8F5B00`, critical `#C6292F` (lighter variants in dark), unavailable is a neutral grey with a dashed outline. Status is never shown by color alone: a dot always sits next to a word, since healthy and brand are both green.
 - Typography: a characterful grotesque for headings (Bricolage Grotesque or similar), a clean sans for UI text (Instrument Sans or similar), JetBrains Mono for fingerprints, versions, paths and code.
 - Fingerprints, version numbers and file paths are always monospace and always selectable, with a copy affordance on hover.
 - Sentence case everywhere. No all-caps labels. No emoji.

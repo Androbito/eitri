@@ -9,24 +9,25 @@
 <meta property="og:description" content="Ten tools in one desktop app. Free, open source, no account. In development.">
 <meta property="og:type" content="website">
 <meta name="color-scheme" content="light dark">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%237F52FF'/%3E%3Cpath d='M7 11h14c2.5 0 4 1 4 3h-7v3l3 5H10l3-5v-3H9z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233DDC84'/%3E%3Cpath d='M7 11h14c2.5 0 4 1 4 3h-7v3l3 5H10l3-5v-3H9z' fill='%2306210F'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #F4F3FA;
+  --bg: #F5F7F5;
   --surface: #FFFFFF;
-  --surface-2: #ECEAF6;
-  --line: #D9D5EA;
-  --text: #1A1730;
-  --muted: #5D5878;
-  --violet: #6A3DF0;
-  --violet-soft: #E7DFFF;
-  --on-violet: #FFFFFF;
-  --ok: #17874B;
+  --surface-2: #E9EEEA;
+  --line: #D3DAD5;
+  --text: #101412;
+  --muted: #55605A;
+  --accent: #3DDC84;
+  --accent-ink: #0A7D43;
+  --accent-soft: #DDF7E8;
+  --on-accent: #06210F;
+  --ok: #137A43;
   --ok-soft: #DDF3E6;
-  --warn: #9A6200;
+  --warn: #8F5B00;
   --warn-soft: #FBEBCB;
   --crit: #C6292F;
   --crit-soft: #FBE0E1;
@@ -38,15 +39,16 @@
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #131124;
-    --surface: #1B1832;
-    --surface-2: #242042;
-    --line: #353058;
-    --text: #EEECF8;
-    --muted: #A8A3C4;
-    --violet: #9B7BFF;
-    --violet-soft: #2E2659;
-    --on-violet: #14102B;
+    --bg: #0E1210;
+    --surface: #151A17;
+    --surface-2: #1E2521;
+    --line: #303A34;
+    --text: #ECF1EE;
+    --muted: #A3AEA8;
+    --accent: #3DDC84;
+    --accent-ink: #3DDC84;
+    --accent-soft: #153524;
+    --on-accent: #06210F;
     --ok: #4FD08A;
     --ok-soft: #173A2B;
     --warn: #F2B453;
@@ -67,8 +69,8 @@ body {
   font: 400 17px/1.55 var(--sans);
   -webkit-font-smoothing: antialiased;
 }
-a { color: var(--violet); text-underline-offset: 3px; }
-:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; border-radius: 4px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 2px; border-radius: 4px; }
 .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
 h1, h2, h3 { font-family: var(--display); letter-spacing: -0.02em; line-height: 1.08; margin: 0; text-wrap: balance; }
 h1 { font-size: clamp(2.5rem, 6.4vw, 4.6rem); font-weight: 700; max-width: 14ch; }
@@ -90,8 +92,8 @@ code, .mono { font-family: var(--mono); font-size: 0.86em; }
   background: var(--surface); color: var(--text);
   font: 600 0.98rem var(--sans); text-decoration: none; cursor: pointer;
 }
-.btn:hover { border-color: var(--violet); }
-.btn.primary { background: var(--violet); border-color: var(--violet); color: var(--on-violet); }
+.btn:hover { border-color: var(--accent-ink); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 .btn.primary:hover { filter: brightness(1.08); }
 .btn svg { width: 18px; height: 18px; fill: currentColor; }
 @media (max-width: 720px) { .nav a.link { display: none; } }
@@ -107,7 +109,7 @@ code, .mono { font-family: var(--mono); font-size: 0.86em; }
 .demo-section { padding: 12px 0 72px; }
 .window {
   border: 1px solid var(--line); border-radius: 12px; background: var(--surface);
-  overflow: hidden; box-shadow: 0 30px 60px -40px rgba(60, 40, 140, 0.45);
+  overflow: hidden; box-shadow: 0 30px 60px -40px rgba(10, 60, 35, 0.35);
 }
 .titlebar { display: flex; align-items: center; gap: 7px; padding: 11px 14px; border-bottom: 1px solid var(--line); background: var(--surface-2); }
 .titlebar i { width: 11px; height: 11px; border-radius: 50%; background: var(--line); }
@@ -124,7 +126,7 @@ code, .mono { font-family: var(--mono); font-size: 0.86em; }
   background: none; color: var(--muted); font: 500 0.92rem var(--sans); cursor: pointer;
 }
 .tab:hover { background: var(--surface-2); color: var(--text); }
-.tab[aria-selected="true"] { background: var(--violet-soft); color: var(--text); font-weight: 600; }
+.tab[aria-selected="true"] { background: var(--accent-soft); color: var(--text); font-weight: 600; }
 .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
 .dot.crit { background: var(--crit); } .dot.warn { background: var(--warn); } .dot.ok { background: var(--ok); } .dot.none { border: 1px dashed var(--muted); }
 .panel { padding: 22px 24px 26px; font-size: 0.92rem; min-width: 0; }
@@ -156,7 +158,7 @@ td .mono { color: var(--muted); }
 .cats { display: grid; grid-template-columns: repeat(3, minmax(110px, 1fr)); gap: 6px 18px; flex: 1; min-width: 260px; }
 .cat { display: grid; grid-template-columns: 1fr auto; font-size: 0.82rem; color: var(--muted); }
 .cat i { grid-column: 1 / -1; height: 4px; border-radius: 2px; background: var(--surface-2); position: relative; overflow: hidden; }
-.cat i::after { content: ""; position: absolute; inset: 0; width: var(--v); background: var(--violet); }
+.cat i::after { content: ""; position: absolute; inset: 0; width: var(--v); background: var(--accent-ink); }
 .split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .box { border: 1px solid var(--line); border-radius: 8px; padding: 12px; min-width: 0; }
 .graph text { font: 500 11px var(--mono); fill: var(--text); }
@@ -164,7 +166,7 @@ td .mono { color: var(--muted); }
 .graph rect.hot { stroke: var(--crit); fill: var(--crit-soft); }
 .graph rect.mid { stroke: var(--warn); fill: var(--warn-soft); }
 .graph path { stroke: var(--muted); fill: none; }
-.graph path.state { stroke: var(--violet); stroke-dasharray: 4 3; }
+.graph path.state { stroke: var(--accent-ink); stroke-dasharray: 4 3; }
 .diff { font: 400 0.78rem/1.6 var(--mono); margin: 8px 0 0; border-radius: 6px; overflow-x: auto; border: 1px solid var(--line); }
 .diff div { padding: 0 10px; white-space: pre; }
 .diff .del { background: var(--del); } .diff .add { background: var(--add); }
@@ -188,7 +190,7 @@ td .mono { color: var(--muted); }
 .track .rel { display: grid; gap: 5px; }
 .track .meta { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .prog { height: 6px; background: var(--surface-2); border-radius: 3px; overflow: hidden; }
-.prog i { display: block; height: 100%; width: var(--v); background: var(--violet); }
+.prog i { display: block; height: 100%; width: var(--v); background: var(--accent-ink); }
 .timeline { list-style: none; margin: 0; padding: 0; }
 .timeline li { display: grid; grid-template-columns: 78px 1fr; gap: 14px; padding: 11px 0; border-bottom: 1px solid var(--line); }
 .timeline .when { font: 700 1rem var(--display); }
@@ -196,7 +198,7 @@ td .mono { color: var(--muted); }
 .tree { font: 400 0.8rem/1.9 var(--mono); }
 .tree .ex { color: var(--muted); text-decoration: line-through; }
 .send { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
-.fakebtn { padding: 8px 14px; border-radius: 6px; background: var(--violet); color: var(--on-violet); font-weight: 600; font-size: 0.88rem; }
+.fakebtn { padding: 8px 14px; border-radius: 6px; background: var(--accent); color: var(--on-accent); font-weight: 600; font-size: 0.88rem; }
 .std { display: inline-block; padding: 0 6px; border: 1px solid var(--line); border-radius: 4px; color: var(--text); white-space: nowrap; }
 .score.grade { width: 76px; height: 76px; display: grid; place-items: center; border-radius: 10px; background: var(--warn-soft); color: var(--warn); }
 .demo-note { margin-top: 14px; color: var(--muted); font-size: 0.92rem; }
@@ -218,13 +220,13 @@ section.alt { background: var(--surface); border-block: 1px solid var(--line); }
 .sec-head p { margin-top: 14px; }
 .tools { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 56px; }
 .tool { padding: 26px 0; border-top: 1px solid var(--line); display: grid; gap: 8px; align-content: start; }
-.tool .name { font: 500 0.9rem var(--mono); color: var(--violet); }
+.tool .name { font: 500 0.9rem var(--mono); color: var(--accent-ink); }
 .tool p { color: var(--muted); max-width: 52ch; }
 @media (max-width: 760px) { .tools { grid-template-columns: 1fr; } }
 
 .ai { display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: start; }
 .ai ul { margin: 22px 0 0; padding: 0; list-style: none; display: grid; gap: 14px; }
-.ai li { padding-left: 18px; border-left: 2px solid var(--violet); }
+.ai li { padding-left: 18px; border-left: 2px solid var(--accent-ink); }
 .ai li b { display: block; }
 .ai li span { color: var(--muted); }
 .providers { border: 1px solid var(--line); border-radius: 12px; background: var(--bg); padding: 6px 18px; }
@@ -243,7 +245,7 @@ section.alt { background: var(--surface); border-block: 1px solid var(--line); }
 .road b { font-weight: 600; }
 .road span { color: var(--muted); }
 .road .st { font-size: 0.85rem; color: var(--muted); }
-.road .st.now { color: var(--violet); font-weight: 600; }
+.road .st.now { color: var(--accent-ink); font-weight: 600; }
 @media (max-width: 640px) { .road li { grid-template-columns: 52px 1fr; } .road .st { grid-column: 2; } }
 
 .faq { max-width: 760px; }
@@ -266,7 +268,7 @@ footer nav { display: flex; gap: 20px; flex-wrap: wrap; }
 
 <header class="wrap nav">
   <a class="brand" href="#top" aria-label="Eitri home">
-    <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#7F52FF"/><path d="M7 11h14c2.5 0 4 1 4 3h-7v3l3 5H10l3-5v-3H9z" fill="#fff"/></svg>
+    <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#3DDC84"/><path d="M7 11h14c2.5 0 4 1 4 3h-7v3l3 5H10l3-5v-3H9z" fill="#06210F"/></svg>
     Eitri
   </a>
   <a class="link" href="#demo">Demo</a>
@@ -414,14 +416,14 @@ footer nav { display: flex; gap: 20px; flex-wrap: wrap; }
           <p class="q">What is taking all this space?</p>
           <div class="big">84 GB <small>31 GB can be removed safely</small></div>
           <div class="bar" aria-hidden="true">
-            <i style="width:31%;background:#7F52FF"></i><i style="width:24%;background:#B79CFF"></i><i style="width:19%;background:#2FBF71"></i><i style="width:14%;background:#F2A93B"></i><i style="width:12%;background:#8C87A8"></i>
+            <i style="width:31%;background:#0A7D43"></i><i style="width:24%;background:#3DDC84"></i><i style="width:19%;background:#2F6FDE"></i><i style="width:14%;background:#E08A1E"></i><i style="width:12%;background:#8A938E"></i>
           </div>
           <div class="legend">
-            <span><i style="background:#7F52FF"></i>System images 26 GB</span>
-            <span><i style="background:#B79CFF"></i>Emulators 20 GB</span>
-            <span><i style="background:#2FBF71"></i>Gradle caches 16 GB</span>
-            <span><i style="background:#F2A93B"></i>NDKs 12 GB</span>
-            <span><i style="background:#8C87A8"></i>Other 10 GB</span>
+            <span><i style="background:#0A7D43"></i>System images 26 GB</span>
+            <span><i style="background:#3DDC84"></i>Emulators 20 GB</span>
+            <span><i style="background:#2F6FDE"></i>Gradle caches 16 GB</span>
+            <span><i style="background:#E08A1E"></i>NDKs 12 GB</span>
+            <span><i style="background:#8A938E"></i>Other 10 GB</span>
           </div>
           <div class="tbl-scroll">
           <table>

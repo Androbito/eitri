@@ -9,10 +9,10 @@ You are building **Eitri**, a free and open source desktop toolbox for Android a
 ## Read these first
 
 1. `ROADMAP.md`: the full feature list, by milestone. It is the scope. Tick boxes as you complete items.
-2. `design/tokens.md`, `design/components/` and `design/screens/`: the UI designs. They are the source of truth for layout, color, type and component behavior. Look at the images, read any exported HTML for exact values.
+2. `design/tokens.md` and `design/screens/`: the UI designs. They are the source of truth for layout, color, type and component behavior. Each screen is an HTML file with inline styles: read it for exact values. `Components.dc.html` holds the shared components and the five tool states. `tokens.md` lists what is not drawn yet: build those from the nearest pattern and record them in `design/GAPS.md`.
 3. `prompts/01-ui-design.md`: the brief the designs were made from. Use it when a design is missing a state.
 
-If `design/` is empty, stop and say so. Do not invent the UI.
+If `design/screens/` is empty, stop and say so. Do not invent the UI.
 
 ## Engineering standards: mobile-craft-skills
 
@@ -95,7 +95,7 @@ Rules:
 ## UI implementation
 
 - Translate `design/tokens.md` into `ui` tokens one to one. Name tokens by role (`surface`, `surfaceRaised`, `textMuted`, `statusCritical`), not by color.
-- Build the components from `design/components/` first, with a gallery screen (debug builds only) that shows every component in both themes. Then assemble screens.
+- Build the components from `design/screens/Components.dc.html` first, with a gallery screen (debug builds only) that shows every component in both themes. Then assemble screens.
 - Match the designs: spacing, radii, type sizes and states. Where a design is silent, follow the nearest existing pattern and list the gap in `design/GAPS.md` instead of improvising a new pattern.
 - Every tool screen implements all states: first run, loading, healthy, findings, unavailable, error.
 - Fingerprints, versions, paths and code use the monospace face, are selectable, and have a copy action.

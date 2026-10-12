@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Eitri Compose analyzer</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.eitri{--bg:#F5F7F5;--surface:#FFFFFF;--raised:#E9EEEA;--line:#D3DAD5;--text:#101412;--muted:#55605A;--accent:#3DDC84;--accent-ink:#0A7D43;--accent-soft:#DDF7E8;--on-accent:#06210F;--ok:#137A43;--ok-soft:#DDF3E6;--warn:#8F5B00;--warn-soft:#FBEBCB;--crit:#C6292F;--crit-soft:#FBE0E1;--add:#E3F4E9;--del:#FBE4E5}
+.eitri.dark{--bg:#0E1210;--surface:#151A17;--raised:#1E2521;--line:#303A34;--text:#ECF1EE;--muted:#A3AEA8;--accent:#3DDC84;--accent-ink:#3DDC84;--accent-soft:#153524;--on-accent:#06210F;--ok:#4FD08A;--ok-soft:#173A2B;--warn:#F2B453;--warn-soft:#3D2F14;--crit:#FF7A7F;--crit-soft:#44191D;--add:#17352A;--del:#3E1A1E}
+a{color:#0A7D43}a:hover{color:#075C31}.eitri.dark a{color:#3DDC84}
+</style>
+</helmet>
+<div class="eitri {{themeClass}}" style="display: flex; flex-wrap: wrap; min-height: 800px; background: var(--bg); color: var(--text); font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 14px; line-height: 1.45">
+<nav aria-label="Tools" style="flex: 0 0 232px; box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; padding: 16px 12px; background: var(--surface); border-right: 1px solid var(--line)">
+<div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 14px">
+<svg aria-hidden="true" width="26" height="26" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#3DDC84"></rect><path d="M7 11h14c2.5 0 4 1 4 3h-7v3l3 5H10l3-5v-3H9z" fill="#06210F"></path></svg>
+<span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 18px">Eitri</span>
+</div>
+<button type="button" style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px; margin-bottom: 12px; padding: 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; text-align: left; cursor: pointer">
+<span style="font-weight: 600">Fjord Notes</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted)">~/dev/fjord-notes</span>
+</button>
+<sc-for list="{{nav}}" as="item" hint-placeholder-count="11">
+<a href="{{item.href}}" style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; border-radius: 6px; text-decoration: none; background: {{item.bg}}; color: {{item.fg}}; font-weight: {{item.weight}}">
+<span>{{item.label}}</span>
+<span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{item.dot}}"></span>
+</a>
+</sc-for>
+<a href="Settings.dc.html" style="margin-top: auto; padding: 8px 10px; border-radius: 6px; text-decoration: none; color: var(--muted); font-weight: 500">Settings</a>
+</nav>
+<main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 28px 32px 36px">
+<header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 20px">
+<div>
+<h1 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 26px; letter-spacing: -0.01em">Compose</h1>
+<p style="margin: 4px 0 0; color: var(--muted)">Why does this composable recompose?</p>
+</div>
+<div style="display: flex; align-items: center; gap: 12px">
+<span style="color: var(--muted); font-size: 13px">Module app, root NoteListScreen</span>
+<a href="AiReview.dc.html" style="display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 6px; background: var(--accent); color: var(--on-accent); font-weight: 600; text-decoration: none">Deep analysis</a>
+</div>
+</header>
+<section aria-label="Score" style="display: flex; flex-wrap: wrap; align-items: center; gap: 28px; padding: 16px 20px; margin-bottom: 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface)">
+<div style="display: flex; align-items: baseline; gap: 8px">
+<span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 52px; line-height: 1">69</span>
+<span style="color: var(--muted)">out of 100<br><a href="#formula" style="font-size: 12px">How it is computed</a></span>
+</div>
+<div style="flex: 1 1 420px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px 24px; font-size: 13px">
+<div><div style="display: flex; justify-content: space-between"><span style="color: var(--muted)">Stability</span><span style="font-weight: 600">48</span></div><div style="height: 4px; margin-top: 4px; border-radius: 2px; background: var(--raised)"><div style="width: 48%; height: 4px; border-radius: 2px; background: var(--accent-ink)"></div></div></div>
+<div><div style="display: flex; justify-content: space-between"><span style="color: var(--muted)">State</span><span style="font-weight: 600">72</span></div><div style="height: 4px; margin-top: 4px; border-radius: 2px; background: var(--raised)"><div style="width: 72%; height: 4px; border-radius: 2px; background: var(--accent-ink)"></div></div></div>
+<div><div style="display: flex; justify-content: space-between"><span style="color: var(--muted)">Lists</span><span style="font-weight: 600">60</span></div><div style="height: 4px; margin-top: 4px; border-radius: 2px; background: var(--raised)"><div style="width: 60%; height: 4px; border-radius: 2px; background: var(--accent-ink)"></div></div></div>
+<div><div style="display: flex; justify-content: space-between"><span style="color: var(--muted)">Side effects</span><span style="font-weight: 600">85</span></div><div style="height: 4px; margin-top: 4px; border-radius: 2px; background: var(--raised)"><div style="width: 85%; height: 4px; border-radius: 2px; background: var(--accent-ink)"></div></div></div>
+<div><div style="display: flex; justify-content: space-between"><span style="color: var(--muted)">Performance</span><span style="font-weight: 600">66</span></div><div style="height: 4px; margin-top: 4px; border-radius: 2px; background: var(--raised)"><div style="width: 66%; height: 4px; border-radius: 2px; background: var(--accent-ink)"></div></div></div>
+<div><div style="display: flex; justify-content: space-between"><span style="color: var(--muted)">Structure</span><span style="font-weight: 600">83</span></div><div style="height: 4px; margin-top: 4px; border-radius: 2px; background: var(--raised)"><div style="width: 83%; height: 4px; border-radius: 2px; background: var(--accent-ink)"></div></div></div>
+</div>
+</section>
+<div role="tablist" aria-label="Views" style="display: flex; gap: 4px; margin-bottom: 12px; border-bottom: 1px solid var(--line)">
+<button type="button" role="tab" aria-selected="true" style="height: 36px; padding: 0 14px; border: 0; border-bottom: 2px solid var(--accent-ink); background: none; color: var(--text); font: inherit; font-weight: 600; cursor: pointer">Graph</button>
+<button type="button" role="tab" aria-selected="false" style="height: 36px; padding: 0 14px; border: 0; border-bottom: 2px solid transparent; background: none; color: var(--muted); font: inherit; font-weight: 500; cursor: pointer">Issues, 6</button>
+<button type="button" role="tab" aria-selected="false" style="height: 36px; padding: 0 14px; border: 0; border-bottom: 2px solid transparent; background: none; color: var(--muted); font: inherit; font-weight: 500; cursor: pointer">Compiler report</button>
+<button type="button" role="tab" aria-selected="false" style="height: 36px; padding: 0 14px; border: 0; border-bottom: 2px solid transparent; background: none; color: var(--muted); font: inherit; font-weight: 500; cursor: pointer">Paste a composable</button>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+<div style="flex: 999 1 420px; min-width: 0; overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface)">
+<div style="position: relative; width: 520px; height: 300px; margin: 0 auto; font-family: 'JetBrains Mono', monospace; font-size: 12px">
+<div aria-hidden="true" style="position: absolute; left: 259px; top: 56px; width: 2px; height: 28px; background: var(--line)"></div>
+<div aria-hidden="true" style="position: absolute; left: 120px; top: 84px; width: 280px; height: 2px; background: var(--line)"></div>
+<div aria-hidden="true" style="position: absolute; left: 120px; top: 84px; width: 2px; height: 26px; background: var(--line)"></div>
+<div aria-hidden="true" style="position: absolute; left: 398px; top: 84px; width: 2px; height: 26px; background: var(--line)"></div>
+<div aria-hidden="true" style="position: absolute; left: 120px; top: 146px; width: 2px; height: 54px; background: var(--line)"></div>
+<div aria-hidden="true" style="position: absolute; left: 190px; top: 216px; width: 208px; height: 0; border-top: 2px dashed var(--accent-ink)"></div>
+<div aria-hidden="true" style="position: absolute; left: 398px; top: 146px; width: 0; height: 70px; border-left: 2px dashed var(--accent-ink)"></div>
+<div style="position: absolute; left: 190px; top: 20px; width: 140px; height: 36px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 1px solid var(--line); border-radius: 6px; background: var(--raised)">NoteListScreen</div>
+<div style="position: absolute; left: 60px; top: 110px; width: 120px; height: 36px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 1px solid var(--warn); border-radius: 6px; background: var(--warn-soft)">NoteList</div>
+<div style="position: absolute; left: 338px; top: 110px; width: 120px; height: 36px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 1px solid var(--line); border-radius: 6px; background: var(--raised)">SearchBar</div>
+<div style="position: absolute; left: 50px; top: 200px; width: 140px; height: 36px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid var(--crit); border-radius: 6px; background: var(--crit-soft)">NoteRow</div>
+<div style="position: absolute; left: 210px; top: 224px; font-family: 'Instrument Sans', sans-serif; color: var(--muted)">reads state: query</div>
+<div style="position: absolute; left: 20px; top: 262px; display: flex; gap: 16px; font-family: 'Instrument Sans', sans-serif; color: var(--muted)"><span>Solid line: contains</span><span>Dashed line: state dependency</span><span>Red: recomposes on every change</span></div>
+</div>
+</div>
+<aside aria-label="Selected composable" style="flex: 1 1 300px; max-width: 380px; box-sizing: border-box; padding: 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); display: flex; flex-direction: column; gap: 12px">
+<div>
+<div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 18px">NoteRow is not skippable</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted)">ui/list/NoteRow.kt:24</div>
+</div>
+<table style="width: 100%; border-collapse: collapse; font-size: 13px">
+<thead><tr><th scope="col" style="padding: 6px 0; text-align: left; font-weight: 500; color: var(--muted); border-bottom: 1px solid var(--line)">Parameter</th><th scope="col" style="padding: 6px 0; text-align: left; font-weight: 500; color: var(--muted); border-bottom: 1px solid var(--line)">Stability</th></tr></thead>
+<tbody>
+<tr><td style="padding: 8px 0; border-bottom: 1px solid var(--line); font-family: 'JetBrains Mono', monospace; font-size: 12px">note: Note</td><td style="padding: 8px 0; border-bottom: 1px solid var(--line); color: var(--ok); font-weight: 600">Stable</td></tr>
+<tr><td style="padding: 8px 0; border-bottom: 1px solid var(--line); font-family: 'JetBrains Mono', monospace; font-size: 12px">tags: List&lt;Tag&gt;</td><td style="padding: 8px 0; border-bottom: 1px solid var(--line); color: var(--crit); font-weight: 600">Unstable</td></tr>
+<tr><td style="padding: 8px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px">onClick: () -&gt; Unit</td><td style="padding: 8px 0; color: var(--ok); font-weight: 600">Stable</td></tr>
+</tbody>
+</table>
+<p style="margin: 0; color: var(--muted)">The compiler treats <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px">List</span> as unstable because it could be mutable. Use an immutable collection.</p>
+<div style="border: 1px solid var(--line); border-radius: 6px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7">
+<div style="padding: 4px 10px; border-bottom: 1px solid var(--line); color: var(--muted)">NoteRow.kt</div>
+<div style="padding: 0 10px; background: var(--del); white-space: pre">- tags: List&lt;Tag&gt;,</div>
+<div style="padding: 0 10px; background: var(--add); white-space: pre">+ tags: ImmutableList&lt;Tag&gt;,</div>
+</div>
+<div style="display: flex; gap: 8px">
+<button type="button" style="height: 32px; padding: 0 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; font-weight: 600; cursor: pointer">Copy diff</button>
+<button type="button" style="height: 32px; padding: 0 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; font-weight: 600; cursor: pointer">Open in editor</button>
+</div>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+var dark = this.props.dark ?? false;
+var active = 'compose';
+var items = [
+['overview', 'Overview', 'Main.dc.html', 'transparent'],
+['signing', 'Signing', 'Signing.dc.html', 'var(--crit)'],
+['compose', 'Compose', 'Compose.dc.html', 'var(--warn)'],
+['gradle', 'Gradle', 'Gradle.dc.html', 'var(--crit)'],
+['sdk', 'SDK and disk', 'SdkDisk.dc.html', 'var(--warn)'],
+['preflight', 'Preflight', 'Preflight.dc.html', 'var(--warn)'],
+['releases', 'Releases', 'Releases.dc.html', 'var(--ok)'],
+['reminders', 'Reminders', 'Reminders.dc.html', 'var(--warn)'],
+['a11y', 'Accessibility', 'Accessibility.dc.html', 'var(--warn)'],
+['security', 'Security', 'Security.dc.html', 'var(--crit)'],
+['ai', 'AI review', 'AiReview.dc.html', 'transparent']
+];
+return {
+themeClass: dark ? 'dark' : '',
+nav: items.map(function (i) {
+var on = i[0] === active;
+return { label: i[1], href: i[2], dot: i[3], bg: on ? 'var(--accent-soft)' : 'transparent', fg: on ? 'var(--text)' : 'var(--muted)', weight: on ? 600 : 500 };
+})
+};
+}
+}
+</script>
+</body>
+</html>

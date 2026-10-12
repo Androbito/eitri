@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Eitri dialogs</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.eitri{--bg:#F5F7F5;--surface:#FFFFFF;--raised:#E9EEEA;--line:#D3DAD5;--text:#101412;--muted:#55605A;--accent:#3DDC84;--accent-ink:#0A7D43;--accent-soft:#DDF7E8;--on-accent:#06210F;--ok:#137A43;--ok-soft:#DDF3E6;--warn:#8F5B00;--warn-soft:#FBEBCB;--crit:#C6292F;--crit-soft:#FBE0E1;--add:#E3F4E9;--del:#FBE4E5}
+.eitri.dark{--bg:#0E1210;--surface:#151A17;--raised:#1E2521;--line:#303A34;--text:#ECF1EE;--muted:#A3AEA8;--accent:#3DDC84;--accent-ink:#3DDC84;--accent-soft:#153524;--on-accent:#06210F;--ok:#4FD08A;--ok-soft:#173A2B;--warn:#F2B453;--warn-soft:#3D2F14;--crit:#FF7A7F;--crit-soft:#44191D;--add:#17352A;--del:#3E1A1E}
+a{color:#0A7D43}a:hover{color:#075C31}.eitri.dark a{color:#3DDC84}
+</style>
+</helmet>
+<div class="eitri {{themeClass}}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px; align-items: start; min-height: 800px; box-sizing: border-box; padding: 40px 32px; background: var(--raised); color: var(--text); font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 14px; line-height: 1.45">
+<section role="dialog" aria-labelledby="d1" style="padding: 22px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); display: flex; flex-direction: column; gap: 14px">
+<h1 id="d1" style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 20px">Move 4 items to the trash?</h1>
+<p style="margin: 0; color: var(--muted)">This frees 16.5 GB. The items stay in your system trash until you empty it, so you can restore them.</p>
+<ul style="margin: 0; padding: 12px 14px; list-style: none; display: flex; flex-direction: column; gap: 6px; border-radius: 6px; background: var(--raised); font-family: 'JetBrains Mono', monospace; font-size: 12px">
+<li style="display: flex; justify-content: space-between; gap: 12px"><span>system-images/android-33/google_apis/x86_64</span><span>6.2 GB</span></li>
+<li style="display: flex; justify-content: space-between; gap: 12px"><span>system-images/android-34/google_apis_playstore/arm64-v8a</span><span>5.8 GB</span></li>
+<li style="display: flex; justify-content: space-between; gap: 12px"><span>ndk/25.2.9519653</span><span>4.1 GB</span></li>
+<li style="display: flex; justify-content: space-between; gap: 12px"><span>~/.gradle/wrapper/dists/gradle-8.7-bin</span><span>0.4 GB</span></li>
+</ul>
+<p style="margin: 0; font-size: 13px; color: var(--muted)">This change will be recorded in the history.</p>
+<div style="display: flex; justify-content: flex-end; gap: 8px">
+<button type="button" style="height: 36px; padding: 0 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; font-weight: 600; cursor: pointer">Cancel</button>
+<button type="button" style="height: 36px; padding: 0 14px; border: 0; border-radius: 6px; background: var(--accent); color: var(--on-accent); font: inherit; font-weight: 600; cursor: pointer">Move 4 items to trash</button>
+</div>
+</section>
+<section role="dialog" aria-labelledby="d2" style="padding: 22px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); display: flex; flex-direction: column; gap: 14px">
+<h1 id="d2" style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 20px">Password for release.jks</h1>
+<p style="margin: 0; color: var(--muted)">Eitri needs it to read the certificates in this keystore. It is used once, kept in memory only, and never stored.</p>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="kpass" style="font-size: 13px; color: var(--muted)">Keystore password</label><input id="kpass" type="password" style="height: 36px; padding: 0 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="alias" style="font-size: 13px; color: var(--muted)">Alias</label><select id="alias" style="height: 36px; padding: 0 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit"><option>upload</option></select></div>
+<div style="display: flex; justify-content: flex-end; gap: 8px">
+<button type="button" style="height: 36px; padding: 0 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; font-weight: 600; cursor: pointer">Skip this keystore</button>
+<button type="button" style="height: 36px; padding: 0 14px; border: 0; border-radius: 6px; background: var(--accent); color: var(--on-accent); font: inherit; font-weight: 600; cursor: pointer">Read keystore</button>
+</div>
+</section>
+<section role="dialog" aria-labelledby="d3" style="padding: 22px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); display: flex; flex-direction: column; gap: 14px">
+<h1 id="d3" style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 20px">Update ksp in libs.versions.toml?</h1>
+<div style="border: 1px solid var(--line); border-radius: 6px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7">
+<div style="padding: 4px 10px; border-bottom: 1px solid var(--line); color: var(--muted)">gradle/libs.versions.toml</div>
+<div style="padding: 0 10px; background: var(--del); white-space: pre">- ksp = "2.2.10-2.0.2"</div>
+<div style="padding: 0 10px; background: var(--add); white-space: pre">+ ksp = "2.2.20-2.0.3"</div>
+</div>
+<p style="margin: 0; font-size: 13px; color: var(--muted)">One file changes. Nothing is committed for you. This change will be recorded in the history.</p>
+<div style="display: flex; justify-content: flex-end; gap: 8px">
+<button type="button" style="height: 36px; padding: 0 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; font-weight: 600; cursor: pointer">Cancel</button>
+<button type="button" style="height: 36px; padding: 0 14px; border: 0; border-radius: 6px; background: var(--accent); color: var(--on-accent); font: inherit; font-weight: 600; cursor: pointer">Update the file</button>
+</div>
+</section>
+<section role="dialog" aria-labelledby="d4" style="padding: 22px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); display: flex; flex-direction: column; gap: 14px">
+<h1 id="d4" style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 20px">Accept this finding?</h1>
+<p style="margin: 0; color: var(--muted)">"Exported activity accepts any deep link without verification" will stop being reported for ShareActivity. The reason is saved in eitri-baseline.yml so your team can review it.</p>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="reason" style="font-size: 13px; color: var(--muted)">Reason, required</label><textarea id="reason" rows="3" style="padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; resize: vertical">Share target must accept links from any app. Input is validated in ShareViewModel.</textarea></div>
+<div style="display: flex; justify-content: flex-end; gap: 8px">
+<button type="button" style="height: 36px; padding: 0 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; font-weight: 600; cursor: pointer">Cancel</button>
+<button type="button" style="height: 36px; padding: 0 14px; border: 0; border-radius: 6px; background: var(--accent); color: var(--on-accent); font: inherit; font-weight: 600; cursor: pointer">Accept and save reason</button>
+</div>
+</section>
+<section role="alertdialog" aria-labelledby="d5" style="padding: 22px; border: 1px solid var(--crit); border-radius: 10px; background: var(--surface); display: flex; flex-direction: column; gap: 14px">
+<h1 id="d5" style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 20px">The Compose report could not be generated</h1>
+<p style="margin: 0; color: var(--muted)">Gradle stopped while compiling module app. Nothing in your project was changed.</p>
+<div style="padding: 10px 12px; border-radius: 6px; background: var(--raised); font-family: 'JetBrains Mono', monospace; font-size: 12px; overflow-wrap: anywhere">e: NoteRow.kt:31:18 Unresolved reference: TagChp</div>
+<p style="margin: 0">Fix the compile error, then run the analysis again.</p>
+<div style="display: flex; justify-content: flex-end; gap: 8px">
+<button type="button" style="height: 36px; padding: 0 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; font-weight: 600; cursor: pointer">Copy full output</button>
+<button type="button" style="height: 36px; padding: 0 14px; border: 0; border-radius: 6px; background: var(--accent); color: var(--on-accent); font: inherit; font-weight: 600; cursor: pointer">Open NoteRow.kt</button>
+</div>
+</section>
+<section role="dialog" aria-labelledby="d6" style="padding: 22px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); display: flex; flex-direction: column; gap: 14px">
+<h1 id="d6" style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 20px">Before your first AI review</h1>
+<p style="margin: 0; color: var(--muted)">A review sends the files you select to the provider you choose, using your own API key. Eitri has no server, so the request goes straight from this computer to the provider.</p>
+<p style="margin: 0; color: var(--muted)">Files that look like secrets are left out. You always see the exact list before sending, and with a local model nothing leaves this machine.</p>
+<div style="display: flex; justify-content: flex-end; gap: 8px">
+<button type="button" style="height: 36px; padding: 0 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; font-weight: 600; cursor: pointer">Not now</button>
+<button type="button" style="height: 36px; padding: 0 14px; border: 0; border-radius: 6px; background: var(--accent); color: var(--on-accent); font: inherit; font-weight: 600; cursor: pointer">Continue to file selection</button>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+var dark = this.props.dark ?? false;
+return { themeClass: dark ? 'dark' : '' };
+}
+}
+</script>
+</body>
+</html>

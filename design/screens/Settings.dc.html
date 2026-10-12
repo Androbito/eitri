@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Eitri settings</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.eitri{--bg:#F5F7F5;--surface:#FFFFFF;--raised:#E9EEEA;--line:#D3DAD5;--text:#101412;--muted:#55605A;--accent:#3DDC84;--accent-ink:#0A7D43;--accent-soft:#DDF7E8;--on-accent:#06210F;--ok:#137A43;--ok-soft:#DDF3E6;--warn:#8F5B00;--warn-soft:#FBEBCB;--crit:#C6292F;--crit-soft:#FBE0E1;--add:#E3F4E9;--del:#FBE4E5}
+.eitri.dark{--bg:#0E1210;--surface:#151A17;--raised:#1E2521;--line:#303A34;--text:#ECF1EE;--muted:#A3AEA8;--accent:#3DDC84;--accent-ink:#3DDC84;--accent-soft:#153524;--on-accent:#06210F;--ok:#4FD08A;--ok-soft:#173A2B;--warn:#F2B453;--warn-soft:#3D2F14;--crit:#FF7A7F;--crit-soft:#44191D;--add:#17352A;--del:#3E1A1E}
+a{color:#0A7D43}a:hover{color:#075C31}.eitri.dark a{color:#3DDC84}
+</style>
+</helmet>
+<div class="eitri {{themeClass}}" style="display: flex; flex-wrap: wrap; min-height: 800px; background: var(--bg); color: var(--text); font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 14px; line-height: 1.45">
+<nav aria-label="Tools" style="flex: 0 0 232px; box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; padding: 16px 12px; background: var(--surface); border-right: 1px solid var(--line)">
+<div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 14px">
+<svg aria-hidden="true" width="26" height="26" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#3DDC84"></rect><path d="M7 11h14c2.5 0 4 1 4 3h-7v3l3 5H10l3-5v-3H9z" fill="#06210F"></path></svg>
+<span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 18px">Eitri</span>
+</div>
+<button type="button" style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px; margin-bottom: 12px; padding: 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; text-align: left; cursor: pointer">
+<span style="font-weight: 600">Fjord Notes</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted)">~/dev/fjord-notes</span>
+</button>
+<sc-for list="{{nav}}" as="item" hint-placeholder-count="11">
+<a href="{{item.href}}" style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; border-radius: 6px; text-decoration: none; background: {{item.bg}}; color: {{item.fg}}; font-weight: {{item.weight}}">
+<span>{{item.label}}</span>
+<span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{item.dot}}"></span>
+</a>
+</sc-for>
+<a href="Settings.dc.html" aria-current="page" style="margin-top: auto; padding: 8px 10px; border-radius: 6px; text-decoration: none; background: var(--accent-soft); color: var(--text); font-weight: 600">Settings</a>
+</nav>
+<main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 28px 32px 36px">
+<header style="margin-bottom: 20px">
+<h1 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 26px; letter-spacing: -0.01em">Settings</h1>
+</header>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; align-items: start">
+<section style="padding: 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 14px; font-weight: 600">General</h2>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><label for="appearance">Appearance</label><select id="appearance" style="height: 34px; padding: 0 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit"><option>Follow the system</option><option>Light</option><option>Dark</option></select></div>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><label for="language">Language</label><select id="language" style="height: 34px; padding: 0 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit"><option>English</option><option>Français</option></select></div>
+<label style="display: flex; align-items: center; gap: 10px"><input type="checkbox" style="width: 16px; height: 16px; accent-color: #0A7D43"><span>Check GitHub for a new version at launch</span></label>
+</section>
+<section style="padding: 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 14px; font-weight: 600">Paths</h2>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="sdk" style="font-size: 13px; color: var(--muted)">Android SDK</label><input id="sdk" type="text" value="~/Library/Android/sdk" style="height: 34px; padding: 0 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 12px"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="jdk" style="font-size: 13px; color: var(--muted)">JDK used to run Gradle</label><input id="jdk" type="text" value="~/Library/Java/JavaVirtualMachines/jbr-21" style="height: 34px; padding: 0 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 12px"></div>
+</section>
+<section style="padding: 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 14px; font-weight: 600">Google Play accounts</h2>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 6px">
+<div style="min-width: 0"><div style="font-weight: 600">eitri-reader</div><div style="font-size: 13px; color: var(--muted)">Service account, 2 apps, key stored in the system keychain</div></div>
+<button type="button" style="height: 32px; padding: 0 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; font-weight: 600; cursor: pointer">Remove</button>
+</div>
+<button type="button" style="align-self: flex-start; height: 34px; padding: 0 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; font-weight: 600; cursor: pointer">Connect a service account</button>
+</section>
+<section style="padding: 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 14px; font-weight: 600">AI providers</h2>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="key" style="font-size: 13px; color: var(--muted)">Anthropic API key</label>
+<div style="display: flex; gap: 8px"><input id="key" type="password" value="placeholder" style="flex: 1; min-width: 0; height: 34px; padding: 0 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit"><button type="button" style="height: 34px; padding: 0 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; font-weight: 600; cursor: pointer">Test</button></div>
+<span style="font-size: 13px; color: var(--muted)">Stored in your system keychain. Never written to a file or a log.</span></div>
+<div style="display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px">
+<span style="padding: 4px 10px; border: 1px solid var(--line); border-radius: 4px; color: var(--muted)">OpenAI: not set</span>
+<span style="padding: 4px 10px; border: 1px solid var(--line); border-radius: 4px; color: var(--muted)">Google: not set</span>
+<span style="padding: 4px 10px; border: 1px solid var(--line); border-radius: 4px; color: var(--muted)">OpenAI-compatible: not set</span>
+<span style="padding: 4px 10px; border: 1px solid var(--ok); border-radius: 4px; color: var(--ok); font-weight: 600">Ollama: running locally</span>
+</div>
+</section>
+<section style="grid-column: 1 / -1; padding: 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface)">
+<h2 style="margin: 0 0 4px; font-size: 14px; font-weight: 600">Privacy: everything this app can contact</h2>
+<p style="margin: 0 0 10px; font-size: 13px; color: var(--muted)">This list is generated from the code. There is no other network access, no account and no telemetry.</p>
+<div style="overflow-x: auto">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px">
+<thead><tr><th scope="col" style="padding: 6px 12px 6px 0; text-align: left; font-weight: 500; color: var(--muted); border-bottom: 1px solid var(--line)">Destination</th><th scope="col" style="padding: 6px 12px; text-align: left; font-weight: 500; color: var(--muted); border-bottom: 1px solid var(--line)">Why</th><th scope="col" style="padding: 6px 0 6px 12px; text-align: left; font-weight: 500; color: var(--muted); border-bottom: 1px solid var(--line)">When</th></tr></thead>
+<tbody>
+<tr><td style="padding: 8px 12px 8px 0; border-bottom: 1px solid var(--line); font-family: 'JetBrains Mono', monospace; font-size: 12px">androidpublisher.googleapis.com</td><td style="padding: 8px 12px; border-bottom: 1px solid var(--line)">Play releases and signing certificate, with your service account</td><td style="padding: 8px 0 8px 12px; border-bottom: 1px solid var(--line); color: var(--muted)">When you open Releases or Signing</td></tr>
+<tr><td style="padding: 8px 12px 8px 0; border-bottom: 1px solid var(--line); font-family: 'JetBrains Mono', monospace; font-size: 12px">maven.google.com, repo.maven.apache.org</td><td style="padding: 8px 12px; border-bottom: 1px solid var(--line)">Latest versions of your dependencies</td><td style="padding: 8px 0 8px 12px; border-bottom: 1px solid var(--line); color: var(--muted)">When you open Gradle updates</td></tr>
+<tr><td style="padding: 8px 12px 8px 0; border-bottom: 1px solid var(--line); font-family: 'JetBrains Mono', monospace; font-size: 12px">api.osv.dev</td><td style="padding: 8px 12px; border-bottom: 1px solid var(--line)">Known vulnerabilities. Sends package names and versions only</td><td style="padding: 8px 0 8px 12px; border-bottom: 1px solid var(--line); color: var(--muted)">When you run a dependency check</td></tr>
+<tr><td style="padding: 8px 12px 8px 0; border-bottom: 1px solid var(--line); font-family: 'JetBrains Mono', monospace; font-size: 12px">Your AI provider</td><td style="padding: 8px 12px; border-bottom: 1px solid var(--line)">The files you select for a review, with your key</td><td style="padding: 8px 0 8px 12px; border-bottom: 1px solid var(--line); color: var(--muted)">When you press Send</td></tr>
+<tr><td style="padding: 8px 12px 8px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px">github.com</td><td style="padding: 8px 12px">New versions and refreshed compatibility data</td><td style="padding: 8px 0 8px 12px; color: var(--muted)">At launch, only if you turn it on</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<section style="grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); font-size: 13px">
+<span><span style="font-weight: 600">Eitri 0.1.0.</span> <span style="color: var(--muted)">Open source under Apache 2.0.</span></span>
+<a href="https://github.com/Androbito/eitri">Source code on GitHub</a>
+</section>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+var dark = this.props.dark ?? false;
+var active = 'settings';
+var items = [
+['overview', 'Overview', 'Main.dc.html', 'transparent'],
+['signing', 'Signing', 'Signing.dc.html', 'var(--crit)'],
+['compose', 'Compose', 'Compose.dc.html', 'var(--warn)'],
+['gradle', 'Gradle', 'Gradle.dc.html', 'var(--crit)'],
+['sdk', 'SDK and disk', 'SdkDisk.dc.html', 'var(--warn)'],
+['preflight', 'Preflight', 'Preflight.dc.html', 'var(--warn)'],
+['releases', 'Releases', 'Releases.dc.html', 'var(--ok)'],
+['reminders', 'Reminders', 'Reminders.dc.html', 'var(--warn)'],
+['a11y', 'Accessibility', 'Accessibility.dc.html', 'var(--warn)'],
+['security', 'Security', 'Security.dc.html', 'var(--crit)'],
+['ai', 'AI review', 'AiReview.dc.html', 'transparent']
+];
+return {
+themeClass: dark ? 'dark' : '',
+nav: items.map(function (i) {
+var on = i[0] === active;
+return { label: i[1], href: i[2], dot: i[3], bg: on ? 'var(--accent-soft)' : 'transparent', fg: on ? 'var(--text)' : 'var(--muted)', weight: on ? 600 : 500 };
+})
+};
+}
+}
+</script>
+</body>
+</html>

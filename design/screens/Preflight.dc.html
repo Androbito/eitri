@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Eitri bundle preflight</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.eitri{--bg:#F5F7F5;--surface:#FFFFFF;--raised:#E9EEEA;--line:#D3DAD5;--text:#101412;--muted:#55605A;--accent:#3DDC84;--accent-ink:#0A7D43;--accent-soft:#DDF7E8;--on-accent:#06210F;--ok:#137A43;--ok-soft:#DDF3E6;--warn:#8F5B00;--warn-soft:#FBEBCB;--crit:#C6292F;--crit-soft:#FBE0E1;--add:#E3F4E9;--del:#FBE4E5}
+.eitri.dark{--bg:#0E1210;--surface:#151A17;--raised:#1E2521;--line:#303A34;--text:#ECF1EE;--muted:#A3AEA8;--accent:#3DDC84;--accent-ink:#3DDC84;--accent-soft:#153524;--on-accent:#06210F;--ok:#4FD08A;--ok-soft:#173A2B;--warn:#F2B453;--warn-soft:#3D2F14;--crit:#FF7A7F;--crit-soft:#44191D;--add:#17352A;--del:#3E1A1E}
+a{color:#0A7D43}a:hover{color:#075C31}.eitri.dark a{color:#3DDC84}
+</style>
+</helmet>
+<div class="eitri {{themeClass}}" style="display: flex; flex-wrap: wrap; min-height: 800px; background: var(--bg); color: var(--text); font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 14px; line-height: 1.45">
+<nav aria-label="Tools" style="flex: 0 0 232px; box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; padding: 16px 12px; background: var(--surface); border-right: 1px solid var(--line)">
+<div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 14px">
+<svg aria-hidden="true" width="26" height="26" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#3DDC84"></rect><path d="M7 11h14c2.5 0 4 1 4 3h-7v3l3 5H10l3-5v-3H9z" fill="#06210F"></path></svg>
+<span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 18px">Eitri</span>
+</div>
+<button type="button" style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px; margin-bottom: 12px; padding: 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; text-align: left; cursor: pointer">
+<span style="font-weight: 600">Fjord Notes</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted)">~/dev/fjord-notes</span>
+</button>
+<sc-for list="{{nav}}" as="item" hint-placeholder-count="11">
+<a href="{{item.href}}" style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; border-radius: 6px; text-decoration: none; background: {{item.bg}}; color: {{item.fg}}; font-weight: {{item.weight}}">
+<span>{{item.label}}</span>
+<span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{item.dot}}"></span>
+</a>
+</sc-for>
+<a href="Settings.dc.html" style="margin-top: auto; padding: 8px 10px; border-radius: 6px; text-decoration: none; color: var(--muted); font-weight: 500">Settings</a>
+</nav>
+<main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 28px 32px 36px">
+<header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 20px">
+<div>
+<h1 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 26px; letter-spacing: -0.01em">Preflight</h1>
+<p style="margin: 4px 0 0; color: var(--muted)">Will Play accept this build?</p>
+</div>
+<div style="display: flex; align-items: center; gap: 12px">
+<span style="color: var(--muted); font-size: 13px">Play policy data from 1 October 2026</span>
+<button type="button" style="height: 36px; padding: 0 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; font-weight: 600; cursor: pointer">Compare with another build</button>
+</div>
+</header>
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; margin-bottom: 16px; border: 1px dashed var(--muted); border-radius: 10px; background: var(--surface)">
+<div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500">app-release.aab</div>
+<div style="color: var(--muted); font-size: 13px">Fjord Notes 3.8.1, version code 412, 18.4 MB, signed with the upload key</div>
+</div>
+<span style="color: var(--muted); font-size: 13px">Drop another AAB or APK here to replace it</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+<section aria-label="Checks" style="flex: 999 1 440px; min-width: 0; border: 1px solid var(--line); border-radius: 10px; background: var(--surface)">
+<div style="display: flex; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--line)">
+<h2 style="margin: 0; font-size: 14px; font-weight: 600">Checks</h2>
+<span style="color: var(--muted); font-size: 13px">5 passed, 2 warnings, 0 failed</span>
+</div>
+<div style="display: flex; gap: 14px; padding: 12px 16px; border-bottom: 1px solid var(--line)">
+<span style="flex: 0 0 48px; color: var(--ok); font-weight: 600">Pass</span>
+<div><div style="font-weight: 600">Target API 36 meets the current Play requirement</div></div>
+</div>
+<div style="display: flex; gap: 14px; padding: 12px 16px; border-bottom: 1px solid var(--line)">
+<span style="flex: 0 0 48px; color: var(--warn); font-weight: 600">Warn</span>
+<div style="min-width: 0">
+<div style="font-weight: 600">1 of 6 native libraries is not 16 KB aligned</div>
+<div style="color: var(--muted)">Devices with 16 KB pages will refuse to load it. Update the library or rebuild it with a newer NDK.</div>
+<div style="margin-top: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); overflow-wrap: anywhere">lib/arm64-v8a/libsqlcipher.so, LOAD segment aligned to 0x1000</div>
+</div>
+</div>
+<div style="display: flex; gap: 14px; padding: 12px 16px; border-bottom: 1px solid var(--line)">
+<span style="flex: 0 0 48px; color: var(--warn); font-weight: 600">Warn</span>
+<div style="min-width: 0">
+<div style="font-weight: 600">READ_MEDIA_IMAGES needs a declaration in Play Console</div>
+<div style="margin-top: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted)">added by com.fjord:picker:2.3.0</div>
+</div>
+</div>
+<div style="display: flex; gap: 14px; padding: 12px 16px; border-bottom: 1px solid var(--line)">
+<span style="flex: 0 0 48px; color: var(--ok); font-weight: 600">Pass</span>
+<div><div style="font-weight: 600">Not debuggable, minified with R8, mapping file found</div></div>
+</div>
+<div style="display: flex; gap: 14px; padding: 12px 16px; border-bottom: 1px solid var(--line)">
+<span style="flex: 0 0 48px; color: var(--ok); font-weight: 600">Pass</span>
+<div><div style="font-weight: 600">Every exported component is protected or intended</div></div>
+</div>
+<div style="display: flex; gap: 14px; padding: 12px 16px; border-bottom: 1px solid var(--line)">
+<span style="flex: 0 0 48px; color: var(--ok); font-weight: 600">Pass</span>
+<div><div style="font-weight: 600">Version code 412 is higher than production, 409</div></div>
+</div>
+<div style="display: flex; gap: 14px; padding: 12px 16px">
+<span style="flex: 0 0 48px; color: var(--ok); font-weight: 600">Pass</span>
+<div><div style="font-weight: 600">No cleartext traffic allowed</div></div>
+</div>
+</section>
+<div style="flex: 1 1 300px; max-width: 400px; display: flex; flex-direction: column; gap: 16px">
+<section aria-label="Download size" style="padding: 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface)">
+<h2 style="margin: 0 0 4px; font-size: 14px; font-weight: 600">Download size</h2>
+<div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 28px">11.2 MB <span style="font-family: 'Instrument Sans', sans-serif; font-weight: 400; font-size: 13px; color: var(--muted)">on a Pixel 9, arm64, xxhdpi</span></div>
+<div aria-hidden="true" style="display: flex; gap: 2px; height: 12px; margin: 12px 0 10px; border-radius: 4px; overflow: hidden">
+<div style="width: 38%; background: #0A7D43"></div>
+<div style="width: 29%; background: #3DDC84"></div>
+<div style="width: 22%; background: #2F6FDE"></div>
+<div style="width: 11%; background: #8A938E"></div>
+</div>
+<dl style="margin: 0; display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; font-size: 13px">
+<dt style="display: flex; align-items: center; gap: 6px; color: var(--muted)"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 2px; background: #0A7D43"></span>Dex code</dt><dd style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 12px">4.3 MB</dd>
+<dt style="display: flex; align-items: center; gap: 6px; color: var(--muted)"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 2px; background: #3DDC84"></span>Native libraries</dt><dd style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 12px">3.2 MB</dd>
+<dt style="display: flex; align-items: center; gap: 6px; color: var(--muted)"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 2px; background: #2F6FDE"></span>Resources</dt><dd style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 12px">2.5 MB</dd>
+<dt style="display: flex; align-items: center; gap: 6px; color: var(--muted)"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 2px; background: #8A938E"></span>Assets and other</dt><dd style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 12px">1.2 MB</dd>
+</dl>
+</section>
+<section aria-label="Permissions" style="padding: 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface)">
+<h2 style="margin: 0 0 8px; font-size: 14px; font-weight: 600">Permissions, 5</h2>
+<dl style="margin: 0; display: grid; grid-template-columns: 1fr; gap: 8px; font-size: 13px">
+<div><dt style="font-family: 'JetBrains Mono', monospace; font-size: 12px">INTERNET</dt><dd style="margin: 0; color: var(--muted)">your app</dd></div>
+<div><dt style="font-family: 'JetBrains Mono', monospace; font-size: 12px">POST_NOTIFICATIONS</dt><dd style="margin: 0; color: var(--muted)">your app</dd></div>
+<div><dt style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--warn)">READ_MEDIA_IMAGES</dt><dd style="margin: 0; color: var(--muted)">com.fjord:picker:2.3.0</dd></div>
+<div><dt style="font-family: 'JetBrains Mono', monospace; font-size: 12px">WAKE_LOCK</dt><dd style="margin: 0; color: var(--muted)">androidx.work:work-runtime</dd></div>
+<div><dt style="font-family: 'JetBrains Mono', monospace; font-size: 12px">FOREGROUND_SERVICE</dt><dd style="margin: 0; color: var(--muted)">androidx.work:work-runtime</dd></div>
+</dl>
+</section>
+</div>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+var dark = this.props.dark ?? false;
+var active = 'preflight';
+var items = [
+['overview', 'Overview', 'Main.dc.html', 'transparent'],
+['signing', 'Signing', 'Signing.dc.html', 'var(--crit)'],
+['compose', 'Compose', 'Compose.dc.html', 'var(--warn)'],
+['gradle', 'Gradle', 'Gradle.dc.html', 'var(--crit)'],
+['sdk', 'SDK and disk', 'SdkDisk.dc.html', 'var(--warn)'],
+['preflight', 'Preflight', 'Preflight.dc.html', 'var(--warn)'],
+['releases', 'Releases', 'Releases.dc.html', 'var(--ok)'],
+['reminders', 'Reminders', 'Reminders.dc.html', 'var(--warn)'],
+['a11y', 'Accessibility', 'Accessibility.dc.html', 'var(--warn)'],
+['security', 'Security', 'Security.dc.html', 'var(--crit)'],
+['ai', 'AI review', 'AiReview.dc.html', 'transparent']
+];
+return {
+themeClass: dark ? 'dark' : '',
+nav: items.map(function (i) {
+var on = i[0] === active;
+return { label: i[1], href: i[2], dot: i[3], bg: on ? 'var(--accent-soft)' : 'transparent', fg: on ? 'var(--text)' : 'var(--muted)', weight: on ? 600 : 500 };
+})
+};
+}
+}
+</script>
+</body>
+</html>

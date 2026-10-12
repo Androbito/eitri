@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Eitri releases</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.eitri{--bg:#F5F7F5;--surface:#FFFFFF;--raised:#E9EEEA;--line:#D3DAD5;--text:#101412;--muted:#55605A;--accent:#3DDC84;--accent-ink:#0A7D43;--accent-soft:#DDF7E8;--on-accent:#06210F;--ok:#137A43;--ok-soft:#DDF3E6;--warn:#8F5B00;--warn-soft:#FBEBCB;--crit:#C6292F;--crit-soft:#FBE0E1;--add:#E3F4E9;--del:#FBE4E5}
+.eitri.dark{--bg:#0E1210;--surface:#151A17;--raised:#1E2521;--line:#303A34;--text:#ECF1EE;--muted:#A3AEA8;--accent:#3DDC84;--accent-ink:#3DDC84;--accent-soft:#153524;--on-accent:#06210F;--ok:#4FD08A;--ok-soft:#173A2B;--warn:#F2B453;--warn-soft:#3D2F14;--crit:#FF7A7F;--crit-soft:#44191D;--add:#17352A;--del:#3E1A1E}
+a{color:#0A7D43}a:hover{color:#075C31}.eitri.dark a{color:#3DDC84}
+</style>
+</helmet>
+<div class="eitri {{themeClass}}" style="display: flex; flex-wrap: wrap; min-height: 800px; background: var(--bg); color: var(--text); font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 14px; line-height: 1.45">
+<nav aria-label="Tools" style="flex: 0 0 232px; box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; padding: 16px 12px; background: var(--surface); border-right: 1px solid var(--line)">
+<div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 14px">
+<svg aria-hidden="true" width="26" height="26" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#3DDC84"></rect><path d="M7 11h14c2.5 0 4 1 4 3h-7v3l3 5H10l3-5v-3H9z" fill="#06210F"></path></svg>
+<span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 18px">Eitri</span>
+</div>
+<button type="button" style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px; margin-bottom: 12px; padding: 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; text-align: left; cursor: pointer">
+<span style="font-weight: 600">Fjord Notes</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted)">~/dev/fjord-notes</span>
+</button>
+<sc-for list="{{nav}}" as="item" hint-placeholder-count="11">
+<a href="{{item.href}}" style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; border-radius: 6px; text-decoration: none; background: {{item.bg}}; color: {{item.fg}}; font-weight: {{item.weight}}">
+<span>{{item.label}}</span>
+<span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{item.dot}}"></span>
+</a>
+</sc-for>
+<a href="Settings.dc.html" style="margin-top: auto; padding: 8px 10px; border-radius: 6px; text-decoration: none; color: var(--muted); font-weight: 500">Settings</a>
+</nav>
+<main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 28px 32px 36px">
+<header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 20px">
+<div>
+<h1 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 26px; letter-spacing: -0.01em">Releases</h1>
+<p style="margin: 4px 0 0; color: var(--muted)">Where is build 412?</p>
+</div>
+<div style="display: flex; align-items: center; gap: 12px">
+<span style="color: var(--muted); font-size: 13px">Read only. Refreshed 4 minutes ago</span>
+<button type="button" style="height: 36px; padding: 0 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; font-weight: 600; cursor: pointer">Refresh</button>
+</div>
+</header>
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+<section aria-label="Apps" style="flex: 1 1 220px; max-width: 280px; display: flex; flex-direction: column; gap: 6px">
+<button type="button" aria-pressed="true" style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 12px 14px; border: 1px solid var(--accent-ink); border-radius: 10px; background: var(--accent-soft); color: var(--text); font: inherit; text-align: left; cursor: pointer">
+<span style="font-weight: 600">Fjord Notes</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted)">app.fjord.notes</span>
+<span style="font-size: 13px">1 build in review</span>
+</button>
+<button type="button" aria-pressed="false" style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--text); font: inherit; text-align: left; cursor: pointer">
+<span style="font-weight: 600">Fjord Wear</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted)">app.fjord.wear</span>
+<span style="font-size: 13px; color: var(--muted)">Nothing in progress</span>
+</button>
+<p style="margin: 8px 2px 0; font-size: 13px; color: var(--muted)">Connected with the service account eitri-reader. <a href="Settings.dc.html">Manage accounts</a></p>
+</section>
+<section aria-label="Tracks for Fjord Notes" style="flex: 999 1 460px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+<article style="padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface)">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px">
+<h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 18px">Production</h2>
+<span style="font-weight: 600">Staged rollout, 20%</span>
+</div>
+<div style="margin: 4px 0 10px; color: var(--muted)">3.8.0 <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px">(409)</span>, started 3 days ago, release notes in 6 languages</div>
+<div role="img" aria-label="Rollout at 20 percent" style="height: 8px; border-radius: 4px; background: var(--raised)"><div style="width: 20%; height: 8px; border-radius: 4px; background: var(--accent-ink)"></div></div>
+</article>
+<article style="padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface)">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px">
+<h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 18px">Open testing</h2>
+<span style="font-weight: 600; color: var(--warn)">In review</span>
+</div>
+<div style="margin: 4px 0 10px; color: var(--muted)">3.8.1 <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px">(412)</span>, sent 9 hours ago</div>
+<div style="display: inline-block; padding: 2px 8px; border: 1px dashed var(--muted); border-radius: 4px; font-size: 13px; color: var(--muted)">Review details unavailable: the Play API does not expose them</div>
+</article>
+<article style="padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface)">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px">
+<h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 18px">Closed testing</h2>
+<span style="font-weight: 600; color: var(--ok)">Available to testers</span>
+</div>
+<div style="margin: 4px 0 10px; color: var(--muted)">3.8.1 <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px">(412)</span>, live since yesterday</div>
+<div role="img" aria-label="Rollout complete" style="height: 8px; border-radius: 4px; background: var(--raised)"><div style="width: 100%; height: 8px; border-radius: 4px; background: var(--accent-ink)"></div></div>
+</article>
+<article style="padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface)">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px">
+<h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 18px">Internal testing</h2>
+<span style="font-weight: 600; color: var(--ok)">Available to testers</span>
+</div>
+<div style="margin: 4px 0 10px; color: var(--muted)">3.9.0 <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px">(415)</span>, uploaded 2 hours ago</div>
+<div role="img" aria-label="Rollout complete" style="height: 8px; border-radius: 4px; background: var(--raised)"><div style="width: 100%; height: 8px; border-radius: 4px; background: var(--accent-ink)"></div></div>
+</article>
+</section>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+var dark = this.props.dark ?? false;
+var active = 'releases';
+var items = [
+['overview', 'Overview', 'Main.dc.html', 'transparent'],
+['signing', 'Signing', 'Signing.dc.html', 'var(--crit)'],
+['compose', 'Compose', 'Compose.dc.html', 'var(--warn)'],
+['gradle', 'Gradle', 'Gradle.dc.html', 'var(--crit)'],
+['sdk', 'SDK and disk', 'SdkDisk.dc.html', 'var(--warn)'],
+['preflight', 'Preflight', 'Preflight.dc.html', 'var(--warn)'],
+['releases', 'Releases', 'Releases.dc.html', 'var(--ok)'],
+['reminders', 'Reminders', 'Reminders.dc.html', 'var(--warn)'],
+['a11y', 'Accessibility', 'Accessibility.dc.html', 'var(--warn)'],
+['security', 'Security', 'Security.dc.html', 'var(--crit)'],
+['ai', 'AI review', 'AiReview.dc.html', 'transparent']
+];
+return {
+themeClass: dark ? 'dark' : '',
+nav: items.map(function (i) {
+var on = i[0] === active;
+return { label: i[1], href: i[2], dot: i[3], bg: on ? 'var(--accent-soft)' : 'transparent', fg: on ? 'var(--text)' : 'var(--muted)', weight: on ? 600 : 500 };
+})
+};
+}
+}
+</script>
+</body>
+</html>

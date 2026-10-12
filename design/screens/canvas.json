@@ -1,0 +1,29 @@
+{
+  "v": 3,
+  "createdOnFiles": {"v": 1, "at": "2026-10-12T18:20:00Z"},
+  "title": "Eitri desktop app UI",
+  "launch": {"view": "canvas"},
+  "pages": [],
+  "boards": {
+    "Main.dc.html": {"x": 1360, "y": 0, "w": 1280, "h": 800, "title": "02 Overview", "expand": "fill", "is_interactive": true},
+    "Welcome.dc.html": {"x": 0, "y": 0, "w": 1280, "h": 800, "title": "01 Welcome", "expand": "fill", "is_interactive": true},
+    "Signing.dc.html": {"x": 2720, "y": 0, "w": 1280, "h": 800, "title": "03 Signing", "expand": "fill", "is_interactive": true},
+    "Compose.dc.html": {"x": 4080, "y": 0, "w": 1280, "h": 800, "title": "04 Compose", "expand": "fill", "is_interactive": true},
+    "Gradle.dc.html": {"x": 0, "y": 920, "w": 1280, "h": 800, "title": "05 Gradle", "expand": "fill", "is_interactive": true},
+    "SdkDisk.dc.html": {"x": 1360, "y": 920, "w": 1280, "h": 800, "title": "06 SDK and disk", "expand": "fill", "is_interactive": true},
+    "Preflight.dc.html": {"x": 2720, "y": 920, "w": 1280, "h": 800, "title": "07 Preflight", "expand": "fill", "is_interactive": true},
+    "Releases.dc.html": {"x": 4080, "y": 920, "w": 1280, "h": 800, "title": "08 Releases", "expand": "fill", "is_interactive": true},
+    "Reminders.dc.html": {"x": 0, "y": 1840, "w": 1280, "h": 800, "title": "09 Reminders", "expand": "fill", "is_interactive": true},
+    "Accessibility.dc.html": {"x": 1360, "y": 1840, "w": 1280, "h": 800, "title": "10 Accessibility", "expand": "fill", "is_interactive": true},
+    "Security.dc.html": {"x": 2720, "y": 1840, "w": 1280, "h": 800, "title": "11 Security", "expand": "fill", "is_interactive": true},
+    "AiReview.dc.html": {"x": 4080, "y": 1840, "w": 1280, "h": 800, "title": "12 AI review", "expand": "fill", "is_interactive": true},
+    "Settings.dc.html": {"x": 0, "y": 2760, "w": 1280, "h": 800, "title": "13 Settings", "expand": "fill", "is_interactive": true},
+    "Dialogs.dc.html": {"x": 1360, "y": 2760, "w": 1280, "h": 800, "title": "14 Dialogs", "expand": "fill"},
+    "Components.dc.html": {"x": 2720, "y": 2760, "w": 1280, "h": 800, "title": "Components", "expand": "fill"}
+  },
+  "order": ["Welcome.dc.html", "Main.dc.html", "Signing.dc.html", "Compose.dc.html", "Gradle.dc.html", "SdkDisk.dc.html", "Preflight.dc.html", "Releases.dc.html", "Reminders.dc.html", "Accessibility.dc.html", "Security.dc.html", "AiReview.dc.html", "Settings.dc.html", "Dialogs.dc.html", "Components.dc.html"],
+  "notes": {
+    "heading": {"x": 0, "y": -300, "text": "Eitri desktop app", "kind": "title1", "maxW": 5360}
+  },
+  "designSystems": []
+}
