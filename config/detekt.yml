@@ -1,0 +1,41 @@
+# Only the deltas from detekt's default configuration are listed here.
+# --build-upon-default-config is passed on the command line.
+build:
+  maxIssues: 0
+
+complexity:
+  LongParameterList:
+    # Immutable UI state classes and domain records legitimately carry many values.
+    ignoreAnnotated: [ 'Composable' ]
+    functionThreshold: 8
+    constructorThreshold: 12
+  TooManyFunctions:
+    ignoreAnnotatedFunctions: [ 'Composable' ]
+    thresholdInFiles: 20
+    thresholdInClasses: 20
+
+style:
+  MaxLineLength:
+    maxLineLength: 120
+  MagicNumber:
+    # Design tokens are literal values by definition; so are HTTP codes in tests.
+    ignoreAnnotated: [ 'Composable' ]
+    ignorePropertyDeclaration: true
+    ignoreCompanionObjectPropertyDeclaration: true
+  ReturnCount:
+    max: 4
+  ForbiddenComment:
+    # A TODO without an owner rots. Keep them out of main.
+    comments:
+      - reason: 'Track the work in ROADMAP.md instead of leaving a TODO behind.'
+        value: 'TODO:'
+
+naming:
+  FunctionNaming:
+    ignoreAnnotated: [ 'Composable' ]
+
+exceptions:
+  TooGenericExceptionCaught:
+    active: true
+  SwallowedException:
+    active: true

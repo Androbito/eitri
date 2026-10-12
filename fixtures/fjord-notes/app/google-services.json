@@ -1,0 +1,87 @@
+{
+  "project_info": {
+    "project_number": "415920117336",
+    "project_id": "fjord-notes",
+    "storage_bucket": "fjord-notes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415920117336:android:7c1d0b4a9e2f3a6b",
+        "android_client_info": {
+          "package_name": "app.fjord.notes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "415920117336-dbg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.fjord.notes",
+            "certificate_hash": "bb8a823f19f928152e629432eaf8f2e452214cd6"
+          }
+        },
+        {
+          "client_id": "415920117336-upl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.fjord.notes",
+            "certificate_hash": "8914b81777ba9a35c1ace9bed6ee805e2cd35731"
+          }
+        },
+        {
+          "client_id": "415920117336-web.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEMOkeyNotRealFjordNotes0000000000"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "415920117336-web.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415920117336:android:9f2e5c8b1a4d7e0c",
+        "android_client_info": {
+          "package_name": "app.fjord.notes.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "415920117336-dbg2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.fjord.notes.debug",
+            "certificate_hash": "bb8a823f19f928152e629432eaf8f2e452214cd6"
+          }
+        },
+        {
+          "client_id": "415920117336-web.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEMOkeyNotRealFjordNotes0000000000"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
