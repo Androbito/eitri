@@ -11,7 +11,10 @@ import app.servante.core.unavailable
 import app.servante.storage.project.FileSystemProjectDetector
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
+import java.nio.file.Files
 import java.nio.file.Path
+import kotlin.io.path.createDirectories
+import kotlin.io.path.writeText
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -223,5 +226,65 @@ class SigningToolTest {
             is ToolState.Healthy -> last.result
             else -> error("expected a result, got $last")
         }
+    }
+}
+
+/**
+ * A project whose build file declares many signing configs, each with literal passwords, produces more
+ * findings than the tool counts comparisons. The count of passed checks must not go negative, because
+ * `ToolResult` rejects that and the tool would crash on the project it is meant to help with.
+ */
+class SigningToolManyFindingsTest {
+    private val fixtures: Path = Path.of(
+        requireNotNull(System.getProperty("servante.fixtures")) { "set by the test task" },
+    )
+
+    @Test
+    fun `a project with more findings than comparisons still reports`() = runTest {
+        val root = Files.createTempDirectory("servante-many")
+        root.resolve("settings.gradle.kts").writeText("rootProject.name = \"many\"\ninclude(\":app\")\n")
+        root.resolve("app").createDirectories()
+        val configs = (1..12).joinToString("\n") { index ->
+            """
+            |        create("release$index") {
+            |            storeFile = file("keystore$index.jks")
+            |            storePassword = "password$index"
+            |            keyAlias = "alias$index"
+            |            keyPassword = "password$index"
+            |        }
+            """.trimMargin()
+        }
+        root.resolve("app/build.gradle.kts").writeText(
+            """
+            plugins { id("com.android.application") }
+
+            android {
+                namespace = "app.many"
+                defaultConfig { applicationId = "app.many" }
+                signingConfigs {
+            $configs
+                }
+            }
+            """.trimIndent(),
+        )
+
+        val tool = SigningTool(
+            fileSystem = RealSigningFileSystem(homePath = root.toString()),
+            keystoreReader = KeystoreReader(),
+            googleServicesReader = GoogleServicesReader(),
+            signingConfigReader = SigningConfigReader(),
+            passwordProvider = KeystorePasswordProvider { null },
+            playCertificates = PlayAppSigningCertificates { unavailable("No Play account.") },
+            clock = FixedClock(Instant.parse("2026-10-12T20:30:00Z")),
+        )
+        val project = (FileSystemProjectDetector().detect(root.toString()) as Availability.Available).value
+
+        val states = tool.check(project).toList()
+
+        val last = states.last()
+        assertTrue(last is ToolState.Findings, "was $last")
+        val result = last.result.result
+        assertEquals(24, result.findings.count { "password committed" in it.title.lowercase() })
+        assertTrue(result.checksPassed >= 0)
     }
 }

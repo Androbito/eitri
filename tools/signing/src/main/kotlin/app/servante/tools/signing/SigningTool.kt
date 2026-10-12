@@ -103,7 +103,13 @@ public class SigningTool(
         val result = ToolResult(
             tool = ToolId.Signing,
             findings = findings,
-            checksPassed = checksRun(withPlay, matrix) - findings.count { it.severity != Severity.Healthy },
+            // Coerced, not trusted to be positive: a project with several signing configs can produce
+            // more findings than the number of comparisons counted here, and ToolResult rejects a
+            // negative count, so without this a pathological project would crash the tool instead of
+            // reporting on it.
+            checksPassed = (
+                checksRun(withPlay, matrix) - findings.count { it.severity != Severity.Healthy }
+                ).coerceAtLeast(0),
         )
         val report = SigningReport(result, matrix, withPlay, keystores)
 

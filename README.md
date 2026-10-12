@@ -43,7 +43,7 @@ AI review is optional and runs on your own API key (Anthropic, OpenAI, Google, a
 | User interface | **Not built.** The design tokens and both languages are written; no screen exists yet |
 | CLI | Not started |
 
-204 tests. Run them with `./gradlew checkAll`, which is also what CI runs.
+210 tests. Run them with `./gradlew checkAll`, which is also what CI runs.
 
 ## Building it
 
