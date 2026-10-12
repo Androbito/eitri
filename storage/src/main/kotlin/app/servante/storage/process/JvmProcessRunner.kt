@@ -40,10 +40,14 @@ public class JvmProcessRunner(private val dispatcher: CoroutineDispatcher = Disp
             val finished = runInterruptible {
                 process.waitFor(command.timeout.inWholeMilliseconds, TimeUnit.MILLISECONDS)
             }
+            // Killed before the readers are joined, not after: joining first made a timeout cost the
+            // timeout plus the join of two readers that cannot end until the process is gone.
+            if (!finished) {
+                process.destroyForcibly().waitFor(DESTROY_WAIT_MILLIS, TimeUnit.MILLISECONDS)
+            }
             outReader.join(DRAIN_JOIN_MILLIS)
             errReader.join(DRAIN_JOIN_MILLIS)
             if (!finished) {
-                process.destroyForcibly().waitFor(DESTROY_WAIT_MILLIS, TimeUnit.MILLISECONDS)
                 ProcessOutcome.TimedOut(
                     after = command.timeout,
                     stdoutSoFar = stdout.toString(),
@@ -82,7 +86,14 @@ public class JvmProcessRunner(private val dispatcher: CoroutineDispatcher = Disp
                 if (!process.waitFor(command.timeout.inWholeMilliseconds, TimeUnit.MILLISECONDS)) {
                     process.destroyForcibly()
                 }
-                readers.forEach { it.join(DRAIN_JOIN_MILLIS) }
+                // Joined without a timeout, deliberately. A reader ends at end of stream, which
+                // follows the process being gone, and the only thing it can be waiting on by this
+                // point is the collector taking the lines. The fixed cap that used to be here closed
+                // the flow under any collector slower than it and dropped the rest of the output: the
+                // same silent loss as the trySend it replaced, one layer further out. If something
+                // other than the child holds the pipe open, cancelling the flow destroys the process
+                // through awaitClose, which ends the stream and releases these joins.
+                readers.forEach { it.join() }
             }
             close()
         }

@@ -130,7 +130,7 @@ class JvmProcessRunnerStreamBackPressureTest {
     @Test
     fun `every line reaches a slow collector`() = runTest {
         val runner = JvmProcessRunner(Dispatchers.IO)
-        val lineCount = 500
+        val lineCount = 400
         val command = ProcessCommand(
             executable = ProcessTestPrograms.javaExecutable,
             arguments = ProcessTestPrograms.arguments(
@@ -142,10 +142,16 @@ class JvmProcessRunnerStreamBackPressureTest {
 
         val received = runner.stream(command)
             .filterNot { it.fromStandardError }
-            .onEach { Thread.sleep(1) }
+            // Deliberately slower in total than any cap inside the runner: this is what caught the
+            // reader-join timeout that silently truncated the output on a slower machine.
+            .onEach { Thread.sleep(SLOW_COLLECTOR_MILLIS) }
             .toList()
 
         assertEquals(lineCount, received.size, "lost ${lineCount - received.size} lines")
         assertEquals((0 until lineCount).map { "line $it" }, received.map { it.text })
+    }
+
+    private companion object {
+        private const val SLOW_COLLECTOR_MILLIS = 10L
     }
 }
