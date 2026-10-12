@@ -1,12 +1,11 @@
 package app.servante.ui.theme
 
 import androidx.compose.runtime.Immutable
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.platform.Font
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 
@@ -19,25 +18,31 @@ import androidx.compose.ui.unit.sp
  *
  * Licences are beside the files: all three are under the SIL Open Font License.
  */
-@OptIn(ExperimentalTextApi::class)
 public object ServanteFonts {
-    private fun bricolage(weight: FontWeight) = Font(
-        resource = "fonts/BricolageGrotesque-Variable.ttf",
+    /**
+     * One weight of a variable font.
+     *
+     * The weight is passed twice on purpose: once so the font resolver knows which weight this entry
+     * answers for, and once as the `wght` axis setting, which is what actually makes the file render at
+     * that weight. Without the axis setting every entry would render at the file's default instance,
+     * so bold text would come out regular.
+     *
+     * The factory is the one in `androidx.compose.ui.text.platform`, which loads from the classpath.
+     * The similarly named one in `androidx.compose.ui.text.font` takes an Android resource id and does
+     * not apply here. The path is passed positionally because the two name that parameter differently,
+     * so this file does not depend on which is in scope.
+     */
+    private fun variableFont(path: String, weight: FontWeight) = Font(
+        path,
         weight = weight,
         variationSettings = FontVariation.Settings(FontVariation.weight(weight.weight)),
     )
 
-    private fun instrument(weight: FontWeight) = Font(
-        resource = "fonts/InstrumentSans-Variable.ttf",
-        weight = weight,
-        variationSettings = FontVariation.Settings(FontVariation.weight(weight.weight)),
-    )
+    private fun bricolage(weight: FontWeight) = variableFont("fonts/BricolageGrotesque-Variable.ttf", weight)
 
-    private fun jetBrainsMono(weight: FontWeight) = Font(
-        resource = "fonts/JetBrainsMono-Variable.ttf",
-        weight = weight,
-        variationSettings = FontVariation.Settings(FontVariation.weight(weight.weight)),
-    )
+    private fun instrument(weight: FontWeight) = variableFont("fonts/InstrumentSans-Variable.ttf", weight)
+
+    private fun jetBrainsMono(weight: FontWeight) = variableFont("fonts/JetBrainsMono-Variable.ttf", weight)
 
     /** Display, titles and big numbers. */
     public val display: FontFamily = FontFamily(
