@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eitri: the open source toolbox for Android and Kotlin developers</title>
+<meta name="description" content="Eitri is a free, open source desktop app for Android and Kotlin developers: signing fingerprints, Compose stability, Gradle versions, SDK disk usage, bundle preflight, Play releases and reminders. macOS, Windows and Linux.">
+<meta property="og:title" content="Eitri: the open source toolbox for Android and Kotlin developers">
+<meta property="og:description" content="Eight tools in one desktop app. Free, open source, no account. In development.">
+<meta property="og:type" content="website">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%237F52FF'/%3E%3Cpath d='M7 11h14c2.5 0 4 1 4 3h-7v3l3 5H10l3-5v-3H9z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F4F3FA;
+  --surface: #FFFFFF;
+  --surface-2: #ECEAF6;
+  --line: #D9D5EA;
+  --text: #1A1730;
+  --muted: #5D5878;
+  --violet: #6A3DF0;
+  --violet-soft: #E7DFFF;
+  --on-violet: #FFFFFF;
+  --ok: #17874B;
+  --ok-soft: #DDF3E6;
+  --warn: #9A6200;
+  --warn-soft: #FBEBCB;
+  --crit: #C6292F;
+  --crit-soft: #FBE0E1;
+  --add: #E3F4E9;
+  --del: #FBE4E5;
+  --display: "Bricolage Grotesque", "Instrument Sans", system-ui, sans-serif;
+  --sans: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #131124;
+    --surface: #1B1832;
+    --surface-2: #242042;
+    --line: #353058;
+    --text: #EEECF8;
+    --muted: #A8A3C4;
+    --violet: #9B7BFF;
+    --violet-soft: #2E2659;
+    --on-violet: #14102B;
+    --ok: #4FD08A;
+    --ok-soft: #173A2B;
+    --warn: #F2B453;
+    --warn-soft: #3D2F14;
+    --crit: #FF7A7F;
+    --crit-soft: #44191D;
+    --add: #17352A;
+    --del: #3E1A1E;
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 17px/1.55 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--violet); text-underline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; border-radius: 4px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+h1, h2, h3 { font-family: var(--display); letter-spacing: -0.02em; line-height: 1.08; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(2.5rem, 6.4vw, 4.6rem); font-weight: 700; max-width: 14ch; }
+h2 { font-size: clamp(1.8rem, 3.6vw, 2.7rem); font-weight: 700; max-width: 22ch; }
+h3 { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; }
+p { margin: 0; }
+.lede { font-size: 1.2rem; color: var(--muted); max-width: 58ch; }
+code, .mono { font-family: var(--mono); font-size: 0.86em; }
+
+/* nav */
+.nav { display: flex; align-items: center; gap: 28px; padding: 20px 0; }
+.brand { display: flex; align-items: center; gap: 10px; font: 700 1.25rem var(--display); color: var(--text); text-decoration: none; margin-right: auto; }
+.brand svg { width: 30px; height: 30px; }
+.nav a.link { color: var(--muted); text-decoration: none; font-weight: 500; font-size: 0.95rem; }
+.nav a.link:hover { color: var(--text); }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 18px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--surface); color: var(--text);
+  font: 600 0.98rem var(--sans); text-decoration: none; cursor: pointer;
+}
+.btn:hover { border-color: var(--violet); }
+.btn.primary { background: var(--violet); border-color: var(--violet); color: var(--on-violet); }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn svg { width: 18px; height: 18px; fill: currentColor; }
+@media (max-width: 720px) { .nav a.link { display: none; } }
+
+/* hero */
+.hero { padding: 56px 0 36px; }
+.hero .lede { margin-top: 22px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.status-line { margin-top: 18px; color: var(--muted); font-size: 0.95rem; display: flex; gap: 10px; align-items: baseline; max-width: 60ch; }
+.pill { flex: none; font: 600 0.78rem var(--sans); padding: 3px 9px; border-radius: 99px; background: var(--warn-soft); color: var(--warn); }
+
+/* demo window */
+.demo-section { padding: 12px 0 72px; }
+.window {
+  border: 1px solid var(--line); border-radius: 12px; background: var(--surface);
+  overflow: hidden; box-shadow: 0 30px 60px -40px rgba(60, 40, 140, 0.45);
+}
+.titlebar { display: flex; align-items: center; gap: 7px; padding: 11px 14px; border-bottom: 1px solid var(--line); background: var(--surface-2); }
+.titlebar i { width: 11px; height: 11px; border-radius: 50%; background: var(--line); }
+.titlebar span { margin-left: 10px; font-size: 0.82rem; color: var(--muted); }
+.app { display: grid; grid-template-columns: 208px 1fr; min-height: 540px; }
+.side { border-right: 1px solid var(--line); padding: 14px 10px; background: var(--surface); min-width: 0; }
+.project { padding: 8px 10px 14px; border-bottom: 1px solid var(--line); margin-bottom: 10px; }
+.project b { display: block; font-size: 0.95rem; }
+.project span { font: 400 0.72rem var(--mono); color: var(--muted); }
+.side [role="tablist"] { display: flex; flex-direction: column; gap: 2px; }
+.tab {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  width: 100%; text-align: left; padding: 8px 10px; border: 0; border-radius: 6px;
+  background: none; color: var(--muted); font: 500 0.92rem var(--sans); cursor: pointer;
+}
+.tab:hover { background: var(--surface-2); color: var(--text); }
+.tab[aria-selected="true"] { background: var(--violet-soft); color: var(--text); font-weight: 600; }
+.dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.dot.crit { background: var(--crit); } .dot.warn { background: var(--warn); } .dot.ok { background: var(--ok); } .dot.none { border: 1px dashed var(--muted); }
+.panel { padding: 22px 24px 26px; font-size: 0.92rem; min-width: 0; }
+.panel[hidden] { display: none; }
+.panel h4 { font: 700 1.35rem var(--display); margin: 0; letter-spacing: -0.01em; }
+.panel .q { color: var(--muted); margin: 2px 0 18px; }
+.verdict { padding: 12px 14px; border-radius: 8px; background: var(--crit-soft); color: var(--text); border-left: 3px solid var(--crit); margin-bottom: 16px; }
+.verdict.warn { background: var(--warn-soft); border-color: var(--warn); }
+.verdict.ok { background: var(--ok-soft); border-color: var(--ok); }
+.tbl-scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 0.88rem; }
+th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { color: var(--muted); font-weight: 500; }
+td .mono { color: var(--muted); }
+.cell { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
+.cell.ok { color: var(--ok); } .cell.crit { color: var(--crit); } .cell.warn { color: var(--warn); } .cell.na { color: var(--muted); font-weight: 400; }
+.findings { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 8px; }
+.findings li { display: grid; grid-template-columns: 10px 1fr; gap: 10px; align-items: baseline; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; }
+.findings b { display: block; }
+.findings .mono { color: var(--muted); display: block; margin-top: 2px; overflow-wrap: anywhere; }
+.cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.card { border: 1px solid var(--line); border-radius: 8px; padding: 12px; display: grid; gap: 4px; align-content: start; }
+.card.wide { grid-column: span 2; }
+.card small { color: var(--muted); display: flex; align-items: center; gap: 7px; }
+.card b { font-size: 1rem; line-height: 1.3; }
+.score-row { display: flex; gap: 22px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
+.score { font: 700 3rem/1 var(--display); }
+.score small { font: 400 0.9rem var(--sans); color: var(--muted); }
+.cats { display: grid; grid-template-columns: repeat(3, minmax(110px, 1fr)); gap: 6px 18px; flex: 1; min-width: 260px; }
+.cat { display: grid; grid-template-columns: 1fr auto; font-size: 0.82rem; color: var(--muted); }
+.cat i { grid-column: 1 / -1; height: 4px; border-radius: 2px; background: var(--surface-2); position: relative; overflow: hidden; }
+.cat i::after { content: ""; position: absolute; inset: 0; width: var(--v); background: var(--violet); }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.box { border: 1px solid var(--line); border-radius: 8px; padding: 12px; min-width: 0; }
+.graph text { font: 500 11px var(--mono); fill: var(--text); }
+.graph rect { fill: var(--surface-2); stroke: var(--line); }
+.graph rect.hot { stroke: var(--crit); fill: var(--crit-soft); }
+.graph rect.mid { stroke: var(--warn); fill: var(--warn-soft); }
+.graph path { stroke: var(--muted); fill: none; }
+.graph path.state { stroke: var(--violet); stroke-dasharray: 4 3; }
+.diff { font: 400 0.78rem/1.6 var(--mono); margin: 8px 0 0; border-radius: 6px; overflow-x: auto; border: 1px solid var(--line); }
+.diff div { padding: 0 10px; white-space: pre; }
+.diff .del { background: var(--del); } .diff .add { background: var(--add); }
+.chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 16px; }
+.chip { font: 500 0.8rem var(--mono); padding: 5px 9px; border: 1px solid var(--line); border-radius: 6px; }
+.chip.bad { border-color: var(--crit); background: var(--crit-soft); }
+.chips .link-ok, .chips .link-bad { width: 14px; height: 2px; background: var(--line); }
+.chips .link-bad { background: none; border-top: 2px dashed var(--crit); }
+.bar { display: flex; height: 14px; border-radius: 4px; overflow: hidden; margin: 6px 0 8px; gap: 2px; }
+.bar i { display: block; height: 100%; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 0.8rem; color: var(--muted); margin-bottom: 12px; }
+.legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 6px; }
+.big { font: 700 2rem/1.1 var(--display); }
+.big small { font: 400 0.9rem var(--sans); color: var(--muted); }
+.checks { list-style: none; padding: 0; margin: 0; display: grid; gap: 0; }
+.checks li { display: grid; grid-template-columns: 54px 1fr; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+.checks li span.s { font-weight: 600; font-size: 0.82rem; }
+.checks li em { font-style: normal; color: var(--muted); display: block; }
+.track { display: grid; grid-template-columns: 96px 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); align-items: center; }
+.track b { font-weight: 600; }
+.track .rel { display: grid; gap: 5px; }
+.track .meta { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.prog { height: 6px; background: var(--surface-2); border-radius: 3px; overflow: hidden; }
+.prog i { display: block; height: 100%; width: var(--v); background: var(--violet); }
+.timeline { list-style: none; margin: 0; padding: 0; }
+.timeline li { display: grid; grid-template-columns: 78px 1fr; gap: 14px; padding: 11px 0; border-bottom: 1px solid var(--line); }
+.timeline .when { font: 700 1rem var(--display); }
+.timeline em { font-style: normal; color: var(--muted); display: block; }
+.tree { font: 400 0.8rem/1.9 var(--mono); }
+.tree .ex { color: var(--muted); text-decoration: line-through; }
+.send { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+.fakebtn { padding: 8px 14px; border-radius: 6px; background: var(--violet); color: var(--on-violet); font-weight: 600; font-size: 0.88rem; }
+.demo-note { margin-top: 14px; color: var(--muted); font-size: 0.92rem; }
+@media (max-width: 860px) {
+  .app { grid-template-columns: 1fr; }
+  .side { border-right: 0; border-bottom: 1px solid var(--line); padding: 10px; }
+  .project { display: none; }
+  .side [role="tablist"] { flex-direction: row; overflow-x: auto; }
+  .tab { width: auto; white-space: nowrap; flex: none; }
+  .cards { grid-template-columns: 1fr 1fr; }
+  .split { grid-template-columns: 1fr; }
+  .panel { padding: 18px 16px 22px; }
+}
+
+/* sections */
+section { padding: 72px 0; }
+section.alt { background: var(--surface); border-block: 1px solid var(--line); }
+.sec-head { margin-bottom: 40px; }
+.sec-head p { margin-top: 14px; }
+.tools { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 56px; }
+.tool { padding: 26px 0; border-top: 1px solid var(--line); display: grid; gap: 8px; align-content: start; }
+.tool .name { font: 500 0.9rem var(--mono); color: var(--violet); }
+.tool p { color: var(--muted); max-width: 52ch; }
+@media (max-width: 760px) { .tools { grid-template-columns: 1fr; } }
+
+.ai { display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: start; }
+.ai ul { margin: 22px 0 0; padding: 0; list-style: none; display: grid; gap: 14px; }
+.ai li { padding-left: 18px; border-left: 2px solid var(--violet); }
+.ai li b { display: block; }
+.ai li span { color: var(--muted); }
+.providers { border: 1px solid var(--line); border-radius: 12px; background: var(--bg); padding: 6px 18px; }
+.providers div { display: flex; justify-content: space-between; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--line); }
+.providers div:last-child { border-bottom: 0; }
+.providers span { color: var(--muted); font-size: 0.92rem; text-align: right; }
+@media (max-width: 860px) { .ai { grid-template-columns: 1fr; gap: 32px; } }
+
+.principles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 34px 56px; }
+.principles p { color: var(--muted); margin-top: 8px; max-width: 48ch; }
+@media (max-width: 760px) { .principles { grid-template-columns: 1fr; } }
+
+.road { list-style: none; margin: 0; padding: 0; counter-reset: m; border-top: 1px solid var(--line); }
+.road li { counter-increment: m; display: grid; grid-template-columns: 64px 1fr auto; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+.road li::before { content: "v0." counter(m); font: 500 0.9rem var(--mono); color: var(--muted); }
+.road b { font-weight: 600; }
+.road span { color: var(--muted); }
+.road .st { font-size: 0.85rem; color: var(--muted); }
+.road .st.now { color: var(--violet); font-weight: 600; }
+@media (max-width: 640px) { .road li { grid-template-columns: 52px 1fr; } .road .st { grid-column: 2; } }
+
+.faq { max-width: 760px; }
+details { border-bottom: 1px solid var(--line); padding: 18px 0; }
+details:first-of-type { border-top: 1px solid var(--line); }
+summary { font: 600 1.08rem var(--sans); cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; font: 400 1.4rem/1 var(--mono); color: var(--muted); }
+details[open] summary::after { content: "\2212"; }
+details p { color: var(--muted); margin-top: 10px; max-width: 64ch; }
+
+.cta { text-align: left; }
+.cta .actions { margin-top: 26px; }
+footer { padding: 34px 0 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9rem; }
+footer .wrap { display: grid; gap: 10px; }
+footer nav { display: flex; gap: 20px; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+
+<header class="wrap nav">
+  <a class="brand" href="#top" aria-label="Eitri home">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#7F52FF"/><path d="M7 11h14c2.5 0 4 1 4 3h-7v3l3 5H10l3-5v-3H9z" fill="#fff"/></svg>
+    Eitri
+  </a>
+  <a class="link" href="#demo">Demo</a>
+  <a class="link" href="#tools">Tools</a>
+  <a class="link" href="#ai">AI review</a>
+  <a class="link" href="#roadmap">Roadmap</a>
+  <a class="link" href="#faq">FAQ</a>
+  <a class="btn" href="https://github.com/Androbito/eitri">
+    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.93-.89-1.17-.89-1.17-.73-.5.05-.49.05-.49.8.06 1.23.83 1.23.83.72 1.22 1.88.87 2.33.66.07-.52.28-.87.5-1.07-1.77-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.19c0 .21.15.46.55.38A8 8 0 0 0 8 0z"/></svg>
+    GitHub
+  </a>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <h1>Find out why the release build breaks.</h1>
+    <p class="lede">Eitri is a free, open source desktop app for Android and Kotlin developers. Eight tools in one window: signing fingerprints, Compose stability, Gradle versions, SDK disk usage, bundle preflight, Play releases, reminders and an AI review that runs on your own key.</p>
+    <div class="actions">
+      <a class="btn primary" href="#demo">Try the demo</a>
+      <a class="btn" href="https://github.com/Androbito/eitri">Follow on GitHub</a>
+    </div>
+    <p class="status-line"><span class="pill">In development</span><span>There is no download yet. The first release will be the Signing tool, for macOS, Windows and Linux.</span></p>
+  </div>
+
+  <div class="wrap demo-section" id="demo">
+    <div class="window">
+      <div class="titlebar" aria-hidden="true"><i></i><i></i><i></i><span>Eitri</span></div>
+      <div class="app">
+        <div class="side">
+          <div class="project"><b>Fjord Notes</b><span>~/dev/fjord-notes</span></div>
+          <div role="tablist" aria-label="Eitri tools" aria-orientation="vertical">
+            <button class="tab" role="tab" id="t-overview" aria-controls="p-overview" aria-selected="false" tabindex="-1">Overview</button>
+            <button class="tab" role="tab" id="t-signing" aria-controls="p-signing" aria-selected="true">Signing <i class="dot crit"></i></button>
+            <button class="tab" role="tab" id="t-compose" aria-controls="p-compose" aria-selected="false" tabindex="-1">Compose <i class="dot warn"></i></button>
+            <button class="tab" role="tab" id="t-gradle" aria-controls="p-gradle" aria-selected="false" tabindex="-1">Gradle <i class="dot crit"></i></button>
+            <button class="tab" role="tab" id="t-sdk" aria-controls="p-sdk" aria-selected="false" tabindex="-1">SDK and disk <i class="dot warn"></i></button>
+            <button class="tab" role="tab" id="t-preflight" aria-controls="p-preflight" aria-selected="false" tabindex="-1">Preflight <i class="dot warn"></i></button>
+            <button class="tab" role="tab" id="t-releases" aria-controls="p-releases" aria-selected="false" tabindex="-1">Releases <i class="dot ok"></i></button>
+            <button class="tab" role="tab" id="t-reminders" aria-controls="p-reminders" aria-selected="false" tabindex="-1">Reminders <i class="dot warn"></i></button>
+            <button class="tab" role="tab" id="t-ai" aria-controls="p-ai" aria-selected="false" tabindex="-1">AI review <i class="dot none"></i></button>
+          </div>
+        </div>
+
+        <div class="panel" role="tabpanel" id="p-overview" aria-labelledby="t-overview" tabindex="0" hidden>
+          <h4>Overview</h4>
+          <p class="q">Fjord Notes, checked 2 minutes ago</p>
+          <div class="cards">
+            <div class="card wide"><small><i class="dot crit"></i>Signing</small><b>Play signing certificate missing in Firebase</b></div>
+            <div class="card wide"><small><i class="dot crit"></i>Gradle</small><b>KSP does not match Kotlin 2.2.20</b></div>
+            <div class="card"><small><i class="dot warn"></i>Compose</small><b>Score 69, 4 unstable parameters</b></div>
+            <div class="card"><small><i class="dot warn"></i>SDK and disk</small><b>84 GB used, 31 GB reclaimable</b></div>
+            <div class="card"><small><i class="dot warn"></i>Preflight</small><b>1 library not 16 KB aligned</b></div>
+            <div class="card"><small><i class="dot warn"></i>Reminders</small><b>Target API deadline in 41 days</b></div>
+            <div class="card wide"><small><i class="dot ok"></i>Releases</small><b>3.8.0 at 20% in production</b></div>
+            <div class="card wide"><small><i class="dot none"></i>AI review</small><b>No provider configured</b></div>
+          </div>
+        </div>
+
+        <div class="panel" role="tabpanel" id="p-signing" aria-labelledby="t-signing" tabindex="0">
+          <h4>Signing</h4>
+          <p class="q">Why does sign-in work in debug and fail in release?</p>
+          <p class="verdict"><b>Google Sign-In will fail for Play installs.</b> The Play app signing certificate is not registered in the Firebase project.</p>
+          <div class="tbl-scroll">
+          <table>
+            <thead><tr><th>Identity</th><th>SHA-256</th><th>Firebase</th><th>OAuth client</th><th>Play</th></tr></thead>
+            <tbody>
+              <tr><td>Debug keystore</td><td><span class="mono">3A:91:0C:E4 … 7B:22</span></td><td><span class="cell ok">Match</span></td><td><span class="cell ok">Match</span></td><td><span class="cell na">Not used</span></td></tr>
+              <tr><td>Upload key</td><td><span class="mono">C8:5F:A1:09 … D4:6E</span></td><td><span class="cell ok">Match</span></td><td><span class="cell ok">Match</span></td><td><span class="cell ok">Match</span></td></tr>
+              <tr><td>Play app signing key</td><td><span class="mono">F2:77:3D:B0 … 19:AC</span></td><td><span class="cell crit">Missing</span></td><td><span class="cell crit">Missing</span></td><td><span class="cell ok">Match</span></td></tr>
+            </tbody>
+          </table>
+          </div>
+          <ul class="findings">
+            <li><i class="dot crit"></i><div><b>Add the Play signing SHA-1 and SHA-256 to Firebase</b><span class="mono">google-services.json, client app.fjord.notes</span></div></li>
+            <li><i class="dot warn"></i><div><b>Keystore password committed to the repository</b><span class="mono">app/build.gradle.kts:42</span></div></li>
+            <li><i class="dot ok"></i><div><b>Upload certificate valid until 2049</b><span class="mono">release.jks, alias upload, RSA 4096</span></div></li>
+          </ul>
+        </div>
+
+        <div class="panel" role="tabpanel" id="p-compose" aria-labelledby="t-compose" tabindex="0" hidden>
+          <h4>Compose</h4>
+          <p class="q">Why does this composable recompose?</p>
+          <div class="score-row">
+            <div class="score">69 <small>out of 100</small></div>
+            <div class="cats">
+              <div class="cat">Stability<b>48</b><i style="--v:48%"></i></div>
+              <div class="cat">State<b>72</b><i style="--v:72%"></i></div>
+              <div class="cat">Lists<b>60</b><i style="--v:60%"></i></div>
+              <div class="cat">Side effects<b>85</b><i style="--v:85%"></i></div>
+              <div class="cat">Performance<b>66</b><i style="--v:66%"></i></div>
+              <div class="cat">Structure<b>83</b><i style="--v:83%"></i></div>
+            </div>
+          </div>
+          <div class="split">
+            <div class="box">
+              <svg class="graph" viewBox="0 0 300 170" role="img" aria-label="Composable graph: NoteListScreen contains NoteList and SearchBar, NoteList contains NoteRow. NoteRow is at high recomposition risk.">
+                <path d="M150 34 L80 66 M150 34 L226 66 M80 94 L80 126"/>
+                <path class="state" d="M226 94 C226 140 150 140 132 140"/>
+                <rect x="90" y="8" width="120" height="26" rx="5"/><text x="150" y="25" text-anchor="middle">NoteListScreen</text>
+                <rect class="mid" x="30" y="66" width="100" height="28" rx="5"/><text x="80" y="84" text-anchor="middle">NoteList</text>
+                <rect x="180" y="66" width="92" height="28" rx="5"/><text x="226" y="84" text-anchor="middle">SearchBar</text>
+                <rect class="hot" x="30" y="126" width="100" height="28" rx="5"/><text x="80" y="144" text-anchor="middle">NoteRow</text>
+              </svg>
+            </div>
+            <div class="box">
+              <b>NoteRow is not skippable</b>
+              <p style="color:var(--muted)">Parameter <code>tags</code> is a <code>List</code>, which the compiler treats as unstable.</p>
+              <div class="diff" aria-label="Suggested fix">
+                <div class="del">- tags: List&lt;Tag&gt;,</div>
+                <div class="add">+ tags: ImmutableList&lt;Tag&gt;,</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" role="tabpanel" id="p-gradle" aria-labelledby="t-gradle" tabindex="0" hidden>
+          <h4>Gradle</h4>
+          <p class="q">Which of these versions do not go together?</p>
+          <div class="chips">
+            <span class="chip">Gradle 9.1</span><i class="link-ok"></i>
+            <span class="chip">AGP 9.0.0</span><i class="link-ok"></i>
+            <span class="chip bad">Kotlin 2.2.20</span><i class="link-bad"></i>
+            <span class="chip bad">KSP 2.2.10-2.0.2</span><i class="link-ok"></i>
+            <span class="chip">JDK 21</span>
+          </div>
+          <p class="verdict"><b>KSP was built for Kotlin 2.2.10.</b> The build may fail or silently skip processors. Move KSP to a release that matches Kotlin 2.2.20.</p>
+          <div class="tbl-scroll">
+          <table>
+            <thead><tr><th>Catalog entry</th><th>Current</th><th>Latest stable</th><th></th></tr></thead>
+            <tbody>
+              <tr><td><span class="mono">ksp</span></td><td>2.2.10-2.0.2</td><td>2.2.20-2.0.3</td><td><span class="cell crit">Required</span></td></tr>
+              <tr><td><span class="mono">compose-bom</span></td><td>2026.06.00</td><td>2026.09.00</td><td><span class="cell warn">Update</span></td></tr>
+              <tr><td><span class="mono">okhttp</span></td><td>5.1.0</td><td>5.1.0</td><td><span class="cell ok">Current</span></td></tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+
+        <div class="panel" role="tabpanel" id="p-sdk" aria-labelledby="t-sdk" tabindex="0" hidden>
+          <h4>SDK and disk</h4>
+          <p class="q">What is taking all this space?</p>
+          <div class="big">84 GB <small>31 GB can be removed safely</small></div>
+          <div class="bar" aria-hidden="true">
+            <i style="width:31%;background:#7F52FF"></i><i style="width:24%;background:#B79CFF"></i><i style="width:19%;background:#2FBF71"></i><i style="width:14%;background:#F2A93B"></i><i style="width:12%;background:#8C87A8"></i>
+          </div>
+          <div class="legend">
+            <span><i style="background:#7F52FF"></i>System images 26 GB</span>
+            <span><i style="background:#B79CFF"></i>Emulators 20 GB</span>
+            <span><i style="background:#2FBF71"></i>Gradle caches 16 GB</span>
+            <span><i style="background:#F2A93B"></i>NDKs 12 GB</span>
+            <span><i style="background:#8C87A8"></i>Other 10 GB</span>
+          </div>
+          <div class="tbl-scroll">
+          <table>
+            <thead><tr><th>Item</th><th>Size</th><th>Last used</th><th>This project</th></tr></thead>
+            <tbody>
+              <tr><td>System image, API 33, x86_64</td><td>6.2 GB</td><td>14 months ago</td><td><span class="cell na">No AVD uses it</span></td></tr>
+              <tr><td>NDK 25.2</td><td>4.1 GB</td><td>9 months ago</td><td><span class="cell na">Not referenced</span></td></tr>
+              <tr><td>Gradle 8.7 distribution</td><td>0.4 GB</td><td>11 months ago</td><td><span class="cell na">Not referenced</span></td></tr>
+              <tr><td>Build-tools 36.0.0</td><td>0.2 GB</td><td>Today</td><td><span class="cell ok">In use</span></td></tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+
+        <div class="panel" role="tabpanel" id="p-preflight" aria-labelledby="t-preflight" tabindex="0" hidden>
+          <h4>Preflight</h4>
+          <p class="q">Will Play accept this build?</p>
+          <p class="q" style="margin-top:-12px"><span class="mono">app-release.aab, 3.8.0 (412), 18.4 MB</span></p>
+          <ul class="checks">
+            <li><span class="s cell ok">Pass</span><div>Target API meets the current Play requirement</div></li>
+            <li><span class="s cell warn">Warn</span><div>1 of 6 native libraries is not 16 KB aligned<em class="mono">lib/arm64-v8a/libsqlcipher.so</em></div></li>
+            <li><span class="s cell ok">Pass</span><div>Not debuggable, minified, mapping file present</div></li>
+            <li><span class="s cell warn">Warn</span><div>READ_MEDIA_IMAGES needs a Play declaration<em>Added by com.fjord:picker:2.3.0</em></div></li>
+            <li><span class="s cell ok">Pass</span><div>Version code 412 is higher than production (409)</div></li>
+          </ul>
+        </div>
+
+        <div class="panel" role="tabpanel" id="p-releases" aria-labelledby="t-releases" tabindex="0" hidden>
+          <h4>Releases</h4>
+          <p class="q">Where is build 412?</p>
+          <div class="track"><b>Production</b><div class="rel"><div class="meta"><span>3.8.0 <span class="mono">(409)</span></span><span>Staged rollout, 20%</span></div><div class="prog"><i style="--v:20%"></i></div></div></div>
+          <div class="track"><b>Open testing</b><div class="rel"><div class="meta"><span>3.8.1 <span class="mono">(412)</span></span><span>In review</span></div><div class="prog"><i style="--v:0%"></i></div></div></div>
+          <div class="track"><b>Closed testing</b><div class="rel"><div class="meta"><span>3.8.1 <span class="mono">(412)</span></span><span>Available to testers</span></div><div class="prog"><i style="--v:100%"></i></div></div></div>
+          <div class="track"><b>Internal</b><div class="rel"><div class="meta"><span>3.9.0 <span class="mono">(415)</span></span><span>Available to testers</span></div><div class="prog"><i style="--v:100%"></i></div></div></div>
+        </div>
+
+        <div class="panel" role="tabpanel" id="p-reminders" aria-labelledby="t-reminders" tabindex="0" hidden>
+          <h4>Reminders</h4>
+          <p class="q">What deadline is coming?</p>
+          <ul class="timeline">
+            <li><span class="when">41 days</span><div><b>Play target API requirement</b><em>Fjord Notes must target the new API level to keep publishing updates</em></div></li>
+            <li><span class="when">67 days</span><div><b>Service account key is one year old</b><em>Rotate the key used for the Play connection</em></div></li>
+            <li><span class="when">23 years</span><div><b>Upload certificate expires</b><em>Nothing to do</em></div></li>
+          </ul>
+          <p class="q" style="margin-top:16px">Notifications are local. Eitri has no server to send them from.</p>
+        </div>
+
+        <div class="panel" role="tabpanel" id="p-ai" aria-labelledby="t-ai" tabindex="0" hidden>
+          <h4>AI review</h4>
+          <p class="q">Review the architecture of the app module</p>
+          <div class="split">
+            <div class="box">
+              <b>What will be sent</b>
+              <div class="tree">
+                <div>app/src/main/kotlin/ (38 files)</div>
+                <div>app/build.gradle.kts</div>
+                <div>gradle/libs.versions.toml</div>
+                <div class="ex">local.properties</div>
+                <div class="ex">google-services.json</div>
+                <div class="ex">release.jks</div>
+              </div>
+            </div>
+            <div class="box">
+              <b>Where it goes</b>
+              <p style="color:var(--muted);margin-top:6px">To the provider you chose, with your own API key, which stays in your system keychain. Three files are excluded because they look like secrets.</p>
+              <p style="margin-top:10px">About 41,000 tokens</p>
+            </div>
+          </div>
+          <div class="send"><span style="color:var(--muted)">Nothing is sent until you press the button.</span><span class="fakebtn">Send to provider</span></div>
+        </div>
+      </div>
+    </div>
+    <p class="demo-note">This is an interactive preview with fictional data, not a recording of the app. Click the tools in the sidebar. The real app is being built in the open.</p>
+  </div>
+
+  <section class="alt" id="tools">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Eight tools, each built around one question</h2>
+        <p class="lede">Android Studio is good at writing code. These are the questions it leaves you to answer with a terminal, three browser tabs and a forum thread.</p>
+      </div>
+      <div class="tools">
+        <div class="tool"><span class="name">Signing</span><h3>Why does sign-in work in debug and fail in release?</h3><p>Reads your keystores and signing configs, computes every SHA-1 and SHA-256, and compares them with what Firebase and Play expect. It names the fingerprint that is missing and where to add it.</p></div>
+        <div class="tool"><span class="name">Compose</span><h3>Why does this composable recompose?</h3><p>Runs the Compose compiler reports for you and makes them readable: which parameters are unstable, why, and the fix as a diff. The answer comes from the compiler, not from a guess.</p></div>
+        <div class="tool"><span class="name">Gradle</span><h3>Which of these versions do not go together?</h3><p>Checks Gradle, AGP, Kotlin, KSP, Compose and the JDK against each other, lists the updates in your version catalog, and reviews the build properties that cost you time.</p></div>
+        <div class="tool"><span class="name">SDK and disk</span><h3>What is taking all this space?</h3><p>System images, emulators, NDKs, Gradle caches, old wrapper distributions. See what the open project needs, what nothing uses, and move the rest to the trash.</p></div>
+        <div class="tool"><span class="name">Preflight</span><h3>Will Play accept this build?</h3><p>Drop an AAB or APK. Target API, 16 KB page size alignment, permissions and which library added them, exported components, size by category. Compare two builds side by side.</p></div>
+        <div class="tool"><span class="name">Releases</span><h3>Where is build 412?</h3><p>Your Play tracks in one view: internal, closed, open and production, with version codes and staged rollout progress. It uses your own service account.</p></div>
+        <div class="tool"><span class="name">Reminders</span><h3>What deadline is coming?</h3><p>Local notifications before the Play target API deadline, before a certificate runs out and when a service account key gets old. Plus a log of everything Eitri changed for you.</p></div>
+        <div class="tool"><span class="name">AI review</span><h3>What would a senior reviewer say about this project?</h3><p>An optional review of architecture, build setup or release readiness, run with your own API key or a local model. Findings point at real files and lines.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ai">
+    <div class="wrap ai">
+      <div>
+        <h2>AI when you ask for it, on your key</h2>
+        <p class="lede" style="margin-top:14px">Every tool works without AI. The review is an extra pass you start yourself.</p>
+        <ul>
+          <li><b>You see the payload first</b><span>Pick the modules and files. The preview is exactly what gets sent, with an estimate of the size before anything leaves.</span></li>
+          <li><b>Secrets are left out</b><span>Keystores, local.properties, google-services.json and anything that looks like a key are excluded automatically.</span></li>
+          <li><b>Answers are checked against your source</b><span>A finding that points at a file or line that does not exist is dropped. Fixes are shown as diffs and never applied on their own.</span></li>
+          <li><b>Or keep it on your machine</b><span>Point Eitri at a local model and nothing leaves at all.</span></li>
+        </ul>
+      </div>
+      <div class="providers" aria-label="Supported providers">
+        <div><b>Anthropic</b><span>Your API key</span></div>
+        <div><b>OpenAI</b><span>Your API key</span></div>
+        <div><b>Google</b><span>Your API key</span></div>
+        <div><b>OpenAI-compatible endpoint</b><span>Your URL and key</span></div>
+        <div><b>Ollama</b><span>Local, no key</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="wrap">
+      <div class="sec-head"><h2>Built for a tool that sits next to your signing keys</h2></div>
+      <div class="principles">
+        <div><h3>It reads by default</h3><p>Anything that changes a file, deletes something or installs something asks first, with a summary of what will change. Every change is written to a local log.</p></div>
+        <div><h3>Nothing is made up</h3><p>When Eitri cannot read something, it says "Unavailable" and why. You never get a placeholder where real data should be.</p></div>
+        <div><h3>No account, no server, no telemetry</h3><p>Requests go to Google with your credentials and to the AI provider you picked, when you ask. The app lists every destination it can contact.</p></div>
+        <div><h3>Open source, free, for good</h3><p>Apache 2.0. No paid tier and no license key. You can read the code that touches your keystore, and build it yourself.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="roadmap">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Where the project stands</h2>
+        <p class="lede">Tools ship one at a time, in this order. The full task list is in the <a href="https://github.com/Androbito/eitri/blob/main/ROADMAP.md">roadmap</a>.</p>
+      </div>
+      <ol class="road">
+        <li><div><b>Signing</b> <span>keystores, fingerprints, Firebase and Play comparison</span></div><span class="st now">Next up</span></li>
+        <li><div><b>Compose</b> <span>compiler reports, rules, graph, score</span></div><span class="st">Planned</span></li>
+        <li><div><b>Gradle</b> <span>compatibility, catalog updates, properties</span></div><span class="st">Planned</span></li>
+        <li><div><b>SDK and disk</b> <span>inventory and cleanup</span></div><span class="st">Planned</span></li>
+        <li><div><b>Preflight</b> <span>AAB and APK checks</span></div><span class="st">Planned</span></li>
+        <li><div><b>Releases and reminders</b> <span>Play tracks, deadlines</span></div><span class="st">Planned</span></li>
+        <li><div><b>AI review</b> <span>bring your own key, local models</span></div><span class="st">Planned</span></li>
+        <li><div><b>Command line</b> <span>the same checks in CI</span></div><span class="st">Planned</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="alt" id="faq">
+    <div class="wrap">
+      <div class="sec-head"><h2>Questions</h2></div>
+      <div class="faq">
+        <details><summary>Can I download it today?</summary><p>No. Eitri is in development and nothing has been released yet. The demo on this page is a preview with fictional data. Watch the repository on GitHub to hear about the first release.</p></details>
+        <details><summary>What will it cost?</summary><p>Nothing. Eitri is open source under Apache 2.0, with no paid tier. AI review uses your own provider account, so you pay that provider for what you use, or nothing with a local model.</p></details>
+        <details><summary>Which systems will it run on?</summary><p>macOS, Windows and Linux. It is written in Kotlin with Compose Multiplatform for Desktop.</p></details>
+        <details><summary>What will leave my computer?</summary><p>Requests to Google APIs with your own credentials for the Play features, version lookups against Maven repositories, an optional update check on GitHub, and the files you choose when you start an AI review. There is no Eitri server.</p></details>
+        <details><summary>Will it change my project or my keystores?</summary><p>Only when you ask. It reads by default. Any change is confirmed first with a summary, then recorded in a local log. Keystore passwords are used once and never stored.</p></details>
+        <details><summary>Do I need an AI key?</summary><p>No. The seven other tools run locally with their own rules. A key is only needed for the AI review, and a local model through Ollama needs none.</p></details>
+        <details><summary>How is this related to Sindri?</summary><p>Sindri is a Mac app by Walid Sassi that does this job for iOS and macOS developers, and it inspired Eitri. The two projects are separate. Eitri is named after Sindri's brother in the Norse stories.</p></details>
+        <details><summary>Can I help?</summary><p>Yes. The roadmap lists every task, and Compose and Gradle rules are a good place to start. Open an issue on GitHub before a large change.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <h2>Follow the build</h2>
+      <p class="lede" style="margin-top:14px">Star or watch the repository to get the first release when it lands.</p>
+      <div class="actions">
+        <a class="btn primary" href="https://github.com/Androbito/eitri">Open the repository</a>
+        <a class="btn" href="https://github.com/Androbito/eitri/blob/main/ROADMAP.md">Read the roadmap</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <nav aria-label="Footer">
+      <a href="https://github.com/Androbito/eitri">GitHub</a>
+      <a href="https://github.com/Androbito/eitri/blob/main/ROADMAP.md">Roadmap</a>
+      <a href="https://github.com/Androbito/eitri/blob/main/LICENSE">Apache 2.0 license</a>
+      <a href="https://github.com/Androbito/eitri/issues">Issues</a>
+    </nav>
+    <p>Android, Google Play, Firebase and Jetpack Compose are trademarks of Google LLC. Kotlin is a trademark of the Kotlin Foundation. Eitri is an independent project and is not affiliated with Google, JetBrains or Sindri.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+  function select(tab, focus) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+    if (focus) tab.focus();
+  }
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener('click', function () { select(tab, false); });
+    tab.addEventListener('keydown', function (e) {
+      var d = (e.key === 'ArrowDown' || e.key === 'ArrowRight') ? 1 : (e.key === 'ArrowUp' || e.key === 'ArrowLeft') ? -1 : 0;
+      if (e.key === 'Home') { e.preventDefault(); select(tabs[0], true); }
+      else if (e.key === 'End') { e.preventDefault(); select(tabs[tabs.length - 1], true); }
+      else if (d) { e.preventDefault(); select(tabs[(i + d + tabs.length) % tabs.length], true); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
