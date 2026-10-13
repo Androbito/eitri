@@ -1,0 +1,23 @@
+-- A tool's last result for a project, so reopening a project does not re-run every check.
+-- The payload is each tool's own JSON. A cache entry is never shown without its date: a stale result
+-- labelled "checked 3 days ago" is information, a stale result shown as current is a lie.
+CREATE TABLE cachedResult (
+    projectPath TEXT NOT NULL,
+    tool TEXT NOT NULL,
+    computedAtEpochMillis INTEGER NOT NULL,
+    payload TEXT NOT NULL,
+    PRIMARY KEY (projectPath, tool)
+);
+
+put:
+INSERT OR REPLACE INTO cachedResult(projectPath, tool, computedAtEpochMillis, payload)
+VALUES (?, ?, ?, ?);
+
+get:
+SELECT * FROM cachedResult WHERE projectPath = ? AND tool = ?;
+
+forProject:
+SELECT * FROM cachedResult WHERE projectPath = ?;
+
+removeForProject:
+DELETE FROM cachedResult WHERE projectPath = ?;

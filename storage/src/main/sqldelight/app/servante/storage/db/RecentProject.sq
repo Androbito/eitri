@@ -1,0 +1,15 @@
+-- The recent projects list on the welcome screen.
+CREATE TABLE recentProject (
+    path TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    openedAtEpochMillis INTEGER NOT NULL
+);
+
+upsert:
+INSERT OR REPLACE INTO recentProject(path, name, openedAtEpochMillis) VALUES (?, ?, ?);
+
+mostRecent:
+SELECT * FROM recentProject ORDER BY openedAtEpochMillis DESC LIMIT :limit;
+
+remove:
+DELETE FROM recentProject WHERE path = ?;

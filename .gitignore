@@ -6,3 +6,9 @@ local.properties
 *.jks
 *.keystore
 .kotlin/
+
+# Fixtures are the exception: these files exist to be read by tests, so they are committed.
+# The keys are worthless and the passwords are deliberate. See fixtures/README.md.
+!fixtures/**/local.properties
+!fixtures/**/*.jks
+!fixtures/**/*.keystore

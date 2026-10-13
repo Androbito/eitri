@@ -1,0 +1,52 @@
+-- The local history of every write Servante performed. Append only: no UPDATE, no DELETE.
+CREATE TABLE auditEvent (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    atEpochMillis INTEGER NOT NULL,
+    tool TEXT NOT NULL,
+    action TEXT NOT NULL,
+    summary TEXT NOT NULL,
+    projectPath TEXT,
+    outcome TEXT NOT NULL,
+    failureReason TEXT
+);
+
+CREATE INDEX auditEvent_at ON auditEvent(atEpochMillis DESC);
+CREATE INDEX auditEvent_project ON auditEvent(projectPath);
+
+-- One path a write touched, so the history can say what changed and not only that something did.
+CREATE TABLE auditChange (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    eventId INTEGER NOT NULL REFERENCES auditEvent(id),
+    path TEXT NOT NULL,
+    kind TEXT NOT NULL,
+    detail TEXT
+);
+
+CREATE INDEX auditChange_event ON auditChange(eventId);
+
+insertEvent:
+INSERT INTO auditEvent(atEpochMillis, tool, action, summary, projectPath, outcome, failureReason)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
+lastInsertedEventId:
+SELECT last_insert_rowid();
+
+insertChange:
+INSERT INTO auditChange(eventId, path, kind, detail)
+VALUES (?, ?, ?, ?);
+
+recentEvents:
+SELECT * FROM auditEvent
+ORDER BY atEpochMillis DESC, id DESC
+LIMIT :limit;
+
+recentEventsForProject:
+SELECT * FROM auditEvent
+WHERE projectPath = :projectPath
+ORDER BY atEpochMillis DESC, id DESC
+LIMIT :limit;
+
+changesForEvents:
+SELECT * FROM auditChange
+WHERE eventId IN :eventIds
+ORDER BY id;
