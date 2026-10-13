@@ -41,9 +41,9 @@ AI review is optional and runs on your own API key (Anthropic, OpenAI, Google, a
 | Secrets | The OS store on each of the three systems, behind one interface, with a session-only fallback that says why |
 | Writes | One gate: it asks, writes atomically, and records. There is no other write path |
 | User interface | **Not built.** The design tokens and both languages are written; no screen exists yet |
-| CLI | Not started |
+| CLI | One command, `servante-signing`, which runs the Signing tool over a project and prints the diagnosis. `servante doctor` itself is M9 |
 
-210 tests. Run them with `./gradlew checkAll`, which is also what CI runs.
+233 tests. Run them with `./gradlew checkAll`, which is also what CI runs.
 
 ## Building it
 
@@ -58,6 +58,36 @@ from Maven Central and from Google's Maven repository, which Compose Multiplatfo
 
 Demo mode will run against the fictional project in [`fixtures/fjord-notes`](fixtures/fjord-notes),
 which is the `app.fjord.notes` project the designs show. It is not wired up until the app shell exists.
+
+## Running the Signing tool now, without a screen
+
+The screens are not built, so the Signing tool has a terminal entry point. It is the same tool, the same
+readers and the same Markdown export the screen will call.
+
+```
+./gradlew :cli:installDist
+cli/build/install/servante-signing/bin/servante-signing ~/my-app > diagnosis.md
+```
+
+It reads the project, the keystores its `signingConfigs` name, `~/.android/debug.keystore` and
+`google-services.json`, compares every signing identity against what Firebase has registered, and writes
+the diagnosis to standard output. Progress and password prompts go to standard error, so redirecting
+gives a file that can be pasted into an issue. `--keystore <path>`, repeatable, adds a keystore no build
+file mentions.
+
+Run the installed script rather than `./gradlew :cli:run`: a keystore password is asked for with
+`Console.readPassword`, which needs a real terminal, and there is deliberately no way to pass one as an
+argument or an environment variable. With no terminal attached, the keys that need a password are
+reported as unreadable with that reason instead of the check failing.
+
+To see what it does before pointing it at your own project, run it over the fixture. Its passwords are in
+[`fixtures/fjord-notes/README.md`](fixtures/fjord-notes/README.md), and the three findings it reports are
+there on purpose.
+
+```
+cli/build/install/servante-signing/bin/servante-signing fixtures/fjord-notes \
+  --keystore fixtures/fjord-notes/keystores/debug.keystore
+```
 
 ## What is in this repository
 
